@@ -7,24 +7,28 @@ rebuild_hm() {
 }
 
 rebuild() {
-  sudo nixos-rebuild switch --flake .#thinkpad-x1
+  if [ -z "$1" ]; then
+    echo "no hostname"
+    exit 1
+  fi
+  sudo nixos-rebuild switch --flake ".#$1"
 }
 
 init() {
   echo "Creating directories..."
 
-  mkdir -p $HOME/Pictures/
-  cp imgs/img19.jpg $HOME/Pictures/img19.jpg
+  mkdir -p "$HOME/Pictures/"
+  cp imgs/img19.jpg "$HOME/Pictures/img19.jpg"
 
-  mkdir -p $HOME/.config/nix
-  cp home/nix.conf $HOME/.config/nix/nix.conf
+  mkdir -p "$HOME/.config/nix"
+  cp home/nix.conf "$HOME/.config/nix/nix.conf"
 }
 
 case $1 in
   "rebuild_hm")
     rebuild_hm;;
   "rebuild")
-    rebuild;;
+    rebuild "$2";;
   "init")
     init;;
   *)
