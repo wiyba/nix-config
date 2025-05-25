@@ -2,7 +2,7 @@
 
 set +x
 
-rebuild_hyprland_hdmi_mutable() {
+rebuild_hm() {
   home-manager switch --flake .#
 }
 
@@ -14,13 +14,17 @@ init() {
   echo "Creating directories..."
 
   mkdir -p $HOME/Pictures/
-  cp imgs/
+  cp imgs/img19.jpg $HOME/Pictures/img19.jpg
 
   mkdir -p $HOME/.config/nix
   cp home/nix.conf $HOME/.config/nix/nix.conf
 }
 
 case $1 in
+  "rebuild_hm")
+    rebuild_hm;;
+  "rebuild")
+    rebuild;;
   "init")
     init;;
   *)
