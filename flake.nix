@@ -44,8 +44,7 @@
 
     homeConfigurations = import ./home/default.nix {
       inherit inputs;
-      pkgs = import nixpkgs { system = builtins.currentSystem; config.allowUnfree = true; };
-      system  = builtins.currentSystem;
+      pkgs = import nixpkgs { inherit system; config.allowUnfree = true; };
       extraHomeConfig = {};
     };
   in

@@ -1,3 +1,4 @@
+{ inputs, pkgs, system, ... }:
 let
   mkHome = mods: inputs.home-manager.lib.homeManagerConfiguration {
     inherit pkgs;
