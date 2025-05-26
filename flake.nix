@@ -43,10 +43,11 @@
       });
 
     homeConfigurations = import ./home/default.nix {
-      inherit inputs;
-      pkgs = import nixpkgs { inherit system; config.allowUnfree = true; };
-      extraHomeConfig = {};
-    };
+		  inherit inputs;
+		  pkgs = import nixpkgs { system = builtins.currentSystem; config.allowUnfree = true; };
+		  system = builtins.currentSystem;
+		  extraHomeConfig = {};
+		};
   in
     perSystem // {
       inherit nixosConfigurations darwinConfigurations homeConfigurations;
