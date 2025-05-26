@@ -25,7 +25,7 @@
         system  = "x86_64-linux";
         modules = [
           ./system/configuration.nix
-          ./system/machine/${host}/default.nix
+          ./system/machines/${host}/default.nix
           { nix.registry.nixpkgs.flake = inputs.nixpkgs; }
         ];
         specialArgs = { inherit inputs; };
@@ -36,7 +36,7 @@
         system  = "aarch64-darwin";
         modules = [
           ./system/darwin.nix
-          ./system/machine/${host}/default.nix
+          ./system/machines/${host}/default.nix
           { nix.registry.nixpkgs.flake = inputs.nixpkgs; }
         ];
         specialArgs = { inherit inputs; };
