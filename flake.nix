@@ -20,7 +20,7 @@
     nixosHosts  = [ "ms-7c39" "nix-usb" "thinkpad-x1" ];
     darwinHosts = [ "apple-computer" ];
 
-    nixosConfigurations = nixpkgs.lib.getAttrs nixosHosts (host:
+    nixosConfigurations = nixpkgs.lib.genAttrs nixosHosts (host:
       nixpkgs.lib.nixosSystem {
         system  = "x86_64-linux";
         modules = [
