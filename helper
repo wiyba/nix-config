@@ -15,13 +15,13 @@ rebuild() {
 }
 
 init() {
-  echo "Creating directories..."
+  echo "creating directories..."
 
   mkdir -p "$HOME/Pictures/"
   cp imgs/img19.jpg "$HOME/Pictures/img19.jpg"
 
   mkdir -p "$HOME/.config/nix"
-  cp home/nix.conf "$HOME/.config/nix/nix.conf"
+  cp system/misc/nix.conf "$HOME/.config/nix/nix.conf"
 }
 
 case $1 in
