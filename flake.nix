@@ -20,7 +20,7 @@
     nixosHosts  = [ "ms-7c39" "nix-usb" "thinkpad-x1" ];
     darwinHosts = [ "apple-computer" ];
 
-    nixosConfigurations = flake-utils.lib.genAttrs nixosHosts (host:
+    nixosConfigurations = nixpkgs.lib.getAttrs nixosHosts (host:
       nixpkgs.lib.nixosSystem {
         system  = "x86_64-linux";
         modules = [
@@ -31,7 +31,7 @@
         specialArgs = { inherit inputs; };
       });
 
-    darwinConfigurations = flake-utils.lib.genAttrs darwinHosts (host:
+    darwinConfigurations = nixpkgs.lib.genAttrs darwinHosts (host:
       nix-darwin.lib.darwinSystem {
         system  = "aarch64-darwin";
         modules = [
