@@ -7,6 +7,9 @@
     flake-utils.url    = "github:numtide/flake-utils";
     nix-darwin.url     = "github:LnL7/nix-darwin";
 
+    # packages not in nixpkgs
+    zen-browser.url = "github:MarceColl/zen-browser-flake";
+
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     nix-darwin.inputs.nixpkgs.follows   = "nixpkgs";
   };
@@ -30,7 +33,7 @@
           system  = "x86_64-linux";
           modules = [
             ./system/configuration.nix
-            ./system/machines/${host}/default.nix
+            ./system/machines/${host}
             { nix.registry.nixpkgs.flake = inputs.nixpkgs; }
           ];
           specialArgs = { inherit inputs; };
@@ -41,7 +44,7 @@
           system  = "aarch64-darwin";
           modules = [
             ./system/darwin.nix
-            ./system/machines/${host}/default.nix
+            ./system/machines/${host}
             { nix.registry.nixpkgs.flake = inputs.nixpkgs; }
           ];
           specialArgs = { inherit inputs; };
