@@ -3,8 +3,11 @@
 {
   programs = {
     dconf.enable = true;
+    kitty
     hyprland.enable = true;
   };
+
+  home.packages = with pkgs; [ kitty ];
 
   systemd.services.greetd.serviceConfig = {
     Type = "idle";
