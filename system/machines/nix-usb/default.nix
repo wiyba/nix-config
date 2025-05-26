@@ -10,11 +10,10 @@
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
 
-    loader = {
-      grub-boot.enable = true;
-      device = "nodev";
-      useOSProber = false;
-      efiSupport = true;
+    loader.grub = {
+     	enable = true;
+     	device = "nodev";
+     	efiSupport = true;
       efiInstallAsRemovable = true;
     };
   };
