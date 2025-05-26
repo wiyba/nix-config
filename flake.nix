@@ -42,7 +42,7 @@
               home-manager.nixosModules.home-manager
               { nix.registry.nixpkgs.flake = nixpkgs; }
             ];
-            specialArgs = { inherit inputs; };
+            specialArgs = { inherit inputs host; };
           };
 
         mkDarwinSystem = host:
@@ -54,7 +54,7 @@
               home-manager.darwinModules.home-manager
               { nix.registry.nixpkgs.flake = nixpkgs; }
             ];
-            specialArgs = { inherit inputs; };
+            specialArgs = { inherit inputs host; };
           };
 
         mkHome = { system, modules }:
@@ -77,12 +77,12 @@
             (nixpkgs.lib.filterAttrs (_: arch: arch == "x86_64-darwin" || arch == "aarch64-darwin") hosts);
 
         homeConfigurations = {
-          "wiyba@hyprland" = mkHome {
+          "hyprland" = mkHome {
             system  = "x86_64-linux";
             modules = [ ./home/wm/hyprland/home.nix ];
           };
 
-          "wiyba@darwin" = mkHome {
+          "darwin" = mkHome {
             system  = "aarch64-darwin";
             modules = [ ./home/wm/darwin/home.nix ];
           };
