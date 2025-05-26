@@ -42,8 +42,6 @@ in
     curl
     git
     wget
-    htop
-    fastfetch
   ];
 
   services = {
@@ -70,13 +68,7 @@ in
     font-awesome
   ] ++ customFonts;
   
-  programs = {
-    zsh = {
-      enable = true;
-      enableCompletion = true;
-      syntaxHighlighting.enable = true;
-    };
-  };
+  programs.zsh.enable = true;
 
   console = {
     packages = with pkgs; [ terminus_font ];
