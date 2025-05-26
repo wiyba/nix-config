@@ -1,0 +1,96 @@
+wiyba@nix-usb:/etc/nixos/ > home-manager switch --flake .#
+error: flake 'git+file:///etc/nixos' does not provide attribute 'packages.x86_64-linux.homeConfigurations."".activationPackage', 'legacyPackages.x86_64-linux.homeConfigurations."".activationPackage' or 'homeConfigurations."".activationPackage'
+wiyba@nix-usb:/etc/nixos/ > nix build .#homeConfigurations.me.activationPackage
+error: flake 'git+file:///etc/nixos' does not provide attribute 'packages.x86_64-linux.homeConfigurations.me.activationPackage', 'legacyPackages.x86_64-linux.homeConfigurations.me.activationPackage' or 'homeConfigurations.me.activationPackage'
+wiyba@nix-usb:/etc/nixos/ > nix build .#homeConfigurations.wiyba.activationPackage
+error: flake 'git+file:///etc/nixos' does not provide attribute 'packages.x86_64-linux.homeConfigurations.wiyba.activationPackage', 'legacyPackages.x86_64-linux.homeConfigurations.wiyba.activationPackage' or 'homeConfigurations.wiyba.activationPackage'
+wiyba@nix-usb:/etc/nixos/ > nix build .#homeConfigurations.wiyba.activationPackage
+error: flake 'git+file:///etc/nixos' does not provide attribute 'packages.x86_64-linux.homeConfigurations.wiyba.activationPackage', 'legacyPackages.x86_64-linux.homeConfigurations.wiyba.activationPackage' or 'homeConfigurations.wiyba.activationPackage'
+wiyba@nix-usb:/etc/nixos/ > nix
+error: no subcommand specified
+Try 'nix --help' for more information.
+wiyba@nix-usb:/etc/nixos/ > nix build
+error: flake 'git+file:///etc/nixos' does not provide attribute 'packages.x86_64-linux.default' or 'defaultPackage.x86_64-linux'
+wiyba@nix-usb:/etc/nixos/ > nixos-rebuild switch --flake .#
+error: flake 'git+file:///etc/nixos' does not provide attribute 'packages.x86_64-linux.nixosConfigurations."nixos-usb".config.system.build.nixos-rebuild', 'legacyPackages.x86_64-linux.nixosConfigurations."nixos-usb".config.system.build.nixos-rebuild' or 'nixosConfigurations."nixos-usb".config.system.build.nixos-rebuild'
+       Did you mean nix-usb?
+wiyba@nix-usb:/etc/nixos/ > nixos-rebuild switch --flake .#nix-usb
+building the system configuration...
+error: creating symlink '"/nix/var/nix/profiles/.0_system"' -> '"system-15-link"': Permission denied
+wiyba@nix-usb:/etc/nixos/ > home-manager switch --flake .#nix-usb                 
+error: flake 'git+file:///etc/nixos' does not provide attribute 'packages.x86_64-linux.homeConfigurations."nix-usb".activationPackage', 'legacyPackages.x86_64-linux.homeConfigurations."nix-usb".activationPackage' or 'homeConfigurations."nix-usb".activationPackage'
+wiyba@nix-usb:/etc/nixos/ > home-manager switch --flake .#nixos-usb
+error: flake 'git+file:///etc/nixos' does not provide attribute 'packages.x86_64-linux.homeConfigurations."nixos-usb".activationPackage', 'legacyPackages.x86_64-linux.homeConfigurations."nixos-usb".activationPackage' or 'homeConfigurations."nixos-usb".activationPackage'
+wiyba@nix-usb:/etc/nixos/ > home-manager switch --flake .#wiyba@nix-usb
+error:
+       … while evaluating the attribute 'legacyPackages."${(builtins).currentSystem}"'
+         at /nix/store/khwrmv3vkmc60ig18h90rf0iadis95na-source/flake.nix:210:7:
+          209|       */
+          210|       legacyPackages = forAllSystems (
+             |       ^
+          211|         system:
+
+       error: attribute 'currentSystem' missing
+       at /nix/store/yjvwi536i5k251abva8prs1v4dmwpppn-source/flake.nix:47:37:
+           46|             inherit inputs;
+           47|                   pkgs = nixpkgs.legacyPackages.${builtins.currentSystem};
+             |                                     ^
+           48|              system = builtins.currentSystem;
+wiyba@nix-usb:/etc/nixos/ > sudo git pull
+[sudo] password for wiyba: 
+remote: Enumerating objects: 5, done.
+remote: Counting objects: 100% (5/5), done.
+remote: Compressing objects: 100% (3/3), done.
+remote: Total 3 (delta 2), reused 0 (delta 0), pack-reused 0 (from 0)
+Unpacking objects: 100% (3/3), 1.20 KiB | 1.20 MiB/s, done.
+From github.com:wiyba/nixos
+   b3368df..a7324d2  main       -> origin/main
+Updating b3368df..a7324d2
+Fast-forward
+ flake.nix | 81 ++++++++++++++++++++++++++++++++++++++++++---------------------------------------
+ 1 file changed, 42 insertions(+), 39 deletions(-)
+wiyba@nix-usb:/etc/nixos/ > home-manager switch --flake .#wiyba@nix-usb
+error:
+       … while evaluating a branch condition
+         at /nix/store/khwrmv3vkmc60ig18h90rf0iadis95na-source/pkgs/stdenv/booter.nix:68:9:
+           67|         pred: n:
+           68|         if n == len then
+             |         ^
+           69|           rnul pred
+
+       … while calling the 'length' builtin
+         at /nix/store/khwrmv3vkmc60ig18h90rf0iadis95na-source/pkgs/stdenv/booter.nix:65:13:
+           64|     let
+           65|       len = builtins.length list;
+             |             ^
+           66|       go =
+
+       (stack trace truncated; use '--show-trace' to show the full, detailed trace)
+
+       error: attribute 'currentSystem' missing
+       at /nix/store/dr227ylkivkfas57hif6qpchzp4vz2s3-source/flake.nix:17:21:
+           16|      systems        = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ];
+           17|     currentSystem  = builtins.currentSystem;
+             |                     ^
+           18|
+wiyba@nix-usb:/etc/nixos/ > sudo git pull                              
+remote: Enumerating objects: 5, done.
+remote: Counting objects: 100% (5/5), done.
+remote: Compressing objects: 100% (3/3), done.
+remote: Total 3 (delta 2), reused 0 (delta 0), pack-reused 0 (from 0)
+Unpacking objects: 100% (3/3), 1.15 KiB | 1.15 MiB/s, done.
+From github.com:wiyba/nixos
+   a7324d2..f734676  main       -> origin/main
+Updating a7324d2..f734676
+Fast-forward
+ flake.nix | 84 ++++++++++++++++++++++++++++++++++++++++++------------------------------------------
+ 1 file changed, 42 insertions(+), 42 deletions(-)
+wiyba@nix-usb:/etc/nixos/ > home-manager switch --flake .#wiyba@nix-usb
+error: flake 'git+file:///etc/nixos' does not provide attribute 'packages.x86_64-linux.homeConfigurations."wiyba@nix-usb".activationPackage', 'legacyPackages.x86_64-linux.homeConfigurations."wiyba@nix-usb".activationPackage' or 'homeConfigurations."wiyba@nix-usb".activationPackage'
+wiyba@nix-usb:/etc/nixos/ > home-manager switch --flake .#wiyba@nix-usb
+error: flake 'git+file:///etc/nixos' does not provide attribute 'packages.x86_64-linux.homeConfigurations."wiyba@nix-usb".activationPackage', 'legacyPackages.x86_64-linux.homeConfigurations."wiyba@nix-usb".activationPackage' or 'homeConfigurations."wiyba@nix-usb".activationPackage'
+wiyba@nix-usb:/etc/nixos/ > nixos-rebuild switch --flake .#            
+error: flake 'git+file:///etc/nixos' does not provide attribute 'packages.x86_64-linux.nixosConfigurations."nixos-usb".config.system.build.nixos-rebuild', 'legacyPackages.x86_64-linux.nixosConfigurations."nixos-usb".config.system.build.nixos-rebuild' or 'nixosConfigurations."nixos-usb".config.system.build.nixos-rebuild'
+wiyba@nix-usb:/etc/nixos/ > nixos-rebuild switch --flake .#nix-usb     
+error: flake 'git+file:///etc/nixos' does not provide attribute 'packages.x86_64-linux.nixosConfigurations."nix-usb".config.system.build.nixos-rebuild', 'legacyPackages.x86_64-linux.nixosConfigurations."nix-usb".config.system.build.nixos-rebuild' or 'nixosConfigurations."nix-usb".config.system.build.nixos-rebuild'
+wiyba@nix-usb:/etc/nixos/ >    
