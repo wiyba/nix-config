@@ -11,47 +11,46 @@
     nix-darwin.inputs.nixpkgs.follows   = "nixpkgs";
   };
 
-  outputs = inputs @ { self, nixpkgs, flake-utils, nix-darwin, home-manager, ... }:
-    let
-      systems = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ];
+  outputs = inputs @ { self, nixpkgs, home-manager, flake-utils, nix-darwin, ... }:
+  let
+    systems = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ];
 
-      nixosHosts  = [ "ms-7c39" "nix-usb" "thinkpad-x1" ];
-      darwinHosts = [ "apple-computer" ];
-    in
-    flake-utils.lib.eachSystem systems (system:
-      let
-        pkgs = import nixpkgs {
-          inherit system;
-          config.allowUnfree = true;
-        };
+    pkgsFor = system:
+      import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+      };
 
-        nixosConfigurations = nixpkgs.lib.genAttrs nixosHosts (host:
-          nixpkgs.lib.nixosSystem {
-            inherit system;
-            modules = [
-              ./system/configuration.nix
-              ./system/machines/${host}/default.nix
-              { nix.registry.nixpkgs.flake = inputs.nixpkgs; }
-            ];
-            specialArgs = { inherit inputs; };
-          });
+    nixosHosts  = [ "ms-7c39" "nix-usb" "thinkpad-x1" ];
+    darwinHosts = [ "apple-computer" ];
+  in
+    flake-utils.lib.eachSystem systems (_: { }) // {
+      nixosConfigurations = nixpkgs.lib.genAttrs nixosHosts (host:
+        nixpkgs.lib.nixosSystem {
+          system  = "x86_64-linux";
+          modules = [
+            ./system/configuration.nix
+            ./system/machines/${host}/default.nix
+            { nix.registry.nixpkgs.flake = inputs.nixpkgs; }
+          ];
+          specialArgs = { inherit inputs; };
+        });
 
-        darwinConfigurations = nixpkgs.lib.genAttrs darwinHosts (host:
-          nix-darwin.lib.darwinSystem {
-            inherit system;
-            modules = [
-              ./system/darwin.nix
-              ./system/machines/${host}/default.nix
-              { nix.registry.nixpkgs.flake = inputs.nixpkgs; }
-            ];
-            specialArgs = { inherit inputs; };
-          });
+      darwinConfigurations = nixpkgs.lib.genAttrs darwinHosts (host:
+        nix-darwin.lib.darwinSystem {
+          system  = "aarch64-darwin";
+          modules = [
+            ./system/darwin.nix
+            ./system/machines/${host}/default.nix
+            { nix.registry.nixpkgs.flake = inputs.nixpkgs; }
+          ];
+          specialArgs = { inherit inputs; };
+        });
 
-        homeConfigurations = import ./home/default.nix {
-          inherit inputs pkgs system;
-          extraHomeConfig = {};
-        };
-      in {
-        inherit nixosConfigurations darwinConfigurations homeConfigurations;
-      });
+      homeConfigurations = import ./home/default.nix {
+        inherit inputs;
+        pkgs   = pkgsFor "x86_64-linux";
+        system = "x86_64-linux";
+      };
+    };
 }
