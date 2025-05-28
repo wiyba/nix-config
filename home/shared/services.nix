@@ -10,5 +10,6 @@ let
 in
 [
   ../services/hypridle
+  ../services/easyeffects
   more
 ]

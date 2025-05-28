@@ -3,8 +3,8 @@
 get_icon() {
     case $1 in
         # Icons for weather-icons
-        01d) icon="";;   # ясно
-        01n) icon="";;
+        01d) icon="";;   # ясно
+        01n) icon="";;
         02d) icon="";;   # немного облачно
         02n) icon="";;
         03*) icon="󰅟";;   # облачно
@@ -14,7 +14,7 @@ get_icon() {
         10n) icon="";;
         11*) icon="";;   # гроза
         13*) icon="";;   # снег
-        50*) icon="󰖑";;   # туман
+        50*) icon="";;   # туман
         *) icon="";;     # неизвестно
 
         # Icons for Font Awesome 5 Pro

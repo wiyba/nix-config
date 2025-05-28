@@ -3,7 +3,7 @@
 
   "custom/menu": {
     "format": "{icon}",
-    "format-icons": "󰣇",
+    "format-icons": "",
     "on-click": "fuzzel",
     "escape": true,
     "tooltip": false

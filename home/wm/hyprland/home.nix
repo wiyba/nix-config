@@ -28,7 +28,9 @@ let
     loupe
     nekoray
     swaynotificationcenter
+    sway-audio-idle-inhibit
     nemo
+    wlogout
     nix-search
     unzip
     grim
@@ -41,10 +43,7 @@ let
     kdePackages.xwaylandvideobridge
   ] ++ fontPkgs ++ audioPkgs;
 
-  scripts = pkgs.callPackage ./scripts.nix { 
-		hyprctl = pkgs.hyprland;
-		jq = pkgs.jq;
-	};
+  scripts = pkgs.callPackage ./scripts.nix { hyprctl = pkgs.hyprland; jq = pkgs.jq; };
 
 in
 {
@@ -114,6 +113,10 @@ in
 
       $mainMod = SUPER
       $altMod = ALT_L
+
+      exec-once = ${pkgs.hyprpaper}/bin/hyprpaper
+      exec-once = ${pkgs.swaynotificationcenter}/bin/swaync
+      
     '' + (builtins.readFile ./hyprland.conf);
   plugins = [ ];
   systemd = {
