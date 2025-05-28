@@ -1,15 +1,15 @@
 { pkgs, lib, ... }:
 
 let
-  nerdFonts = with (pkgs.nerd-fonts); [
-    jetbrains-mono
-    caskaydia-cove
-    iosevka
-  ];
+	nerdFonts = with pkgs.nerd-fonts; [
+	    symbols-only
+	    caskaydia-cove
+	  ];
 
   fontPkgs = with pkgs; [
     font-awesome
     material-design-icons
+    jetbrains-mono
     noto-fonts
     noto-fonts-cjk-sans
     noto-fonts-emoji
@@ -36,6 +36,8 @@ let
     wl-clipboard
     wofi
     zip
+    catppuccin-gtk
+    papirus-icon-theme
     kdePackages.xwaylandvideobridge
   ] ++ fontPkgs ++ audioPkgs;
 
@@ -106,7 +108,7 @@ in
       $editor = ${lib.getExe pkgs.vscode}
       $grim = ${lib.getExe pkgs.grim}
       $slurp = ${lib.getExe pkgs.slurp}
-      $wlcopy = ${lib.getExe pkgs.wl-clipboard}
+      $wlcopy = ${lib.getExe' pkgs.wl-clipboard "wl-copy"}
 
       $closeSpecial = ${lib.getExe scripts.closeSpecialWorkspace}
 

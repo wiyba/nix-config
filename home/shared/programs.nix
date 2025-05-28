@@ -36,6 +36,7 @@ in
 [
   ../programs/fastfetch
   ../programs/waybar
+  ../programs/neovim
   ../programs/dconf
   ../programs/git
   ../programs/zsh

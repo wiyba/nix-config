@@ -2,9 +2,9 @@
 
 {
   closeSpecialWorkspace = writeShellScriptBin "close-special-workspace" ''
-    active=$(${lib.getExe hyprctl} -j monitors | ${lib.getExe jq} --raw-output '.[] | select(.focused==true).specialWorkspace.name | split(":") | if length > 1 then .[1] else "" end')
+    active=$(${lib.getExe' hyprctl "hyprctl"} -j monitors | ${lib.getExe jq} --raw-output '.[] | select(.focused==true).specialWorkspace.name | split(":") | if length > 1 then .[1] else "" end')
     if [[ ''${#active} -gt 0 ]]; then
-      ${lib.getExe hyprctl} dispatch togglespecialworkspace "$active"
+      ${lib.getExe' hyprctl "hyprctl"} dispatch togglespecialworkspace "$active"
     fi
   '';
 }
