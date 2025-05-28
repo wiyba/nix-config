@@ -47,7 +47,7 @@ in
     changes-report.enable = true;
 
     sessionVariables = {
-      BROWSER = "${lib.exe pkgs.firefox-beta-bin}";
+      BROWSER = "${lib.getExe pkgs.firefox-beta-bin}";
       DISPLAY = ":0";
       EDITOR = "nvim";
       GIT_ASKPASS = "";
