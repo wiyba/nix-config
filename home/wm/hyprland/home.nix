@@ -30,6 +30,8 @@ let
     nemo
     nix-search
     unzip
+    grim
+    slurp
     wl-clipboard
     wofi
     zip
@@ -55,7 +57,7 @@ in
 
     sessionVariables = {
       NIXOS_OZONE_WL = 1;
-      SHELL = "${pkgs.zsh}/bin/zsh";
+      SHELL = "${lib.getExe pkgs.zsh}";
       MOZ_ENABLE_WAYLAND = 1;
       XDG_CURRENT_DESKTOP = "Hyprland";
       XDG_SESSION_DESKTOP = "Hyprland";
@@ -90,13 +92,28 @@ in
   };
 
   wayland.windowManager.hyprland = {
+  enable = true;
+  extraConfig =
+    ''
+      $terminal = ${lib.getExe pkgs.kitty}
+      $fileManager = ${lib.getExe pkgs.nemo}
+      $menu = ${lib.getExe pkgs.wofi}
+      $browser = ${lib.getExe pkgs.firefox-beta-bin}
+      $editor = ${lib.getExe pkgs.vscode}
+      $grim = ${lib.getExe pkgs.grim}
+      $slurp = ${lib.getExe pkgs.slurp}
+      $wlcopy = ${lib.getExe pkgs.wl-clipboard}
+
+      $closeSpecial = ${lib.getExe scripts.closeSpecialWorkspace}
+
+      $mainMod = SUPER
+      $altMod = ALT_L
+    '' + (builtins.readFile ./hyprland.conf);
+  plugins = [ ];
+  systemd = {
     enable = true;
-    extraConfig = (builtins.readFile ./hyprland.conf);
-    plugins = [ ];
-    systemd = {
-      enable = true;
-      variables = [ "--all" ];
-    };
-    xwayland.enable = true;
+    variables = [ "--all" ];
   };
+  xwayland.enable = true;
+};
 }

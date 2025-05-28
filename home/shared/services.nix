@@ -9,5 +9,6 @@ let
   };
 in
 [
+  ../services/hypridle
   more
 ]
