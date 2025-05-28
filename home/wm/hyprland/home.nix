@@ -11,7 +11,7 @@ let
     font-awesome
     material-design-icons
     noto-fonts
-    noto-fonts-cjk
+    noto-fonts-cjk-sans
     noto-fonts-emoji
   ] ++ nerdFonts;
 
@@ -26,7 +26,8 @@ let
 
   packages = with pkgs; [
     loupe
-    swaync
+    nekoray
+    swaynotificationcenter
     nemo
     nix-search
     unzip
@@ -47,10 +48,10 @@ in
 {
   imports = [
     ../../shared
-    ../../programs/kitty
     ../../programs/hyprlock
     ../../programs/hyprpaper
     ../../programs/waybar
+    ../../programs/kitty
     ../../services/hypridle
   ];
 
