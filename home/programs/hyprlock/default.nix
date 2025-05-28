@@ -8,8 +8,8 @@
     $1 = ${../../../imgs/42271.jpg}
     $1 = ${../../../imgs/42271.jpg}
     $2 = ${../../../imgs/new.jpeg}
-    $3 = ${../../../imgs/board.png}
-    $4 = ${../../../imgs/catp2.png}
+    $3 = ${../../../imgs/b24.png}
+    $4 = ${../../../imgs/new.jpeg}
     $5 = ${../../../imgs/img19.jpg}
     $current = $5
 
