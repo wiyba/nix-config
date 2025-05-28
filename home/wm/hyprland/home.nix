@@ -38,7 +38,10 @@ let
     kdePackages.xwaylandvideobridge
   ] ++ fontPkgs ++ audioPkgs;
 
-  scripts = pkgs.callPackage ./scripts.nix { };
+  scripts = pkgs.callPackage ./scripts.nix { 
+		hyprctl = pkgs.hyprland;
+		jq = pkgs.jq;
+	};
 
 in
 {
