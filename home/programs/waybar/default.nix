@@ -21,7 +21,7 @@ in {
 
         "custom/menu" = {
           format = "{icon}";
-          format-icons = "󰣇";
+          format-icons = "";
           on-click = "fuzzel";
           escape = true;
           tooltip = false;
@@ -58,7 +58,7 @@ in {
         };
 
         "hyprland/language" = {
-          format = "<span color='#fab387'>󰌏</span> {}";
+          format = "<span color='#fab387'></span> {}";
           "format-en" = "EN";
           "format-ru" = "RU";
           "on-click" = "hyprctl dispatch lang toggle";
@@ -75,7 +75,7 @@ in {
         };
 
         clock = {
-          format = "<span color='#fab387'></span> {:%H:%M}";
+          format = "<span color='#fab387'></span> {:%H:%M}";
           "tooltip-format" = "<big><span color='#cdd6f4'>{:%Y %B}</span></big>\n<tt><small>{calendar}</small></tt>";
           "format-alt" = "<span color='#eba0ac'></span> <span color='#cdd6f4'>{:%d.%m.%Y}</span>";
           calendar = {
