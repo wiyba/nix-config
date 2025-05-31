@@ -1,5 +1,5 @@
 {
-  description = "nixos & home-manager configs by wiyba";
+  description = "nixos & home-manager configs by wiyba ";
 
   nixConfig = {
     substituters          = [ "https://cache.nixos.org" ];
