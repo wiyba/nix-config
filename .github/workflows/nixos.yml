@@ -1,0 +1,36 @@
+name: build nixos
+
+on:
+  push:
+    branches: [ master ]
+    paths:
+      - 'flake.nix'
+      - 'flake.lock'
+      - 'system/**'
+  pull_request:
+    paths:
+      - 'flake.nix'
+      - 'flake.lock'
+      - 'system/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: true
+      matrix:
+        host:
+          - nix-usb
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: install nix
+        uses: cachix/install-nix-action@v27
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+
+      - name: build ${{ matrix.host }} nixos config
+        run: nix build .#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel -L
