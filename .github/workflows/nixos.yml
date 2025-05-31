@@ -2,7 +2,6 @@ name: build nixos
 
 on:
   push:
-    branches: [ master ]
     paths:
       - 'flake.nix'
       - 'flake.lock'
