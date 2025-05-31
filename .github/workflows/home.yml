@@ -1,0 +1,32 @@
+name: build home
+
+on:
+  push:
+    branches: [ master ]
+    paths:
+      - 'flake.nix'
+      - 'flake.lock'
+      - 'home/**'
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        profile:
+          - hyprland
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v27
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+
+      - name: build home configuration
+        run: nix build .#homeConfigurations.${{ matrix.profile }}.activationPackage
