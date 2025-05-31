@@ -8,6 +8,11 @@ on:
       - 'flake.lock'
       - 'home/**'
   pull_request:
+    paths:
+      - 'flake.nix'
+      - 'flake.lock'
+      - 'home/**'
+      
 
 jobs:
   build:
@@ -22,7 +27,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Nix
+      - name: install nix
         uses: cachix/install-nix-action@v27
         with:
           extra_nix_config: |
