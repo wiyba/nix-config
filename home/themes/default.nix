@@ -1,38 +1,9 @@
 [
-  ({ pkgs, lib, ... }:
-
-  let
-    catppuccinFausto = pkgs.stdenv.mkDerivation rec {
-      pname = "catppuccin-gtk-fausto";
-      version = "2024-05-21";
-
-      src = pkgs.fetchFromGitHub {
-        owner = "Fausto-Korpsvart";
-        repo = "Catppuccin-GTK-Theme";
-        rev = "c961826";
-        sha256 = "sha256-7F4FrhM+kBFPeLp2mjmYkoDiF9iKDUkC27LUBuFyz7g=";
-      };
-
-      propagatedBuildInputs = with pkgs; [
-        gtk-engine-murrine
-        gnome-themes-extra
-      ];
-
-      installPhase = ''
-        mkdir -p $out/share/themes
-        cp -r themes/Catppuccin-Frappe-Standard-Blue-Dark $out/share/themes/
-      '';
-    };
-  in
-
+  ({ pkgs, ... }: 
+  
   {
-    gtk = rec {
+    gtk = {
       enable = true;
-
-      theme = {
-        name = "Catppuccin-Frappe-Standard-Blue-Dark";
-        package = catppuccinFausto;
-      };
 
       iconTheme = {
         name = "Papirus-Dark";
@@ -41,14 +12,7 @@
 
       gtk3.extraConfig.gtk-application-prefer-dark-theme = true;
 
-      gtk4 = {
-        extraConfig = {
-          gtk-application-prefer-dark-theme = true;
-        };
-        extraCss = ''
-          @import "${theme.package}/share/themes/${theme.name}/gtk-4.0/gtk-dark.css";
-        '';
-      };
+      gtk4.extraConfig.gtk-application-prefer-dark-theme = true;
     };
   })
 ]
