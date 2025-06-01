@@ -6,8 +6,8 @@ let
   configHome = "${homeDirectory}/.config";
 
   packages = with pkgs; [
-    bottom # alternative to htop & ytop
     dig # dns command-line tool
+    btop # htop but better
     duf # disk usage/free utility
     eza # a better "ls"
     fd # "find" for files
@@ -15,12 +15,8 @@ let
     libreoffice # office suite
     ncdu # disk space info
     fastfetch # minimal system information fetch
-    nix-output-monitor # nom: monitor nix commands
-    ranger # terminal file explorer
-    screenkey # shows keypresses on screen
     spotify # music player
     tdesktop # telegram messaging client
-    tree # display files in a tree view
     vlc # media player
     xsel # clipboard support (also for neovim)
   ];
