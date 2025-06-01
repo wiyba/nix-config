@@ -33,7 +33,6 @@ let
     grim
     slurp
     wl-clipboard
-    wofi
     zip
     papirus-icon-theme
   ] ++ fontPkgs ++ audioPkgs;
