@@ -10,7 +10,7 @@
         owner = "Fausto-Korpsvart";
         repo = "Catppuccin-GTK-Theme";
         rev = "c961826";
-        sha256 = "sha256-41Ng86gV7It0BkxCvA0c7QOIx0szpMwCdBaGWu+iJ+A=";
+        sha256 = "sha256-7F4FrhM+kBFPeLp2mjmYkoDiF9iKDUkC27LUBuFyz7g=";
       };
 
       propagatedBuildInputs = with pkgs; [
