@@ -3,7 +3,6 @@
 let
   customFonts = with (pkgs.nerd-fonts); [
     jetbrains-mono
-    iosevka
   ];
 
   myfonts = pkgs.callPackage fonts/default.nix { inherit pkgs; };

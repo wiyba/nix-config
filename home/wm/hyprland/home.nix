@@ -16,12 +16,10 @@ let
   ] ++ nerdFonts;
 
   audioPkgs = with pkgs; [
-    paprefs
     pasystray
     pavucontrol
     playerctl
     pulsemixer
-    reaper
   ];
 
   packages = with pkgs; [
@@ -31,16 +29,13 @@ let
     sway-audio-idle-inhibit
     nemo
     wlogout
-    nix-search
     unzip
     grim
     slurp
     wl-clipboard
     wofi
     zip
-    catppuccin-gtk
     papirus-icon-theme
-    kdePackages.xwaylandvideobridge
   ] ++ fontPkgs ++ audioPkgs;
 
   scripts = pkgs.callPackage ./scripts.nix { hyprctl = pkgs.hyprland; jq = pkgs.jq; };

@@ -4,12 +4,6 @@ let
       # "cat" but better
       bat.enable = true;
 
-      # auto .envrc variables
-      direnv = {
-        enable = true;
-        nix-direnv.enable = true;
-      };
-
       # htop
       htop = {
         enable = true;
