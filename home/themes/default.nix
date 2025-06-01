@@ -9,7 +9,7 @@
       src = pkgs.fetchFromGitHub {
         owner = "Fausto-Korpsvart";
         repo = "Catppuccin-GTK-Theme";
-        rev = "449a4c90dbe3a2305de06ed68edb81f360cfecfa";
+        rev = "c961826";
         sha256 = "sha256-41Ng86gV7It0BkxCvA0c7QOIx0szpMwCdBaGWu+iJ+A=";
       };
 
