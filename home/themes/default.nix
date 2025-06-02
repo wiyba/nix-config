@@ -14,5 +14,12 @@
 
       gtk4.extraConfig.gtk-application-prefer-dark-theme = true;
     };
+
+    home.pointerCursor = {
+      name = "breeze_cursors";
+      package = pkgs.kdePackages.breeze;
+      gtk.enable = true;
+      x11.enable = true;
+    };
   })
 ]

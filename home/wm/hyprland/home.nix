@@ -1,10 +1,10 @@
 { pkgs, lib, ... }:
 
 let
-	nerdFonts = with pkgs.nerd-fonts; [
-	    symbols-only
-	    caskaydia-cove
-	  ];
+  nerdFonts = with pkgs.nerd-fonts; [
+    symbols-only
+    caskaydia-cove
+  ];
 
   fontPkgs = with pkgs; [
     font-awesome
@@ -24,7 +24,8 @@ let
 
   packages = with pkgs; [
     loupe
-    nekoray
+    appeditor
+    ulauncher
     swaynotificationcenter
     sway-audio-idle-inhibit
     nemo
@@ -91,12 +92,12 @@ in
   };
 
   wayland.windowManager.hyprland = {
-  enable = true;
-  extraConfig =
+    enable = true;
+    extraConfig =
     ''
       $terminal = ${lib.getExe pkgs.kitty}
       $fileManager = ${lib.getExe pkgs.nemo}
-      $menu = ${lib.getExe pkgs.wofi}
+      $menu = ${lib.getExe pkgs.ulauncher}
       $browser = ${lib.getExe pkgs.firefox-beta-bin}
       $editor = ${lib.getExe pkgs.vscode}
       $grim = ${lib.getExe pkgs.grim}
@@ -112,11 +113,11 @@ in
       exec-once = ${pkgs.swaynotificationcenter}/bin/swaync
       
     '' + (builtins.readFile ./hyprland.conf);
-  plugins = [ ];
-  systemd = {
-    enable = true;
-    variables = [ "--all" ];
+    plugins = [ ];
+    systemd = {
+      enable = true;
+      variables = [ "--all" ];
   };
   xwayland.enable = true;
-};
+  };
 }
