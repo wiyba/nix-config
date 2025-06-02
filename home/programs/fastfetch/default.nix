@@ -9,7 +9,7 @@
         # type = "none";
         type   = "kitty";
         source = "${./nixos2.png}";
-        padding = { top = 2; right = 6; };
+        padding = { top = 0; right = 6; };
         width  = 25;
         height = 13;
         color  = { "1" = "white"; };
