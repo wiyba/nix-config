@@ -41,6 +41,7 @@ in
     curl
     git
     wget
+    lm_sensors
   ];
 
   services = {
