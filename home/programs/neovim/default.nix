@@ -16,18 +16,20 @@
 
     extraConfig = ''
       lua << EOF
-      vim.opt.showmode = false
+      -- убрать "-- INSERT --/-- VISUAL --" в командной строке
+      vim.o.showmode = false
+      -- скрыть вступительное сообщение
       vim.opt.shortmess:append("I")
 
       require('nvim-autopairs').setup()
 
-      require('lualine').setup {
+      require('lualine').setup{
         options = {
           icons_enabled = true,
           theme = 'auto',
         },
         sections = {
-          lualine_a = {},                -- без отображения режима
+          lualine_a = { 'mode' },       -- режим теперь в статуслайне
           lualine_b = { 'branch' },
           lualine_c = { 'filename' },
           lualine_x = { 'encoding', 'fileformat', 'filetype' },
@@ -37,7 +39,7 @@
       }
 
       local cmp = require'cmp'
-      cmp.setup {
+      cmp.setup{
         sources = { { name = 'buffer' } },
         mapping = cmp.mapping.preset.insert({
           ['<Tab>'] = cmp.mapping.confirm({ select = true }),
