@@ -4,11 +4,11 @@
   programs.git = {
     enable = true;
     userName = "wiyba";
-    userEmail = "account@wiyba.org"
+    userEmail = "account@wiyba.org";
 
     aliases = {
-      st = "status"
-      ci = "commit"
+      st = "status";
+      ci = "commit";
     };
 
     extraConfig = {

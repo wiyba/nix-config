@@ -6,12 +6,13 @@
 
     settings = {
       logo = {
-        type   = "kitty";
-        source = "${./nixos.png}";
-        padding = { top = 2; right = 6; };
-        width  = 25;
-        height = 13;
-        color  = { "1" = "white"; };
+        # type   = "kitty";
+        # source = "${./nixos.png}";
+        # padding = { top = 2; right = 6; };
+        # width  = 25;
+        # height = 13;
+        # color  = { "1" = "white"; };
+        source = "${./cat}";
       };
 
       display = { separator = " •  "; };

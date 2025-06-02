@@ -16,10 +16,13 @@
 
     extraConfig = ''
       lua << EOF
-      -- убрать "-- INSERT --/-- VISUAL --" в командной строке
+
       vim.o.showmode = false
-      -- скрыть вступительное сообщение
       vim.opt.shortmess:append("I")
+
+      vim.cmd[[highlight EndOfBuffer guifg=#d7d9e1 guibg=NONE]]
+      vim.cmd[[highlight Normal guibg=NONE guibg=NONE]]
+      vim.cmd[[highlight NormalNC guibg=NONE guibg=NONE]]
 
       require('nvim-autopairs').setup()
 
