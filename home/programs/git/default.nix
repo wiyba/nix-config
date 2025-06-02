@@ -5,6 +5,7 @@
     enable = true;
     userName = "wiyba";
     userEmail = "account@wiyba.org";
+    extraConfig.core.editor = "nvim";
 
     aliases = {
       st = "status";
