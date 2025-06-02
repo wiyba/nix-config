@@ -16,8 +16,8 @@
 
     extraConfig = ''
       lua << EOF
-      vim.o.showmode = false
-      vim.opt.shortmess:append "I"
+      vim.opt.showmode = false
+      vim.opt.shortmess:append("I")
 
       require('nvim-autopairs').setup()
 
@@ -25,6 +25,14 @@
         options = {
           icons_enabled = true,
           theme = 'auto',
+        },
+        sections = {
+          lualine_a = {},                -- без отображения режима
+          lualine_b = { 'branch' },
+          lualine_c = { 'filename' },
+          lualine_x = { 'encoding', 'fileformat', 'filetype' },
+          lualine_y = { 'progress' },
+          lualine_z = { 'location' },
         },
       }
 
