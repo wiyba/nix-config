@@ -14,25 +14,24 @@
 	  ];
 	
 	  extraConfig = ''
-	    lua << EOF
-	      require('nvim-autopairs').setup()
-	      require('lualine').setup {
-	        options = {
-	          icons_enabled = true,
-	          theme = 'auto'
-	        }
-	      }
+	    require('nvim-autopairs').setup()
 	
-	      local cmp = require'cmp'
-	      cmp.setup {
-	        sources = {
-	          { name = 'buffer' }
-	        },
-	        mapping = cmp.mapping.preset.insert({
-	          ['<Tab>'] = cmp.mapping.confirm({ select = true })
-	        })
+	    require('lualine').setup {
+	      options = {
+	        icons_enabled = true,
+	        theme = 'auto'
 	      }
-	    EOF
+	    }
+	
+	    local cmp = require'cmp'
+	    cmp.setup {
+	      sources = {
+	        { name = 'buffer' }
+	      },
+	      mapping = cmp.mapping.preset.insert({
+	        ['<Tab>'] = cmp.mapping.confirm({ select = true })
+	      })
+	    }
 	  '';
   };
 }
