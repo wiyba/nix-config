@@ -2,8 +2,8 @@
 
 {
   programs.neovim = {
-    enable         = true;
-    defaultEditor  = true;
+    enable        = true;
+    defaultEditor = true;
 
     plugins = with pkgs.vimPlugins; [
       nvim-autopairs
@@ -16,6 +16,9 @@
 
     extraConfig = ''
       lua << EOF
+      vim.o.showmode = false
+      vim.opt.shortmess:append "I"
+
       require('nvim-autopairs').setup()
 
       require('lualine').setup {
@@ -27,9 +30,7 @@
 
       local cmp = require'cmp'
       cmp.setup {
-        sources = {
-          { name = 'buffer' },
-        },
+        sources = { { name = 'buffer' } },
         mapping = cmp.mapping.preset.insert({
           ['<Tab>'] = cmp.mapping.confirm({ select = true }),
         }),
