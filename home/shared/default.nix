@@ -45,6 +45,7 @@ in
       BROWSER = "${lib.getExe pkgs.firefox-beta-bin}";
       DISPLAY = ":0";
       EDITOR = "nvim";
+      VISUAL = "nvim";
       GIT_ASKPASS = "";
     };
   };
