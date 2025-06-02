@@ -22,7 +22,7 @@ in {
         "custom/menu" = {
           format = "{icon}";
           format-icons = "";
-          on-click = "fuzzel";
+          on-click = "ulauncher";
           escape = true;
           tooltip = false;
         };

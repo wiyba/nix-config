@@ -5,7 +5,7 @@
     enable = true;
     enableCompletion = true;
 
-    initExtra = ''
+    initContent = ''
       fastfetch
 
       setopt HIST_FIND_NO_DUPS
