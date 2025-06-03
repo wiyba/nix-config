@@ -37,7 +37,7 @@
           home-manager.nixosModules.home-manager
           { nix.registry.nixpkgs.flake = nixpkgs; }
         ];
-        specialArgs = { inherit inputs host agenix; };
+        specialArgs = { inherit inputs host; };
       };
 
       mkDarwinSystem = host: nix-darwin.lib.darwinSystem {
@@ -55,7 +55,7 @@
         home-manager.lib.homeManagerConfiguration {
           inherit modules;
           pkgs = pkgsFor system;
-          extraSpecialArgs = { inherit inputs; };
+          extraSpecialArgs = { inherit inputs agenix; };
         };
     in
     (flake-utils.lib.eachDefaultSystem (system: {

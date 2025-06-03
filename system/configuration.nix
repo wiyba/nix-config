@@ -42,7 +42,6 @@ in
     git
     wget
     lm_sensors
-    agenix.packages.${system}.default
   ];
 
   services = {

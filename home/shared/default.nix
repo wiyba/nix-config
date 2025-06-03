@@ -25,14 +25,13 @@ in
   programs.home-manager.enable = true;
 
   imports = lib.concatMap import [
-    ../modules
+#    ../modules
     ../scripts
     ../themes
-    ../secrets
     ./programs.nix
     ./services.nix
   ];
-
+  
   xdg = {
     inherit configHome;
     enable = true;

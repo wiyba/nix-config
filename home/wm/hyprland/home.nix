@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, agenix, ... }:
 
 let
   nerdFonts = with pkgs.nerd-fonts; [
@@ -34,6 +34,7 @@ let
     grim
     slurp
     wl-clipboard
+    agenix.packages.${system}.default
     zip
     papirus-icon-theme
   ] ++ fontPkgs ++ audioPkgs;
