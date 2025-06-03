@@ -18,7 +18,7 @@
     agenix.url = "github:ryantm/agenix";
   };
 
-  outputs = { self, nixpkgs, home-manager, nix-darwin, flake-utils, ... } @ inputs:
+  outputs = { self, nixpkgs, home-manager, nix-darwin, flake-utils, agenix, ... } @ inputs:
     let
       hosts = {
         ms-7c39        = "x86_64-linux";
@@ -37,7 +37,7 @@
           home-manager.nixosModules.home-manager
           { nix.registry.nixpkgs.flake = nixpkgs; }
         ];
-        specialArgs = { inherit inputs host; };
+        specialArgs = { inherit inputs host agenix; };
       };
 
       mkDarwinSystem = host: nix-darwin.lib.darwinSystem {

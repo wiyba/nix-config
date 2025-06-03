@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, agenix, ... }:
 
 let
   customFonts = with (pkgs.nerd-fonts); [
@@ -42,6 +42,7 @@ in
     git
     wget
     lm_sensors
+    agenix.packages.${system}.default
   ];
 
   services = {

@@ -28,6 +28,7 @@ in
     ../modules
     ../scripts
     ../themes
+    ../secrets
     ./programs.nix
     ./services.nix
   ];
