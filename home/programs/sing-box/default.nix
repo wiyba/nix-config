@@ -24,9 +24,9 @@
 	{
 	  type = "vless";
 	  tag = "proxy";
-	  server = ;
+	  server = builtins.readFile "/run/user/1000/agenix/vless_ip";
 	  server_port = 8443;
-	  uuid = ;
+	  uuid = builtins.readFile "/run/user/1000/agenix/vless_uuid";
 	  transport.type = "tcp";
 
 	  tls = {
@@ -34,7 +34,7 @@
 	    server_name = "googletagmanager.com";
 	    reality = {
 	      public_key = "";
-	      short_id = "";
+	      short_id = builtins.readFile "/run/user/1000/agenix/vless_sid";
 	    };
 	  };
 	}
