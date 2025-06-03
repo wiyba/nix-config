@@ -19,7 +19,6 @@ let
     tdesktop # telegram messaging client
     vlc # media player
     xsel # clipboard support (also for neovim)
-    inputs.zen-browser.packages.${pkgs.system}.default # zen-browser (firefox but better)
   ];
 in
 {
