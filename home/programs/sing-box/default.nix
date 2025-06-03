@@ -33,7 +33,7 @@
 	    enabled = true;
 	    server_name = "googletagmanager.com";
 	    reality = {
-	      public_key = "";
+	      public_key = "0hKXovW8oVrg01lCNbKm0eBp20L_fY6aW2fvdphif3c";
 	      short_id = "";
 	    };
 	  };
