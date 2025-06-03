@@ -33,13 +33,8 @@
 	    enabled = true;
 	    server_name = "googletagmanager.com";
 	    reality = {
-<<<<<<< HEAD
-	      public_key = "";
 	      short_id = builtins.readFile "/run/user/1000/agenix/vless_sid";
-=======
 	      public_key = "0hKXovW8oVrg01lCNbKm0eBp20L_fY6aW2fvdphif3c";
-	      short_id = "";
->>>>>>> refs/remotes/origin/main
 	    };
 	  };
 	}
