@@ -14,9 +14,8 @@
 
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     nix-darwin.inputs.nixpkgs.follows   = "nixpkgs";
-
-    zen-browser.url = "github:MarceColl/zen-browser-flake";
-    zen-nebula.url = "github:JustAdumbPrsn/Nebula-A-Minimal-Theme-for-Zen-Browser";
+    
+    agenix.url = "github:ryantm/agenix";
   };
 
   outputs = { self, nixpkgs, home-manager, nix-darwin, flake-utils, ... } @ inputs:
@@ -74,7 +73,10 @@
       homeConfigurations = {
         hyprland = mkHome {
           system  = "x86_64-linux";
-          modules = [ ./home/wm/hyprland/home.nix ];
+          modules = [ 
+            agenix.homeManagerModules.default
+            ./home/wm/hyprland/home.nix
+          ];
         };
         darwin = mkHome {
           system  = "aarch64-darwin";
