@@ -29,6 +29,7 @@ let
     swaynotificationcenter
     sway-audio-idle-inhibit
     nemo
+    age
     wlogout
     unzip
     grim
