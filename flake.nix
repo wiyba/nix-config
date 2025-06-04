@@ -75,7 +75,7 @@
           system  = "x86_64-linux";
           modules = [ 
             ./home/wm/hyprland/home.nix
-            sops-nix.homeManagerModules.sops
+            inputs.sops-nix.homeManagerModules.sops
           ];
         };
         darwin = mkHome {
