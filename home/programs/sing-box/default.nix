@@ -47,14 +47,24 @@
       ];
 
       route = {
-        geoip.path = "${pkgs.sing-geoip}/share/sing-box/geoip.db";
-        geosite.path = "${pkgs.sing-geosite}/share/sing-box/geosite.db";
-
-        rules = [
-          { geoip = [ "ru" ]; geosite = [ "ru" ]; outbound = "direct"; }
-          { ip_cidr = [ "0.0.0.0/0" "::/0" ]; outbound = "proxy"; }
-        ];
-      };
+			  geoip.path = "${pkgs.sing-geoip}/share/sing-box/geoip.db";
+			  geosite.path = "${pkgs.sing-geosite}/share/sing-box/geosite.db";
+			
+			  rules = [
+			    {
+			      rule_set = [ "geosite-ru" "geoip-ru" ];
+			      outbound = "direct";
+			    }
+			    {
+			      domain_suffix = [ "ru" "su" "reddit.com" ];
+			      outbound = "direct";
+			    }
+			    {
+			      ip_cidr = [ "0.0.0.0/0" "::/0" ];
+			      outbound = "proxy";
+			    }
+			  ];
+			};
     };
   };
 }
