@@ -13,3 +13,4 @@ writeShellScriptBin "kls" ''
     ${xkbmap} -layout us
   fi
 ''
+
