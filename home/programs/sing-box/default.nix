@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 
 {
   services.sing-box = {
@@ -24,16 +24,16 @@
 	{
 	  type = "vless";
 	  tag = "proxy";
-	  server = builtins.readFile "/run/user/1000/agenix/vless_ip";
+	  server = builtins.readFile config.sops.secrets.vless_ip.path;
 	  server_port = 8443;
-	  uuid = builtins.readFile "/run/user/1000/agenix/vless_uuid";
+	  uuid = builtins.readFile config.sops.secrets.vless_uuid.path;
 	  transport.type = "tcp";
 
 	  tls = {
 	    enabled = true;
 	    server_name = "googletagmanager.com";
 	    reality = {
-	      short_id = builtins.readFile "/run/user/1000/agenix/vless_sid";
+	      short_id = builtins.readFile config.sops.secrets.vless_sid.path;
 	      public_key = "0hKXovW8oVrg01lCNbKm0eBp20L_fY6aW2fvdphif3c";
 	    };
 	  };
@@ -48,7 +48,7 @@
 	  { geoip = [ "ru" ]; geosite = [ "ru" ]; outbound = "direct"; }
 	  { ip_cidr = [ "0.0.0.0/0" "::/0" ]; outbound = "proxy"; }
 	];
-      }
+      };
     };
   };
 }

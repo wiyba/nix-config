@@ -36,5 +36,6 @@ in
   ../programs/zsh
   ../programs/hyprlock
   ../programs/hyprpaper
+  ../programs/sing-box
   more
 ]
