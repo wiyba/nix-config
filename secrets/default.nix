@@ -1,7 +1,7 @@
 {
   sops = {
     defaultSopsFile = ./secrets.yaml;
-    age.keyFile = "./sops-age.key";
+    age.keyFile = "/etc/nixos/secrets/sops-age.key";
     
     # smth for vless xray
     secrets.ip = {};
