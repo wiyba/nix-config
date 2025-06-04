@@ -9,13 +9,13 @@
 
       inbounds = [
         {
-          type            = "tun";
-          tag             = "tun-in";
-          interface_name  = "tun0";
-          address         = "172.19.0.1/30";   # was inet4_address
-          auto_route      = true;
-          strict_route    = true;
-          stack           = "system";
+          type           = "tun";
+          tag            = "tun-in";
+          interface_name = "tun0";
+          address        = "172.19.0.1/30";
+          auto_route     = true;
+          strict_route   = true;
+          stack          = "system";
         }
       ];
 
@@ -27,7 +27,6 @@
           server      = { _secret = config.sops.secrets.ip.path; };
           server_port = 8443;
           uuid        = { _secret = config.sops.secrets.uuid.path; };
-
           tls = {
             enabled     = true;
             server_name = "googletagmanager.com";
@@ -40,23 +39,19 @@
       ];
 
       route = {
-        # подключаем нужные rule-set-ы
+        # актуальные базы лежат в пакетах, но сами правила надо объявить
         rule_set = [
           {
-            type            = "remote";
-            tag             = "geosite-ru";
-            format          = "binary";
-            url             = "https://raw.githubusercontent.com/hiddify/hiddify-geo/rule-set/country/geosite-ru.srs";
-            update_interval = "24h";
-            download_detour = "proxy";
+            tag    = "geosite-ru";
+            type   = "geosite";
+            path   = "${pkgs.sing-geosite}/share/sing-box/geosite.db";
+            entry  = "ru";
           }
           {
-            type            = "remote";
-            tag             = "geoip-ru";
-            format          = "binary";
-            url             = "https://raw.githubusercontent.com/hiddify/hiddify-geo/rule-set/country/geoip-ru.srs";
-            update_interval = "24h";
-            download_detour = "proxy";
+            tag    = "geoip-ru";
+            type   = "geoip";
+            path   = "${pkgs.sing-geoip}/share/sing-box/geoip.db";
+            entry  = "RU";
           }
         ];
 
@@ -66,11 +61,11 @@
             outbound = "direct";
           }
           {
-            domain_suffix = [ "ru" "su" "reddit.com" "www.reddit.com" ];
+            domain_suffix = [ "ru" "su" "reddit.com" ];
             outbound      = "direct";
           }
           {
-            ip_cidr  = [ "0.0.0.0/0" "::/0" ];
+            ip_cidr = [ "0.0.0.0/0" "::/0" ];
             outbound = "proxy";
           }
         ];
