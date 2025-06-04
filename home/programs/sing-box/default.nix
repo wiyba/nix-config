@@ -12,7 +12,7 @@
           type = "tun";
           tag = "tun-in";
           interface_name = "tun0";
-          inet4_address = "172.19.0.1/30";
+          address = "172.19.0.1/30";
           auto_route = true;
           strict_route = true;
           stack = "system";
@@ -24,21 +24,15 @@
         {
           type = "vless";
           tag = "proxy";
-          server = {
-            _secret = config.sops.secrets.ip.path;
-          };
+          server = { _secret = config.sops.secrets.ip.path; };
           server_port = 8443;
-          uuid = {
-            _secret = config.sops.secrets.uuid.path;
-          };
+          uuid = { _secret = config.sops.secrets.uuid.path; };
 
           tls = {
             enabled = true;
             server_name = "googletagmanager.com";
             reality = {
-              short_id = {
-                _secret = config.sops.secrets.sid.path;
-              };
+              short_id  = { _secret = config.sops.secrets.sid.path; };
               public_key = "0hKXovW8oVrg01lCNbKm0eBp20L_fY6aW2fvdphif3c";
             };
           };
@@ -46,24 +40,24 @@
       ];
 
       route = {
-			  geoip.path = "${pkgs.sing-geoip}/share/sing-box/geoip.db";
-			  geosite.path = "${pkgs.sing-geosite}/share/sing-box/geosite.db";
-			
-			  rules = [
-			    {
-			      rule_set = [ "geosite-ru" "geoip-ru" ];
-			      outbound = "direct";
-			    }
-			    {
-			      domain_suffix = [ "ru" "su" "reddit.com" ];
-			      outbound = "direct";
-			    }
-			    {
-			      ip_cidr = [ "0.0.0.0/0" "::/0" ];
-			      outbound = "proxy";
-			    }
-			  ];
-			};
+        geoip.path   = "${pkgs.sing-geoip}/share/sing-box/geoip.db";
+        geosite.path = "${pkgs.sing-geosite}/share/sing-box/geosite.db";
+
+        rules = [
+          {
+            rule_set = [ "geosite-ru" "geoip-ru" ];
+            outbound = "direct";
+          }
+          {
+            domain_suffix = [ "ru" "su" "reddit.com" ];
+            outbound      = "direct";
+          }
+          {
+            ip_cidr  = [ "0.0.0.0/0" "::/0" ];
+            outbound = "proxy";
+          }
+        ];
+      };
     };
   };
 }
