@@ -4,7 +4,13 @@
   services.sing-box = {
     enable = true;
 
-    settings = {
+    settings = let
+      ip = lib.strings.trim (builtins.readFile config.sops.secrets.ip.path);
+      uuid = lib.strings.trim (builtins.readFile config.sops.secrets.uuid.path);
+      sid = lib.strings.trim (builtins.readFile config.sops.secrets.sid.path);
+      
+    in {
+      
       log.level = "info";
 
       inbounds = [
@@ -24,16 +30,16 @@
 	{
 	  type = "vless";
 	  tag = "proxy";
-	  server = "${pkgs.lib.getEnv "VLESS_IP"}";
+	  server = ip;
 	  server_port = 8443;
-	  uuid = "${pkgs.lib.getEnv "VLESS_SSID"}";
+	  uuid = uuid; 
 	  transport.type = "tcp";
 
 	  tls = {
 	    enabled = true;
 	    server_name = "googletagmanager.com";
 	    reality = {
-	      short_id = "${pkgs.lib.getEnv "VLESS_SID"}";
+	      short_id = sid;
 	      public_key = "0hKXovW8oVrg01lCNbKm0eBp20L_fY6aW2fvdphif3c";
 	    };
 	  };

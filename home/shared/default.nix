@@ -25,6 +25,7 @@ in
   programs.home-manager.enable = true;
 
   imports = lib.concatMap import [
+    ../secrets
     ../scripts
     ../themes
     ./programs.nix

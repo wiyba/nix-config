@@ -30,6 +30,7 @@ let
     sway-audio-idle-inhibit
     nemo
     age
+    sops
     wlogout
     unzip
     grim

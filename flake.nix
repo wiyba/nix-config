@@ -14,6 +14,8 @@
 
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     nix-darwin.inputs.nixpkgs.follows   = "nixpkgs";
+
+    sops-nix.url = "github:Mic92/sops-nix";
   };
 
   outputs = { self, nixpkgs, home-manager, nix-darwin, flake-utils, ... } @ inputs:
@@ -73,6 +75,7 @@
           system  = "x86_64-linux";
           modules = [ 
             ./home/wm/hyprland/home.nix
+            sops-nix.homeManagerModules.sops
           ];
         };
         darwin = mkHome {
