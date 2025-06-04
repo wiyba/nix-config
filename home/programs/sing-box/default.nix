@@ -24,16 +24,16 @@
 	{
 	  type = "vless";
 	  tag = "proxy";
-	  server = builtins.readFile config.sops.secrets.vless_ip.path;
+	  server = "${pkgs.lib.getEnv "VLESS_IP"}";
 	  server_port = 8443;
-	  uuid = builtins.readFile config.sops.secrets.vless_uuid.path;
+	  uuid = "${pkgs.lib.getEnv "VLESS_SSID"}";
 	  transport.type = "tcp";
 
 	  tls = {
 	    enabled = true;
 	    server_name = "googletagmanager.com";
 	    reality = {
-	      short_id = builtins.readFile config.sops.secrets.vless_sid.path;
+	      short_id = "${pkgs.lib.getEnv "VLESS_SID"}";
 	      public_key = "0hKXovW8oVrg01lCNbKm0eBp20L_fY6aW2fvdphif3c";
 	    };
 	  };

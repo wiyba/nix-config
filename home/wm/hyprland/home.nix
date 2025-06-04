@@ -27,7 +27,6 @@ let
     appeditor
     ulauncher
     swaynotificationcenter
-    sops
     sway-audio-idle-inhibit
     nemo
     age
