@@ -31,7 +31,6 @@
           uuid = {
             _secret = config.sops.secrets.uuid.path;
           };
-          transport.type = "tcp";
 
           tls = {
             enabled = true;
