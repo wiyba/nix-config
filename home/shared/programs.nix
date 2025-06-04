@@ -18,7 +18,7 @@ let
 
       # gpg
       gpg.enable = true;
-
+      
       # obs
       obs-studio = {
         enable = true;
