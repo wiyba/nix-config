@@ -1,4 +1,4 @@
-{ config, pkgs, agenix, ... }:
+{ config, pkgs, lib, ... }:
 
 let
   customFonts = with (pkgs.nerd-fonts); [
@@ -8,7 +8,7 @@ let
   myfonts = pkgs.callPackage fonts/default.nix { inherit pkgs; };
 in
 {
-  imports = lib.concatMap import [ ../secrets ];
+  imports = [ ../home/programs/sing-box (import ../secrets) ];
 
   networking = {
     extraHosts = "";

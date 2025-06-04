@@ -32,6 +32,7 @@
       mkNixosSystem = host: nixpkgs.lib.nixosSystem {
         system  = hosts.${host};
         modules = [
+          inputs.sops-nix.nixosModules.sops
           ./system/configuration.nix
           ./system/machines/${host}
           home-manager.nixosModules.home-manager
