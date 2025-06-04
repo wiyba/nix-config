@@ -42,6 +42,8 @@ in
     micro
     curl
     git
+    sing-geoip
+    sing-geosite
     wget
     lm_sensors
   ];
