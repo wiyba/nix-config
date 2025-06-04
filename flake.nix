@@ -15,10 +15,10 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     nix-darwin.inputs.nixpkgs.follows   = "nixpkgs";
     
-    agenix.url = "github:ryantm/agenix";
+    sops-nix.url = "github:Mic92/sops-nix"; 
   };
 
-  outputs = { self, nixpkgs, home-manager, nix-darwin, flake-utils, agenix, ... } @ inputs:
+  outputs = { self, nixpkgs, home-manager, nix-darwin, flake-utils, ... } @ inputs:
     let
       hosts = {
         ms-7c39        = "x86_64-linux";
@@ -55,7 +55,7 @@
         home-manager.lib.homeManagerConfiguration {
           inherit modules;
           pkgs = pkgsFor system;
-          extraSpecialArgs = { inherit inputs agenix; };
+          extraSpecialArgs = { inherit inputs; };
         };
     in
     (flake-utils.lib.eachDefaultSystem (system: {
@@ -74,7 +74,7 @@
         hyprland = mkHome {
           system  = "x86_64-linux";
           modules = [ 
-            agenix.homeManagerModules.default
+            inputs.sops-nix.homeManagerModules.sops
             ./home/wm/hyprland/home.nix
           ];
         };

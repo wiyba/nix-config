@@ -1,4 +1,4 @@
-{ pkgs, lib, agenix, ... }:
+{ pkgs, lib,... }:
 
 let
   nerdFonts = with pkgs.nerd-fonts; [
@@ -27,6 +27,7 @@ let
     appeditor
     ulauncher
     swaynotificationcenter
+    sops
     sway-audio-idle-inhibit
     nemo
     age
@@ -35,7 +36,6 @@ let
     grim
     slurp
     wl-clipboard
-    agenix.packages.${system}.default
     zip
     papirus-icon-theme
   ] ++ fontPkgs ++ audioPkgs;
