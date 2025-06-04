@@ -39,35 +39,20 @@
       ];
 
       route = {
-        # актуальные базы лежат в пакетах, но сами правила надо объявить
-        rule_set = [
-          {
-            tag    = "geosite-ru";
-            type   = "geosite";
-            path   = "${pkgs.sing-geosite}/share/sing-box/geosite.db";
-            entry  = "ru";
-          }
-          {
-            tag    = "geoip-ru";
-            type   = "geoip";
-            path   = "${pkgs.sing-geoip}/share/sing-box/geoip.db";
-            entry  = "RU";
-          }
-        ];
+        # Базы из пакетов
+        geoip.path   = "${pkgs.sing-geoip}/share/sing-box/geoip.db";
+        geosite.path = "${pkgs.sing-geosite}/share/sing-box/geosite.db";
 
         rules = [
-          {
-            rule_set = [ "geosite-ru" "geoip-ru" ];
-            outbound = "direct";
-          }
-          {
-            domain_suffix = [ "ru" "su" "reddit.com" ];
-            outbound      = "direct";
-          }
-          {
-            ip_cidr = [ "0.0.0.0/0" "::/0" ];
-            outbound = "proxy";
-          }
+          # домены и IP-сети РФ мимо прокси
+          { geosite = "ru";  outbound = "direct"; }
+          { geoip   = "RU";  outbound = "direct"; }
+
+          # мелкие исключения вручную
+          { domain_suffix = [ "ru" "su" "reddit.com" ]; outbound = "direct"; }
+
+          # остальное через прокси
+          { ip_cidr = [ "0.0.0.0/0" "::/0" ]; outbound = "proxy"; }
         ];
       };
     };
