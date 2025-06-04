@@ -2,7 +2,7 @@
 {
   sops = {
     defaultSopsFile = ./secrets.yaml;
-    age.keyFile = "/home/wiyba/sops-age.key";
+    age.keyFile = "./sops-age.key";
     
     # smth for vless xray
     secrets.ip = {};
