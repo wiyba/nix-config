@@ -16,6 +16,9 @@ let
       # json parser
       jq.enable = true;
 
+      # gpg
+      gpg.enable = true;
+
       # obs
       obs-studio = {
         enable = true;
