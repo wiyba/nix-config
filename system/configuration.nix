@@ -8,6 +8,8 @@ let
   myfonts = pkgs.callPackage fonts/default.nix { inherit pkgs; };
 in
 {
+  imports = lib.concatMap import [ ../secrets ];
+
   networking = {
     extraHosts = "";
     networkmanager = {

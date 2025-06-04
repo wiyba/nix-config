@@ -6,7 +6,7 @@
     
     # smth for vless xray
     secrets.ip = {};
-    secrets.ssid = {};
+    secrets.uuid = {};
     secrets.sid = {};
   };
 }
