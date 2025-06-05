@@ -28,7 +28,9 @@
           server_port = 8443;
           uuid        = { _secret = config.sops.secrets.uuid.path; };
 
-          transport = { type = "tcp"; };
+          transport = {
+            tcp = {};
+          };
 
           tls = {
             enabled     = true;
