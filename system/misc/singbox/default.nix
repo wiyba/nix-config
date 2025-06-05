@@ -1,3 +1,5 @@
+{ pkgs, config, lib, ... }:
+
 {
   services.sing-box = {
     enable = true;
