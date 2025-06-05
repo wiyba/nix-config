@@ -19,7 +19,6 @@
     ];
 
     outbounds = [
-      { type = "direct"; tag = "direct"; }
       {
         type        = "vless";
         tag         = "proxy";
@@ -31,19 +30,24 @@
         tls = {
           enabled     = true;
           server_name = "googletagmanager.com";
+          utls        = { enabled = true; fingerprint = "chrome"; };
           reality     = {
             short_id   = { _secret = config.sops.secrets.sid.path; };
             public_key = "0hKXovW8oVrg01lCNbKm0eBp20L_fY6aW2fvdphif3c";
           };
         };
       }
+      { type = "direct"; tag = "direct"; }
     ];
 
-    route.rules = [
-      { protocol      = "udp";                                       outbound = "direct"; }
-      { domain_suffix = [ "ru" "su" "reddit.com" "www.reddit.com" ]; outbound = "direct"; }
-      { ip_cidr       = [ "0.0.0.0/0" "::/0" ];                      outbound = "proxy"; }
-    ];
+    route = {
+      final = "proxy"; 
+      rules = [
+        { protocol      = "udp";                                       outbound = "direct"; }
+        { domain_suffix = [ "ru" "su" "reddit.com" "www.reddit.com" ]; outbound = "direct"; }
+        { ip_cidr       = [ "0.0.0.0/0" "::/0" ];                      outbound = "proxy"; }
+      ];
+    };
 
     dns = {
       strategy = "prefer_ipv4";
