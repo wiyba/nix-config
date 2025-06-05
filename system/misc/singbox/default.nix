@@ -22,14 +22,18 @@
       outbounds = [
         { type = "direct"; tag = "direct"; }
         {
-          type  = "vless";
-          tag   = "proxy";
+          type        = "vless";
+          tag         = "proxy";
           server      = { _secret = config.sops.secrets.ip.path; };
           server_port = 8443;
           uuid        = { _secret = config.sops.secrets.uuid.path; };
+
+          transport = { type = "tcp"; };
+
           tls = {
             enabled     = true;
             server_name = "googletagmanager.com";
+            utls        = { enabled = true; fingerprint = "chrome"; };
             reality = {
               short_id   = { _secret = config.sops.secrets.sid.path; };
               public_key = "0hKXovW8oVrg01lCNbKm0eBp20L_fY6aW2fvdphif3c";
@@ -40,18 +44,15 @@
 
       route = {
         rules = [
-          { ip_cidr       = ["38.180.230.195/32"];                       outbound = "proxy"; }
+          { ip_cidr       = [ "38.180.230.195/32" ];                      outbound = "proxy"; }
           { domain_suffix = [ "ru" "su" "reddit.com" "www.reddit.com" ]; outbound = "direct"; }
-          { ip_cidr       = [ "0.0.0.0/0" "::/0" ];                      outbound = "proxy"; }
+          { ip_cidr       = [ "0.0.0.0/0" "::/0" ];                       outbound = "proxy"; }
         ];
       };
 
       dns = {
         servers = [
-          {
-            address = "1.1.1.1";
-            tag     = "dns-remote";
-          }
+          { address = "1.1.1.1"; tag = "dns-remote"; }
         ];
       };
     };
