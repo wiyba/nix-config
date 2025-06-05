@@ -40,14 +40,9 @@
 
       route = {
         rules = [
+          { ip_cidr       = ["38.180.230.195/32"];                       outbound = "direct"; }
           { domain_suffix = [ "ru" "su" "reddit.com" "www.reddit.com" ]; outbound = "direct"; }
-          { ip_cidr       = [ "0.0.0.0/0" "::/0" ];     outbound = "proxy"; }
-        ];
-      };
-
-      dns = {
-        servers = [
-          { address = "1.1.1.1"; }
+          { ip_cidr       = [ "0.0.0.0/0" "::/0" ];                      outbound = "proxy"; }
         ];
       };
     };
