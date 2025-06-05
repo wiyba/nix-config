@@ -29,8 +29,6 @@
           server_port = 8443;
           uuid        = { _secret = config.sops.secrets.uuid.path; };
 
-          network = "tcp";   # plain-TCP поток, без блока transport
-
           tls = {
             enabled     = true;
             server_name = "googletagmanager.com";
