@@ -24,13 +24,12 @@
         {
           type        = "vless";
           tag         = "proxy";
+
           server      = { _secret = config.sops.secrets.ip.path; };
           server_port = 8443;
           uuid        = { _secret = config.sops.secrets.uuid.path; };
 
-          transport = {
-            tcp = {};
-          };
+          network = "tcp";   # plain-TCP поток, без блока transport
 
           tls = {
             enabled     = true;
