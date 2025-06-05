@@ -29,11 +29,14 @@
           server_port = 8443;
           uuid        = { _secret = config.sops.secrets.uuid.path; };
 
+          flow        = "xtls-rprx-vision";
+          network     = "tcp";
+
           tls = {
             enabled     = true;
             server_name = "googletagmanager.com";
             utls        = { enabled = true; fingerprint = "chrome"; };
-            reality = {
+            reality     = {
               short_id   = { _secret = config.sops.secrets.sid.path; };
               public_key = "0hKXovW8oVrg01lCNbKm0eBp20L_fY6aW2fvdphif3c";
             };
