@@ -29,9 +29,6 @@
           server_port = 8443;
           uuid        = { _secret = config.sops.secrets.uuid.path; };
 
-          flow        = "xtls-rprx-vision";
-          network     = "tcp";
-
           tls = {
             enabled     = true;
             server_name = "googletagmanager.com";
@@ -46,9 +43,10 @@
 
       route = {
         rules = [
-          { ip_cidr       = [ "38.180.230.195/32" ];                      outbound = "proxy"; }
+          { protocol = "udp";                                        outbound = "direct"; }
+          { ip_cidr   = [ "38.180.230.195/32" ];                     outbound = "direct"; }
           { domain_suffix = [ "ru" "su" "reddit.com" "www.reddit.com" ]; outbound = "direct"; }
-          { ip_cidr       = [ "0.0.0.0/0" "::/0" ];                       outbound = "proxy"; }
+          { ip_cidr   = [ "0.0.0.0/0" "::/0" ];                      outbound = "proxy"; }
         ];
       };
 
