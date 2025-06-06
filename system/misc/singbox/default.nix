@@ -1,108 +1,74 @@
 { pkgs, config, lib, ... }:
 
 {
-  services.sing-box.enable = true;
+  services.xray.enable = true;
 
-  services.sing-box.settings = {
-    log.level = "info";
-
-    dns = {
-      independent_cache = true;
-      servers = [
-        {
-          address = "https://1.1.1.1/dns-query";
-          address_resolver = "dns-local";
-          detour = "proxy";
-          tag = "dns-remote";
-        }
-        {
-          address = "https://1.1.1.1/dns-query";
-          address_resolver = "dns-local";
-          detour = "direct";
-          tag = "dns-direct";
-        }
-        { address = "rcode://success"; tag = "dns-block"; }
-        { address = "local"; detour = "direct"; tag = "dns-local"; }
-      ];
-      rules = [
-        { outbound = "any"; server = "dns-direct"; }
-        { query_type = [ 32 33 ]; server = "dns-block"; }
-        { domain_suffix = ".lan"; server = "dns-block"; }
-      ];
-    };
+  services.xray.settings = {
+    log = { loglevel = "info"; };
 
     inbounds = [
       {
-        tag            = "mixed-in";
-        type           = "mixed";
-        listen         = "127.0.0.1";
-        listen_port    = 2080;
-        sniff          = true;
+        listen = "127.0.0.1";
+        port = 2080;
+        protocol = "mixed";
+        sniffing = { enabled = true; };
       }
       {
-        tag                        = "tun-in";
-        type                       = "tun";
-        interface_name             = "tun0";
-        address                    = [ "172.19.0.1/28" ];
-        mtu                        = 1500;
-        auto_route                 = true;
-        strict_route               = true;
-        stack                      = "system";
-        endpoint_independent_nat   = true;
+        protocol = "tun";
+        tag = "tun-in";
+        interface_name = "tun0";
+        inet4_address = "172.19.0.1/28";
+        mtu = 1500;
+        strict_route = true;
+        auto_route = true;
+        stack = "system";
       }
     ];
 
     outbounds = [
       {
-        tag         = "proxy";
-        type        = "vless";
-        server      = { _secret = config.sops.secrets.ip.path; };
-        server_port = 8443;
-        uuid        = { _secret = config.sops.secrets.uuid.path; };
-        transport   = { tcp = {}; };
-        tls = {
-          enabled     = true;
-          server_name = "googletagmanager.com";
-          utls        = { enabled = true; fingerprint = "chrome"; };
-          reality     = {
-            enabled     = true;
-            public_key  = "0hKXovW8oVrg01lCNbKm0eBp20L_fY6aW2fvdphif3c";
-            short_id    = { _secret = config.sops.secrets.sid.path; };
+        tag = "proxy";
+        protocol = "vless";
+        settings = {
+          vnext = [{
+            address = { _secret = config.sops.secrets.ip.path; };
+            port    = 8443;
+            users   = [{ id = { _secret = config.sops.secrets.uuid.path; }; encryption = "none"; }];
+          }];
+        };
+        streamSettings = {
+          network  = "tcp";
+          security = "reality";
+          realitySettings = {
+            serverName  = "googletagmanager.com";
+            publicKey   = "0hKXovW8oVrg01lCNbKm0eBp20L_fY6aW2fvdphif3c";
+            shortId     = { _secret = config.sops.secrets.sid.path; };
+            fingerprint = "chrome";
           };
         };
       }
-      { tag = "direct";  type = "direct"; }
-      { tag = "block";   type = "block";  }
-      { tag = "dns-out"; type = "dns";    }
+      { tag = "direct";  protocol = "freedom";    }
+      { tag = "block";   protocol = "blackhole"; }
+      { tag = "dns-out"; protocol = "dns";       }
     ];
 
-    route = {
+    routing = {
       final = "proxy";
       rules = [
-        { protocol = "dns"; outbound = "dns-out"; }
+        { type = "field"; protocol = [ "dns" ]; outboundTag = "dns-out"; }
       ];
     };
   };
 
-	systemd.services.sing-box.serviceConfig = lib.mkMerge [
-    {
-      CapabilityBoundingSet = "CAP_NET_ADMIN CAP_NET_BIND_SERVICE";
-      AmbientCapabilities   = "CAP_NET_ADMIN CAP_NET_BIND_SERVICE";
-      DeviceAllow           = [ "/dev/net/tun rw" ];
-			NoNewPrivileges       = lib.mkForce false;
-
-      User          = "root";
-      Group         = "root";
-      DynamicUser   = lib.mkForce false;
-    }
-  ];
-
-	security.wrappers.singbox = {
-	  owner        = "root";
-	  group        = "root";
-	  source       = "${pkgs.sing-box}/bin/sing-box";
-	  capabilities = "cap_net_admin,cap_net_bind_service+ep";
-	};
+  systemd.services.xray.serviceConfig = {
+    User                  = "root";
+    Group                 = "root";
+    DynamicUser           = lib.mkForce false;
+    CapabilityBoundingSet = "CAP_NET_ADMIN CAP_NET_BIND_SERVICE";
+    AmbientCapabilities   = "CAP_NET_ADMIN CAP_NET_BIND_SERVICE";
+    NoNewPrivileges       = lib.mkForce false;
+    DeviceAllow           = [ "/dev/net/tun rw" ];
+  };
 
   networking.firewall.trustedInterfaces = [ "tun0" ];
 }
