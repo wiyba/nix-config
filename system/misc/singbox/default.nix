@@ -37,20 +37,16 @@
         tag = "mixed-in";
         listen = "127.0.0.1";
         listen_port = 2080;
-        sniff = true;
-        sniff_override_destination = false;
       }
       {
         type = "tun";
         tag = "tun-in";
         interface_name = "neko-tun";
-        addresses = [ "172.19.0.1/28" ];
+        address = [ "172.19.0.1/28" ];
         auto_route = true;
         strict_route = false;
         stack = "gvisor";
         mtu = 9000;
-        sniff = true;
-        sniff_override_destination = false;
       }
     ];
 
