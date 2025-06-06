@@ -83,4 +83,18 @@
       ];
     };
   };
+
+	systemd.services.sing-box.serviceConfig = lib.mkMerge [
+    {
+      CapabilityBoundingSet = "CAP_NET_ADMIN CAP_NET_BIND_SERVICE";
+      AmbientCapabilities   = "CAP_NET_ADMIN CAP_NET_BIND_SERVICE";
+      DeviceAllow           = [ "/dev/net/tun rw" ];
+
+      User          = "root";
+      Group         = "root";
+      DynamicUser   = lib.mkForce false;
+    }
+  ];
+
+  networking.firewall.trustedInterfaces = [ "tun0" ];
 }
