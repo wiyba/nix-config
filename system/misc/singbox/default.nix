@@ -89,12 +89,20 @@
       CapabilityBoundingSet = "CAP_NET_ADMIN CAP_NET_BIND_SERVICE";
       AmbientCapabilities   = "CAP_NET_ADMIN CAP_NET_BIND_SERVICE";
       DeviceAllow           = [ "/dev/net/tun rw" ];
+			NoNewPrivileges       = lib.mkForce false;
 
       User          = "root";
       Group         = "root";
       DynamicUser   = lib.mkForce false;
     }
   ];
+
+	security.wrappers.singbox = {
+	  owner        = "root";
+	  group        = "root";
+	  source       = "${pkgs.sing-box}/bin/sing-box";
+	  capabilities = "cap_net_admin,cap_net_bind_service+ep";
+	};
 
   networking.firewall.trustedInterfaces = [ "tun0" ];
 }
