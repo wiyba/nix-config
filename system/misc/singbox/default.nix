@@ -44,7 +44,7 @@
         type = "tun";
         tag = "tun-in";
         interface_name = "neko-tun";
-        inet4_address = "172.19.0.1/28";
+        addresses = [ "172.19.0.1/28" ];
         auto_route = true;
         strict_route = false;
         stack = "gvisor";
