@@ -82,15 +82,17 @@
           type = "remote";
           tag = "geoip-private";
           format = "binary";
-          url = "https://raw.githubusercontent.com/SagerNet/sing-geoip/rule-set/geoip-private.srs";
+          url = "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geoip/private.srs";
           download_detour = "proxy";
+          update_interval = "120h0m0s";
         }
         {
           type = "remote";
           tag = "geoip-ru";
           format = "binary";
-          url = "https://raw.githubusercontent.com/SagerNet/sing-geoip/rule-set/geoip-ru.srs";
+          url = "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geoip/ru.srs";
           download_detour = "proxy";
+          update_interval = "120h0m0s";
         }
       ];
       rules = [
