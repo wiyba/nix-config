@@ -33,53 +33,47 @@
 
     inbounds = [
       {
-        tag = "mixed-in";
-        type = "mixed";
-        listen = "127.0.0.1";
-        listen_port = 2080;
-        sniff = true;
-        sniff_override_destination = false;
+        tag            = "mixed-in";
+        type           = "mixed";
+        listen         = "127.0.0.1";
+        listen_port    = 2080;
+        sniff          = true;
       }
       {
-        tag = "tun-in";
-        type = "tun";
-        interface_name = "tun0";
-        addresses = [ "172.19.0.1/28" ];
-        mtu = 1500;
-        auto_route = true;
-        strict_route = true;
-        stack = "system";
-        endpoint_independent_nat = true;
-        sniff = true;
-        sniff_override_destination = false;
+        tag                        = "tun-in";
+        type                       = "tun";
+        interface_name             = "tun0";
+        address                    = [ "172.19.0.1/28" ];
+        mtu                        = 1500;
+        auto_route                 = true;
+        strict_route               = true;
+        stack                      = "system";
+        endpoint_independent_nat   = true;
       }
     ];
 
     outbounds = [
       {
-        tag = "proxy";
-        type = "vless";
-        server = { _secret = config.sops.secrets.ip.path; };
+        tag         = "proxy";
+        type        = "vless";
+        server      = { _secret = config.sops.secrets.ip.path; };
         server_port = 8443;
-        uuid = { _secret = config.sops.secrets.uuid.path; };
-        transport = { tcp = {}; };
+        uuid        = { _secret = config.sops.secrets.uuid.path; };
+        transport   = { tcp = {}; };
         tls = {
-          enabled = true;
+          enabled     = true;
           server_name = "googletagmanager.com";
-          utls = {
-            enabled = true;
-            fingerprint = "chrome";
-          };
-          reality = {
-            enabled = true;
-            public_key = "0hKXovW8oVrg01lCNbKm0eBp20L_fY6aW2fvdphif3c";
-            short_id = { _secret = config.sops.secrets.sid.path; };
+          utls        = { enabled = true; fingerprint = "chrome"; };
+          reality     = {
+            enabled     = true;
+            public_key  = "0hKXovW8oVrg01lCNbKm0eBp20L_fY6aW2fvdphif3c";
+            short_id    = { _secret = config.sops.secrets.sid.path; };
           };
         };
       }
-      { tag = "direct"; type = "direct"; }
-      { tag = "block";  type = "block";  }
-      { tag = "dns-out"; type = "dns";   }
+      { tag = "direct";  type = "direct"; }
+      { tag = "block";   type = "block";  }
+      { tag = "dns-out"; type = "dns";    }
     ];
 
     route = {
