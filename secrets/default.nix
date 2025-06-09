@@ -5,7 +5,6 @@
     
     secrets.github = { mode = "0600"; path = "/etc/nixos/secrets/keys/github.key"; };
     secrets.vps = { mode = "0600"; path = "/etc/nixos/secrets/keys/vps.key"; };
-    secrets.vps_ip = {}; 
 
     secrets.uuid = {};
     secrets.sid = {};

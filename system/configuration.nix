@@ -8,8 +8,6 @@ let
   myfonts = pkgs.callPackage fonts/default.nix { inherit pkgs; };
 in
 {
-  imports = [ ../secrets ];
-
   networking = {
     extraHosts = "";
     networkmanager = {

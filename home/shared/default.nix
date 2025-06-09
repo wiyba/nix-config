@@ -5,8 +5,6 @@ let
   homeDirectory = "/home/${username}";
   configHome = "${homeDirectory}/.config";
 
-  vps_ip = builtins.readFile config.sops.secrets.vps_ip.path;
-
   packages = with pkgs; [
     dig # dns command-line tool
     btop # htop but better
