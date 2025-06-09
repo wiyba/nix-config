@@ -26,7 +26,14 @@ let
       };
 
       # ssh
-      ssh.enable = true;
+      ssh = {
+        enable = true;
+        extraConfig = ''
+          Host github.com
+            IdentityFile /etc/nixos/secrets/keys/github.key
+            IdentitiesOnly yes
+        '';
+      };
     };
   };
 in
@@ -39,6 +46,5 @@ in
   ../programs/zsh
   ../programs/hyprlock
   ../programs/hyprpaper
-  ../programs/sing-box
   more
 ]
