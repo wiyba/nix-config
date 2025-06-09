@@ -8,7 +8,7 @@ let
   myfonts = pkgs.callPackage fonts/default.nix { inherit pkgs; };
 in
 {
-  imports = [ ./misc/singbox (import ../secrets) ];
+  imports = [ ../secrets ];
 
   networking = {
     extraHosts = "";
