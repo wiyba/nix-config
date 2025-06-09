@@ -32,6 +32,12 @@ let
           Host github.com
             IdentityFile /etc/nixos/secrets/keys/github.key
             IdentitiesOnly yes
+
+          Host vps
+            HostName ${vps_ip}
+            User root
+            IdentityFile /etc/nixos/secrets/keys/vps.key
+            IdentitiesOnly yes
         '';
       };
     };

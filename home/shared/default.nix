@@ -1,9 +1,11 @@
-{ pkgs, lib, inputs, ... }:
+{ config, pkgs, lib, inputs, ... }:
 
 let
   username = "wiyba";
   homeDirectory = "/home/${username}";
   configHome = "${homeDirectory}/.config";
+
+  vps_ip = builtins.readFile config.sops.secrets.vps_ip.path;
 
   packages = with pkgs; [
     dig # dns command-line tool
@@ -45,6 +47,7 @@ in
       EDITOR = "nvim";
       VISUAL = "nvim";
       GIT_ASKPASS = "";
+      SOPS_AGE_KEY_FILE = "/etc/nixos/secrets/keys/sops-age.key";
     };
   };
 
