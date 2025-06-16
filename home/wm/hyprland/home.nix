@@ -24,6 +24,7 @@ let
 
   packages = with pkgs; [
     loupe
+    sherlock-launcher
     appeditor
     ulauncher
     swaynotificationcenter
