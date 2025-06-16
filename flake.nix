@@ -2,12 +2,20 @@
   description = "nixos & home-manager configs by wiyba";
 
   nixConfig = {
-    substituters          = [ "https://cache.nixos.org" ];
+    extra-substituters = [
+      "https://cache.nixos.org" 
+      "https://nix-community.cachix.org" 
+    ];
+    extra-trusted-public-keys = [ 
+      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+    ];
+
     experimental-features = [ "nix-command" "flakes" ];
   };
 
   inputs = {
-    nixpkgs.url      = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url      = "nixpkgs/nixos-unstable";
     home-manager.url = "github:nix-community/home-manager";
     nix-darwin.url   = "github:LnL7/nix-darwin";
     flake-utils.url  = "github:numtide/flake-utils";
