@@ -1,7 +1,7 @@
-{ pkgs, config, specialArgs, ... }:
+{ pkgs, config, ... }:
 
 let
-  extensions = with pkgs.firefox-addons; [
+  extensions = with pkgs.nur.repos.rycee.firefox-addons; [
     bitwarden
     darkreader
     ff2mpv
