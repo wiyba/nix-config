@@ -100,7 +100,7 @@ in
       $terminal = ${lib.getExe pkgs.kitty}
       $fileManager = ${lib.getExe pkgs.nemo}
       $menu = ${lib.getExe pkgs.rofi}
-      $browser = ${lib.getExe pkgs.firefox-beta-bin}
+      $browser = ${lib.getExe pkgs.firefox-beta}
       $editor = ${lib.getExe pkgs.vscode}
       $grim = ${lib.getExe pkgs.grim}
       $slurp = ${lib.getExe pkgs.slurp}
