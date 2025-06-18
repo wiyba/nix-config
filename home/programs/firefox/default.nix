@@ -42,7 +42,6 @@ let
     "browser.search.widget.inNavBar" = true;
 
     "browser.shell.checkDefaultBrowser" = false;
-    "browser.startup.homepage" = "https://nixos.org";
     "browser.tabs.loadInBackground" = true;
     "browser.urlbar.placeholderName" = "Google";
     "browser.urlbar.showSearchSuggestionsFirst" = false;
@@ -53,6 +52,10 @@ let
     "browser.urlbar.shortcuts.quickactions" = false;
     "browser.urlbar.suggest.quickactions" = false;
 
+    "browser.startup.homepage_override.mstone" = "ignore";
+    "browser.aboutwelcome.enabled" = false;
+    "toolkit.telemetry.reportingpolicy.firstRun" = false;
+
     "distribution.searchplugins.defaultLocale" = "en-US";
 
     "doh-rollout.balrog-migration-done" = true;
@@ -61,7 +64,7 @@ let
     "dom.forms.autocomplete.formautofill" = false;
 
     "general.autoScroll" = true;
-    "general.useragent.locale" = "en-US";
+    "general.useragent.locale" = "ru-RU";
 
     "extensions.activeThemeID" = "firefox-alpenglow@mozilla.org";
 
@@ -86,13 +89,41 @@ let
     "security.webauth.webauthn_enable_usbtoken" = true;
 
     "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
+    
+    "browser.startup.homepage" = "https://wiyba.org";
+    
+    # No session restore
+    "browser.sessionstore.resume_from_crash" = false;
+    "browser.sessionstore.max_resumed_crashes" = 0;
+    
+    # No sponsored suggestions
+    "browser.urlbar.suggest.quicksuggest.nonsponsored" = false;
+    "browser.urlbar.suggest.quicksuggest.sponsored" = false;
+    "browser.urlbar.quicksuggest.enabled" = false;
+    
+    "privacy.sanitize.sanitizeOnShutdown" = true;
+    "privacy.clearOnShutdown_v2.siteSettings" = false;
+    "privacy.clearOnShutdown_v2.cache" = false;
+    "privacy.clearOnShutdown_v2.cookiesAndStorage" = false;
+
+    "browser.aboutConfig.showWarning" = false;
+
+    "signon.rememberSignons" = false;
+    "signon.autofillForms" = false;
+    "signon.generation.enabled" = false;
+    "signon.managment.page.breach-alerts.enabled" = false;
+
+    "browser.newtabpage.activity-stream.showSponsoredTopSites" = false;
+    "browser.newtabpage.activity-stream.feeds.section.topstories" = false;
+
+    "intl.accept_languages" = "ru-RU, ru, en-US, en";
   };
 in
 {
   programs.firefox = {
     enable = true;
 
-    package = pkgs.firefox-beta-bin;
+    package = pkgs.firefox-beta;
 
     profiles = {
       default = {

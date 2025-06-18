@@ -38,7 +38,7 @@
         apple-computer = "aarch64-darwin";
       };
 
-      pkgsFor = system: import nixpkgs { inherit system; config.allowUnfree = true; };
+      pkgsFor = system: import nixpkgs { inherit system overlays; config.allowUnfree = true; };
 
       mkNixosSystem = host: nixpkgs.lib.nixosSystem {
         system  = hosts.${host};
