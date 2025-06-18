@@ -15,7 +15,6 @@ let
     libreoffice # office suite
     ncdu # disk space info
     fastfetch # minimal system information fetch
-    spotify # music player
     tdesktop # telegram messaging client
     vlc # media player
     xsel # clipboard support (also for neovim)
@@ -40,7 +39,7 @@ in
     inherit username homeDirectory packages;
 
     sessionVariables = {
-      BROWSER = "${lib.getExe pkgs.firefox-beta-bin}";
+      BROWSER = "${lib.getExe pkgs.firefox-beta}";
       DISPLAY = ":0";
       EDITOR = "nvim";
       VISUAL = "nvim";

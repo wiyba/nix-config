@@ -113,6 +113,7 @@ in
 
       exec-once = ${pkgs.hyprpaper}/bin/hyprpaper
       exec-once = ${pkgs.swaynotificationcenter}/bin/swaync
+      exec-once = ${pkgs.nekoray}/bin/nekoray -tray -appdata
       
     '' + (builtins.readFile ./hyprland.conf);
     plugins = [ ];

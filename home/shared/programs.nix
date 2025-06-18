@@ -46,6 +46,7 @@ let
     };
 in
 [
+  ../programs/spotify
   ../programs/firefox
   ../programs/fastfetch
   ../programs/waybar
