@@ -46,6 +46,7 @@ let
     };
 in
 [
+  ../programs/firefox
   ../programs/fastfetch
   ../programs/waybar
   ../programs/neovim

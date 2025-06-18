@@ -29,6 +29,8 @@
 
   outputs = { self, nixpkgs, nur, home-manager, nix-darwin, flake-utils, ... } @ inputs:
     let
+      overlays = [ nur.overlays.default ];
+
       hosts = {
         ms-7c39        = "x86_64-linux";
         nix-usb        = "x86_64-linux";
@@ -45,6 +47,8 @@
           ./system/machines/${host}
           home-manager.nixosModules.home-manager
           { nix.registry.nixpkgs.flake = nixpkgs; }
+
+          { nixpkgs.overlays = overlays; }
         ];
         specialArgs = { inherit inputs host; };
       };
@@ -56,6 +60,8 @@
           ./system/machines/${host}
           home-manager.darwinModules.home-manager
           { nix.registry.nixpkgs.flake = nixpkgs; }
+
+          { nixpkgs.overlays = overlays; }
         ];
         specialArgs = { inherit inputs host; };
       };
