@@ -16,6 +16,7 @@
 
   inputs = {
     nixpkgs.url      = "nixpkgs/nixos-unstable";
+    nur.url          = "github:nix-community/NUR";
     home-manager.url = "github:nix-community/home-manager";
     nix-darwin.url   = "github:LnL7/nix-darwin";
     flake-utils.url  = "github:numtide/flake-utils";
@@ -26,7 +27,7 @@
     sops-nix.url = "github:Mic92/sops-nix";
   };
 
-  outputs = { self, nixpkgs, home-manager, nix-darwin, flake-utils, ... } @ inputs:
+  outputs = { self, nixpkgs, nur, home-manager, nix-darwin, flake-utils, ... } @ inputs:
     let
       hosts = {
         ms-7c39        = "x86_64-linux";
@@ -40,7 +41,6 @@
       mkNixosSystem = host: nixpkgs.lib.nixosSystem {
         system  = hosts.${host};
         modules = [
-          inputs.sops-nix.nixosModules.sops
           ./system/configuration.nix
           ./system/machines/${host}
           home-manager.nixosModules.home-manager

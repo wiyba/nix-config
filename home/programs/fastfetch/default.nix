@@ -8,7 +8,7 @@
       logo = {
         # type = "none";
         type   = "kitty";
-        source = "${./nixos2.png}";
+        source = "${./nixos.png}";
         padding = { top = 0; right = 6; };
         width  = 25;
         height = 13;
@@ -19,6 +19,7 @@
       display = { separator = " •  "; };
 
       modules = [
+        "break"
         { type = "title"; color = { user = "33"; at = "37"; host = "33"; }; }
         "break"
         { type = "os";      key = "distribution   "; keyColor = "33"; }
