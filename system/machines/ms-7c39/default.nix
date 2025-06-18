@@ -11,16 +11,15 @@
     kernelPackages = pkgs.linuxPackages_latest;
     
     loader.efi = {
-	canTouchEfiVariables = true;
-        efiSysMountPoint = "/boot";
+	canTouchEfiVariables = false;
     };    
 
     loader.grub = {
      	enable = true;
      	device = "nodev";
      	efiSupport = true;
-	useOSProber = true;
-	efiInstallAsRemovable = false;
+	useOSProber = false;
+	efiInstallAsRemovable = true;
     };
   };
 

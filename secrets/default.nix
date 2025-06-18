@@ -1,4 +1,3 @@
-[
 {
   sops = {
     defaultSopsFile = ./secrets.yaml;
@@ -11,4 +10,3 @@
     secrets.sid = {};
   };
 }
-]
