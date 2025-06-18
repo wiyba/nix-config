@@ -23,10 +23,9 @@ let
   ];
 
   packages = with pkgs; [
+    rofi
     loupe
-    sherlock-launcher
     appeditor
-    ulauncher
     swaynotificationcenter
     sway-audio-idle-inhibit
     nemo
@@ -34,10 +33,10 @@ let
     sops
     wlogout
     unzip
+    zip
     grim
     slurp
     wl-clipboard
-    zip
     papirus-icon-theme
   ] ++ fontPkgs ++ audioPkgs;
 
@@ -100,7 +99,7 @@ in
     ''
       $terminal = ${lib.getExe pkgs.kitty}
       $fileManager = ${lib.getExe pkgs.nemo}
-      $menu = ${lib.getExe pkgs.ulauncher}
+      $menu = ${lib.getExe pkgs.rofi}
       $browser = ${lib.getExe pkgs.firefox-beta-bin}
       $editor = ${lib.getExe pkgs.vscode}
       $grim = ${lib.getExe pkgs.grim}
