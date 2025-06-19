@@ -113,8 +113,9 @@ in
 
       exec-once = ${pkgs.hyprpaper}/bin/hyprpaper
       exec-once = ${pkgs.swaynotificationcenter}/bin/swaync
-      exec-once = ${pkgs.nekoray}/bin/nekoray -tray -appdata
-      
+      # exec-once = ${pkgs.nekoray}/bin/nekoray -tray -appdata
+      exec-once = ${pkgs.clash-verge-rev}/bin/clash-verge-service
+      exec-once = ${pkgs.clash-verge-rev}/bin/clash-verge
     '' + (builtins.readFile ./hyprland.conf);
     plugins = [ ];
     systemd = {
