@@ -42,6 +42,7 @@ in
     git
     wget
     lm_sensors
+    clash-verge-rev # best vless client for now
   ];
 
   services = {
