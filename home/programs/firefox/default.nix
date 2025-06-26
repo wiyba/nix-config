@@ -90,7 +90,7 @@ let
 
     "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
     
-    "browser.startup.homepage" = "https://wiyba.org";
+    "browser.startup.homepage" = "https://wiyba.org/startpage";
     
     # No session restore
     "browser.sessionstore.resume_from_crash" = false;
@@ -102,16 +102,29 @@ let
     "browser.urlbar.quicksuggest.enabled" = false;
     
     "privacy.sanitize.sanitizeOnShutdown" = true;
+    "privacy.sanitize.pending" = ''[{"id":"shutdown","itemsToClear":["formdata","browsingHistoryAndDownloads"],"options":{}}]'';
+    "browser.bookmarks.file" = "";
     "privacy.clearOnShutdown_v2.siteSettings" = false;
     "privacy.clearOnShutdown_v2.cache" = false;
     "privacy.clearOnShutdown_v2.cookiesAndStorage" = false;
+    
+    # urlbar suggestions
+    "browser.urlbar.suggest.bookmark" = false;
+    "browser.urlbar.suggest.topsites" = false;
+    "browser.urlbar.suggest.engines" = false;
 
+    "browser.newtabpage.activity-stream.feeds.topsites" = false;
+    "browser.toolbars.bookmarks.visibility" = "never";
+
+    "browser.urlbar.trimURLs" = false;
+    "browser.urlbar.trimHttps" = false;
+    "browser.tabs.closeWindowWithLastTab" = false;
     "browser.aboutConfig.showWarning" = false;
 
     "signon.rememberSignons" = false;
     "signon.autofillForms" = false;
     "signon.generation.enabled" = false;
-    "signon.managment.page.breach-alerts.enabled" = false;
+    "signon.management.page.breach-alerts.enabled" = false;
 
     "browser.newtabpage.activity-stream.showSponsoredTopSites" = false;
     "browser.newtabpage.activity-stream.feeds.section.topstories" = false;
@@ -130,6 +143,15 @@ in
         id = 0;
         extensions.packages = extensions;
         inherit settings userChrome;
+      };
+    };
+
+    policies = {
+      ExtensionSettings = {
+        "*" = {
+          installation_mode = "allowed";
+          run_in_private_windows = "allow";
+        };
       };
     };
   };
