@@ -35,6 +35,7 @@
         ms-7c39        = "x86_64-linux";
         nix-usb        = "x86_64-linux";
         thinkpad-x1    = "x86_64-linux";
+				rpi5           = "aarch64-linux";
         apple-computer = "aarch64-darwin";
       };
 
