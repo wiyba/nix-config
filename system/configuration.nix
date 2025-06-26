@@ -71,11 +71,6 @@ in
   
   programs.zsh.enable = true;
 
-  programs.nekoray = {
-    enable = true;
-    tunMode.enable = true;
-  };
-
   console = {
     packages = with pkgs; [ terminus_font ];
     font = "${pkgs.terminus_font}/share/consolefonts/ter-v28n.psf.gz";
