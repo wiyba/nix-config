@@ -71,9 +71,10 @@ in
   
   programs.zsh.enable = true;
 
-  programs.nekoray = {
-    enable = true;
-    tunMode.enable = true;
+  security = {
+    sudo = {
+      extraRules = [ { users = [ "wiyba" ]; commands = [{ command = "/nix/store/*/bin/clash-verge-service"; options = [ "NOPASSWD" "SETENV" ]; }]; }];
+    };
   };
 
   console = {

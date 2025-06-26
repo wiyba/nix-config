@@ -16,6 +16,7 @@ let
     ncdu # disk space info
     fastfetch # minimal system information fetch
     tdesktop # telegram messaging client
+    vesktop # discord but better
     vlc # media player
     xsel # clipboard support (also for neovim)
   ];
