@@ -29,6 +29,7 @@
         { type = "terminal"; key = "terminal       "; keyColor = "33"; }
         { type = "wm";      format = "{} ({3})"; key = "window manager "; keyColor = "33"; }
         "break"
+        { type = "battery"; format = "{}% ({status})"; key = "charged "; keyColor = "33"; }
         { type = "uptime";  key = "uptime         "; keyColor = "33"; }
         {
           type = "command";

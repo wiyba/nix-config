@@ -19,6 +19,7 @@ let
     vesktop # discord but better
     vlc # media player
     xsel # clipboard support (also for neovim)
+    foot # alt term emulator
   ];
 in
 {

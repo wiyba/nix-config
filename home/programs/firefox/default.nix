@@ -11,6 +11,10 @@ let
     link-cleaner
     privacy-badger
     ublock-origin
+    indie-wiki-buddy
+    return-youtube-dislikes
+    new-tab-override
+    sponsorblock
   ];
 
   # disable the annoying floating icon with camera and mic when on a call
@@ -90,7 +94,7 @@ let
 
     "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
     
-    "browser.startup.homepage" = "https://wiyba.org/startpage";
+    "browser.startup.homepage" = "https://wiyba.org/newtab";
     
     # No session restore
     "browser.sessionstore.resume_from_crash" = false;

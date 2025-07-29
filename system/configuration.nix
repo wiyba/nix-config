@@ -1,16 +1,17 @@
 { config, pkgs, lib, ... }:
 
 let
-  customFonts = with (pkgs.nerd-fonts); [
+  nerdFonts = with (pkgs.nerd-fonts); [
     jetbrains-mono
   ];
-
-  myfonts = pkgs.callPackage fonts/default.nix { inherit pkgs; };
 in
 {
   networking = {
     extraHosts = "";
     networkmanager = {
+      enable = true;
+    };
+    modemmanager = {
       enable = true;
     };
     firewall = {
@@ -37,8 +38,7 @@ in
   environment.systemPackages = with pkgs; [
     home-manager
     vim
-    micro
-    curl
+    micro curl
     git
     wget
     lm_sensors
@@ -67,12 +67,13 @@ in
 
   fonts.packages = with pkgs; [
     font-awesome
-  ] ++ customFonts;
+  ] ++ nerdFonts;
   
   programs.zsh.enable = true;
 
   security = {
     sudo = {
+      # needed to run clash-verge's tun mode without issues
       extraRules = [ { users = [ "wiyba" ]; commands = [{ command = "/nix/store/*/bin/clash-verge-service"; options = [ "NOPASSWD" "SETENV" ]; }]; }];
     };
   };

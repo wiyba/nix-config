@@ -6,7 +6,10 @@
     hyprland.enable = true;
   };
 
-  environment.systemPackages = with pkgs; [ kitty ];
+  environment = {
+    systemPackages = with pkgs; [ kitty ];
+    variables = { HYPRLAND_DISABLE_VT_SWITCH = "0"; };
+  };
 
   systemd.services.greetd.serviceConfig = {
     Type = "idle";
@@ -44,6 +47,7 @@
         default_session = {
           command = "${pkgs.hyprland}/bin/Hyprland";
           user = "wiyba";
+	  restart = false;
         };
       };
     };
