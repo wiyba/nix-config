@@ -4,7 +4,7 @@ let
       gnome-keyring = {
         enable = true;
         components = [ "ssh" "secrets" ];
-      };
+      }; 
     };
   };
 in

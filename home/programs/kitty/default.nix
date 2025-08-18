@@ -12,84 +12,61 @@
       enable_audio_bell       = "no";
       font_size               = 15.0;
       window_padding_width    = 25;
-      background_opacity      = 0.50;
+      background_opacity      = 0.6;
       hide_window_decorations = "yes";
       confirm_os_window_close = 0;
     };
 
     extraConfig = ''
-      ## Catppuccin Mocha 🌿 theme colors
+    # gruvbox dark by morhetz, https://github.com/morhetz/gruvbox
+# This work is licensed under the terms of the MIT license.
+# For a copy, see https://opensource.org/licenses/MIT.
 
-      # The basic colors
-      foreground              #CDD6F4
-      background              #1E1E2E
-      selection_foreground    #1E1E2E
-      selection_background    #F5E0DC
+background  #282828
+foreground  #ebdbb2
 
-      # Cursor colors
-      cursor                  #F5E0DC
-      cursor_text_color       #1E1E2E
+cursor                #928374
 
-      # URL underline color when hovering with mouse
-      url_color               #B4BEFE
+selection_foreground  #928374
+selection_background  #3c3836
 
-      # Kitty window border colors
-      active_border_color     #CBA6F7
-      inactive_border_color   #8E95B3
-      bell_border_color       #EBA0AC
+color0  #282828
+color8  #928374
 
-      # OS Window titlebar colors
-      wayland_titlebar_color system
-      macos_titlebar_color system
+# red
+color1                #cc241d
+# light red
+color9                #fb4934
 
-      # Tab bar colors
-      active_tab_foreground   #11111B
-      active_tab_background   #CBA6F7
-      inactive_tab_foreground #CDD6F4
-      inactive_tab_background #181825
-      tab_bar_background      #11111B
+# green
+color2                #98971a
+# light green
+color10               #b8bb26
 
-      # Colors for marks (marked text in the terminal)
-      mark1_foreground #1E1E2E
-      mark1_background #87B0F9
-      mark2_foreground #1E1E2E
-      mark2_background #CBA6F7
-      mark3_foreground #1E1E2E
-      mark3_background #74C7EC
+# yellow
+color3                #d79921
+# light yellow
+color11               #fabd2d
 
-      # The 16 terminal colors
+# blue
+color4                #458588
+# light blue
+color12               #83a598
 
-      # black
-      color0 #43465A
-      color8 #43465A
+# magenta
+color5                #b16286
+# light magenta
+color13               #d3869b
 
-      # red
-      color1 #F38BA8
-      color9 #F38BA8
+# cyan
+color6                #689d6a
+# lighy cyan
+color14               #8ec07c
 
-      # green
-      color2  #A6E3A1
-      color10 #A6E3A1
-
-      # yellow
-      color3  #F9E2AF
-      color11 #F9E2AF
-
-      # blue
-      color4  #87B0F9
-      color12 #87B0F9
-
-      # magenta
-      color5  #F5C2E7
-      color13 #F5C2E7
-
-      # cyan
-      color6  #94E2D5
-      color14 #94E2D5
-
-      # white
-      color7  #CDD6F4
-      color15 #A1A8C9
+# light gray
+color7                #a89984
+# dark gray
+color15               #928374  
     '';
   };
 }

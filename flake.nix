@@ -21,24 +21,30 @@
     nix-darwin.url   = "github:LnL7/nix-darwin";
     flake-utils.url  = "github:numtide/flake-utils";
 
+    # nixpkgs fixed
+    #clash-verge.url  = "github:NixOS/nixpkgs/9e83b64f727c88a7711a2c463a7b16eedb69a84c";
+
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     nix-darwin.inputs.nixpkgs.follows   = "nixpkgs";
 
+    grub-themes.url = "github:jeslie0/nixos-grub-themes";
     sops-nix.url = "github:Mic92/sops-nix";
   };
 
   outputs = { self, nixpkgs, nur, home-manager, nix-darwin, flake-utils, ... } @ inputs:
     let
-      overlays = [ nur.overlays.default ];
+      overlays = [ 
+        nur.overlays.default
+      ];
 
       hosts = {
         ms-7c39        = "x86_64-linux";
         nix-usb        = "x86_64-linux";
-        thinkpad-x1    = "x86_64-linux";
+        thinkpad       = "x86_64-linux";
         apple-computer = "aarch64-darwin";
       };
 
-      pkgsFor = system: import nixpkgs { inherit system overlays; config.allowUnfree = true; };
+     pkgsFor = system: import nixpkgs { inherit system overlays; config = { allowUnfree = true; allowInsecure = true; permittedInsecurePackages = [ "libsoup-2.74.3" ]; }; }; 
 
       mkNixosSystem = host: nixpkgs.lib.nixosSystem {
         system  = hosts.${host};
@@ -46,7 +52,8 @@
           ./system/configuration.nix
           ./system/machines/${host}
           home-manager.nixosModules.home-manager
-          
+
+          { nixpkgs.config = { allowUnfree = true; allowInsecure = true; permittedInsecurePackages = [ "libsoup-2.74.3" ]; }; }
           { nix.registry.nixpkgs.flake = nixpkgs; }
           { nixpkgs.overlays = overlays; }
         ];
@@ -59,8 +66,9 @@
           ./system/darwin.nix
           ./system/machines/${host}
           home-manager.darwinModules.home-manager
-          { nix.registry.nixpkgs.flake = nixpkgs; }
 
+          { nixpkgs.config = { allowUnfree = true; allowInsecure = true; permittedInsecurePackages = [ "libsoup-2.74.3" ]; }; }
+          { nix.registry.nixpkgs.flake = nixpkgs; }
           { nixpkgs.overlays = overlays; }
         ];
         specialArgs = { inherit inputs host; };
@@ -91,6 +99,7 @@
           modules = [ 
             ./home/wm/hyprland/home.nix
             inputs.sops-nix.homeManagerModules.sops
+            { nixpkgs.config = { allowUnfree = true; allowInsecure = true; permittedInsecurePackages = [ "libsoup-2.74.3" ]; }; }
           ];
         };
         darwin = mkHome {

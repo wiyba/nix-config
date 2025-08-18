@@ -1,0 +1,132 @@
+{ pkgs, inputs, config, ... }:
+
+{
+  imports =
+    [
+      ./hardware-configuration.nix
+      ../../wm/hyprland.nix
+    ];
+
+  boot = {
+    kernelPackages = pkgs.linuxPackages_latest;
+    
+    loader.efi.canTouchEfiVariables = true;
+    loader.grub = {
+      enable = true;
+      device = "nodev";
+      efiSupport = true;
+      gfxmodeEfi = "2880x1800";
+      useOSProber = true;
+      theme = inputs.grub-themes.packages.${pkgs.system}.hyperfluent;
+      extraInstallCommands = ''
+        ESP="${config.boot.loader.efi.efiSysMountPoint or "/boot"}"
+        export PATH=${pkgs.efibootmgr}/bin:$PATH
+        ${pkgs.grub2_efi}/bin/grub-install \
+          --target=x86_64-efi \
+          --efi-directory="$ESP" \
+          --bootloader-id=NixOS-boot \
+          --modules="tpm" \
+          --disable-shim-lock
+        '';
+    };
+  };
+
+  environment.systemPackages = with pkgs; [
+    sbctl
+    efibootmgr
+    brightnessctl
+    wev
+    libinput
+  ];
+
+  services.logind = {
+    lidSwitch = "suspend";
+    lidSwitchExternalPower = "suspend";
+    lidSwitchDocked = "ignore";
+    extraConfig = ''
+      HoldoffTimeoutSec=0
+      LidSwitchIgnoreInhibited=no
+    '';
+  };
+
+  services.fprintd.enable = true;
+  security.pam.services.login.fprintAuth = true;
+  security.pam.services.sudo.fprintAuth  = true;
+  security.pam.services.polkit-1.fprintAuth = true;
+  security.pam.services.hyprlock.fprintAuth = true;
+
+  environment.etc."systemd/system-sleep/99-brightness".text = ''
+    #!/bin/sh
+    set -eu
+    DEV="$(basename /sys/class/backlight/*)"
+    STATE="/var/lib/brightness/$DEV"
+    case "$1/$2" in
+      pre/*)
+        mkdir -p /var/lib/brightness
+        cat "/sys/class/backlight/$DEV/brightness" > "$STATE"
+        ;;
+      post/*)
+        if [ -r "$STATE" ]; then
+          cat "$STATE" > "/sys/class/backlight/$DEV/brightness"
+        fi
+        ;;
+    esac
+  '';
+
+  system.activationScripts.brightnessSleepHook.text = ''
+    chmod +x /etc/systemd/system-sleep/99-brightness
+  '';
+
+  services.pipewire.wireplumber.extraConfig."51-x1c.conf" = {
+    "monitor.alsa.rules" = [
+      {
+        "matches" = [
+          { "alsa.card_name" = "sof-hda-dsp"; }
+        ];
+        "actions" = {
+          "update-props" = {
+            "device.profile"       = "output:analog-surround-40+input:analog-stereo";
+            "api.acp.auto-profile" = false;
+          };
+        };
+      }
+    ];
+  };
+ 
+  system.activationScripts.signEfiWithSbctl = {
+    supportsDryActivation = true;
+    text = ''
+      SBCTL=${pkgs.sbctl}/bin/sbctl
+      ESP="${config.boot.loader.efi.efiSysMountPoint or "/boot"}"
+  
+      sign_file() {
+        f="$1"
+        [ -e "$f" ] || return 0
+        echo "Signing $f with sbctl…"
+        "$SBCTL" sign -s "$f" || true
+      }
+
+      if [ -d "$ESP/EFI" ]; then
+        for f in $(find "$ESP/EFI" -type f -name '*.efi'); do
+          sign_file "$f"
+        done
+      fi
+
+      if [ -d /boot/grub ]; then
+        for f in $(find /boot/grub -type f -name '*.efi'); do
+          sign_file "$f"
+        done
+      fi
+
+      if [ -d /boot/kernels ]; then
+        for f in /boot/kernels/*-linux-*-bzImage; do
+          [ -e "$f" ] && sign_file "$f"
+        done
+      fi
+    '';
+  }; 
+
+  networking.hostName = "thinkpad";
+
+  system.stateVersion = "24.11";
+}
