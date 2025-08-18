@@ -6,6 +6,8 @@ let
   configHome = "${homeDirectory}/.config";
 
   packages = with pkgs; [
+    polkit_gnome
+    spotify
     dig # dns command-line tool
     btop # htop but better
     duf # disk usage/free utility
@@ -20,6 +22,12 @@ let
     vlc # media player
     xsel # clipboard support (also for neovim)
     foot # alt term emulator
+    networkmanagerapplet # nm tray icon and notifications
+    qbittorrent # best torrent client
+    mpc # cli for mpd
+    obsidian # best notes app
+    osu-lazer # gaem
+    clash-verge-rev
   ];
 in
 {
@@ -31,6 +39,15 @@ in
     ./programs.nix
     ./services.nix
   ] ++ [ ../../secrets ];
+
+  systemd.user.services.polkit-agent = {
+    Unit = { Description = "PolicyKit Authentication Agent"; };
+    Service = {
+      ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
+      Restart = "on-failure";
+    };
+    Install = { WantedBy = [ "graphical-session.target" ]; };
+  };
   
   xdg = {
     inherit configHome;

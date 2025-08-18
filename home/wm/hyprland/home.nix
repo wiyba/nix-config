@@ -1,4 +1,4 @@
-{ pkgs, lib,... }:
+{ pkgs, lib, inputs, ... }:
 
 let
   nerdFonts = with pkgs.nerd-fonts; [
@@ -23,7 +23,6 @@ let
   ];
 
   packages = with pkgs; [
-    rofi
     loupe
     appeditor
     swaynotificationcenter
@@ -91,20 +90,28 @@ in
       xdg-desktop-portal-hyprland
     ];
     xdgOpenUsePortal = true;
-  };
+  }; 
 
   wayland.windowManager.hyprland = {
     enable = true;
     extraConfig =
     ''
+      monitor = eDP-1, 2880x1800@60.00Hz, auto, 1.0, vrr, 1
+      monitor = HDMI-A-1, 3840x2160@60.00Hz, auto, 1.0, mirror, eDP-1
+
+      debug:overlay = 0
+      misc:vrr = 1
+      misc:vfr = false 
+      
       $terminal = ${lib.getExe pkgs.kitty}
       $fileManager = ${lib.getExe pkgs.nemo}
-      $menu = ${lib.getExe pkgs.rofi}
+      $menu = ${lib.getExe pkgs.ulauncher}
       $browser = ${lib.getExe pkgs.firefox-beta}
       $editor = ${lib.getExe pkgs.vscode}
       $grim = ${lib.getExe pkgs.grim}
       $slurp = ${lib.getExe pkgs.slurp}
       $wlcopy = ${lib.getExe' pkgs.wl-clipboard "wl-copy"}
+      $lock = ${lib.getExe pkgs.hyprlock}
 
       $closeSpecial = ${lib.getExe scripts.closeSpecialWorkspace}
 
@@ -112,11 +119,16 @@ in
       $altMod = ALT_L
 
       exec-once = ${pkgs.hyprpaper}/bin/hyprpaper
-      exec-once = ${pkgs.swaynotificationcenter}/bin/swaync
+      exec-once = ${pkgs.blueman}/bin/blueman-applet
+      exec-once = ${pkgs.networkmanagerapplet}/bin/nm-applet --indicator
+      exec-once = ${pkgs.pasystray}/bin/pasystray
+      exec-once = ${pkgs.hyprlock}/bin/hyprlock
+
       # exec-once = ${pkgs.nekoray}/bin/nekoray -tray -appdata
-      exec-once = sleep 10 && sudo ${pkgs.clash-verge-rev}/bin/clash-verge-service
-      exec-once = sleep 15 && ${pkgs.clash-verge-rev}/bin/clash-verge
-    '' + (builtins.readFile ./hyprland.conf);
+      exec-once = sleep 2 && ${pkgs.clash-verge-rev}/bin/clash-verge
+      '' + (builtins.readFile ./hyprland.conf);
+   # exec-once = sleep 5 && sudo ${inputs.clash-verge.legacyPackages.${pkgs.system}.clash-verge-rev}/bin/clash-verge-service
+   # exec-once = sleep 8 && ${inputs.clash-verge.legacyPackages.${pkgs.system}.clash-verge-rev}/bin/clash-verge
     plugins = [ ];
     systemd = {
       enable = true;

@@ -1,9 +1,22 @@
 { config, lib, pkgs, modulesPath, ... }:
 
 {
-  boot.initrd.availableKernelModules = [ "xhci_pci" "thunderbolt" "nvme" "uas" "sd_mod" ];
+  boot.initrd.availableKernelModules = [ "xhci_pci" "thunderbolt" "nvme" "uas" "sd_mod" "usbhid" "xe" "i915" ];
   boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-intel" ];
+  boot.kernelModules = [
+    "kvm-intel"
+    "thinkpad_acpi"
+    "xe"
+    "snd_sof_pci_intel_mtl"
+    "iwlwifi"
+    "btusb"
+    "qmi_wwan"
+    "cdc_wdm"
+    "option"
+    "uvcvideo"
+    "hid_sensor_hub"
+  ];
+  boot.kernelParams = [ "acpi_backlight=native" ];
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =

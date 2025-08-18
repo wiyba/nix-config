@@ -20,7 +20,7 @@ let
 
         # gpg
         gpg.enable = true;
-        
+
         # obs
         obs-studio = {
           enable = true;
@@ -46,7 +46,6 @@ let
     };
 in
 [
-  ../programs/spotify
   ../programs/firefox
   ../programs/fastfetch
   ../programs/waybar
@@ -56,5 +55,6 @@ in
   ../programs/zsh
   ../programs/hyprlock
   ../programs/hyprpaper
+  ../programs/ncmpcpp
   more
 ]

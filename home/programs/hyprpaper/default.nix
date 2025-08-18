@@ -9,8 +9,9 @@
     $3 = ${../../../imgs/reddit2.png}
     $4 = ${../../../imgs/new.jpeg}
     $5 = ${../../../imgs/img19.jpg}
+    $6 = ${../../../imgs/gruvbox-dark-blue.png}
 
-    $current = $5
+    $current = $6
 
     preload = $current
     wallpaper = , $current

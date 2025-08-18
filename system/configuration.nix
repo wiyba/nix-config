@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, inputs, ... }:
 
 let
   nerdFonts = with (pkgs.nerd-fonts); [
@@ -21,6 +21,15 @@ in
     };
   };
 
+  systemd.services.ModemManager = {
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      Restart     = "always";
+      RestartSec  = "2s";
+    };
+  };
+
+
   i18n = {
     defaultLocale = "en_US.UTF-8";
 
@@ -38,11 +47,11 @@ in
   environment.systemPackages = with pkgs; [
     home-manager
     vim
-    micro curl
+    micro
+    curl
     git
     wget
     lm_sensors
-    clash-verge-rev # best vless client for now
   ];
 
   services = {
@@ -70,6 +79,7 @@ in
   ] ++ nerdFonts;
   
   programs.zsh.enable = true;
+  programs.steam.enable = true;
 
   security = {
     sudo = {
