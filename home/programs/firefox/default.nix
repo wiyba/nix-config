@@ -4,7 +4,6 @@ let
   extensions = with pkgs.nur.repos.rycee.firefox-addons; [
     bitwarden
     darkreader
-    ff2mpv
     # auto-accepts cookies, use only with privacy-badger & ublock-origin
     istilldontcareaboutcookies
     languagetool
@@ -70,9 +69,8 @@ let
     "general.autoScroll" = true;
     "general.useragent.locale" = "ru-RU";
 
-    "extensions.activeThemeID" = "firefox-alpenglow@mozilla.org";
+    "extensions.activeThemeID" = "{fd4fdeb0-5a65-4978-81c5-3488d4d56426}";
 
-    "extensions.extensions.activeThemeID" = "firefox-alpenglow@mozilla.org";
     "extensions.update.enabled" = false;
     "extensions.webcompat.enable_picture_in_picture_overrides" = true;
     "extensions.webcompat.enable_shims" = true;

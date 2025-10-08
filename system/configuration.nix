@@ -19,6 +19,11 @@ in
       allowedTCPPorts = [ 22 ];
       allowedUDPPorts = [ ];
     };
+    proxy = {
+      default = "http://127.0.0.1:7897/";
+      allProxy = "http://127.0.0.1:7897/";
+      noProxy = "localhost,127.0.0.1,internal.domain";
+    };
   };
 
   systemd.services.ModemManager = {
@@ -80,6 +85,7 @@ in
   
   programs.zsh.enable = true;
   programs.steam.enable = true;
+  programs.clash-verge.enable = true;
 
   security = {
     sudo = {
@@ -103,7 +109,7 @@ in
   nix = {
     gc = {
       automatic = true;
-      dates = "weekly";
+      dates = "daily";
       options = "--delete-older-than 7d";
     };
 

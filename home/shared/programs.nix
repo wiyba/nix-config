@@ -30,15 +30,34 @@ let
         # ssh
         ssh = {
           enable = true;
+          enableDefaultConfig = false;
+          matchBlocks."*" = {
+            forwardAgent = false;
+            addKeysToAgent = "no";
+            compression = false;
+            serverAliveInterval = 0;
+            serverAliveCountMax = 3;
+            hashKnownHosts = false;
+            userKnownHostsFile = "~/.ssh/known_hosts";
+            controlMaster = "no";
+            controlPath = "~/.ssh/master-%r@%n:%p";
+            controlPersist = "no";
+          };
           extraConfig = ''
             Host github.com
-              IdentityFile /etc/nixos/secrets/keys/github.key
+              IdentityFile /etc/nixos/secrets/keys/multi.key
               IdentitiesOnly yes
 
             Host vps
-              HostName 38.180.230.195
+              HostName wiyba.org 
               User root
-              IdentityFile /etc/nixos/secrets/keys/vps.key
+              IdentityFile /etc/nixos/secrets/keys/multi.key
+              IdentitiesOnly yes
+
+            Host home
+              HostName home.wiyba.org
+              User root
+              IdentityFile /etc/nixos/secrets/keys/multi.key
               IdentitiesOnly yes
           '';
         };

@@ -37,6 +37,21 @@ let
     slurp
     wl-clipboard
     papirus-icon-theme
+    quickshell
+    qt6.qtwayland
+    qt6.qtpositioning
+    qt6.qtsvg
+    qt6.qtimageformats
+    qt6.qtmultimedia
+    qt6.qt5compat    
+    grim 
+    slurp 
+    wl-clipboard 
+    cliphist 
+    imagemagick 
+    jq
+    swww
+    brightnessctl
   ] ++ fontPkgs ++ audioPkgs;
 
   scripts = pkgs.callPackage ./scripts.nix { hyprctl = pkgs.hyprland; jq = pkgs.jq; };
@@ -65,6 +80,7 @@ in
       XDG_SESSION_TYPE = "wayland";
       GDK_BACKEND = "wayland,x11";
       QT_QPA_PLATFORM = "wayland;xcb";
+
     };
   };
 
@@ -96,8 +112,8 @@ in
     enable = true;
     extraConfig =
     ''
-      monitor = eDP-1, 2880x1800@60.00Hz, auto, 1.0, vrr, 1
-      monitor = HDMI-A-1, 3840x2160@60.00Hz, auto, 1.0, mirror, eDP-1
+      monitor = eDP-1, 2880x1800@60.00Hz, auto, 1.25, vrr, 1
+      monitor = HDMI-A-1, preferred, auto, 1.0, mirror, eDP-1
 
       debug:overlay = 0
       misc:vrr = 1
@@ -105,7 +121,6 @@ in
       
       $terminal = ${lib.getExe pkgs.kitty}
       $fileManager = ${lib.getExe pkgs.nemo}
-      $menu = ${lib.getExe pkgs.ulauncher}
       $browser = ${lib.getExe pkgs.firefox-beta}
       $editor = ${lib.getExe pkgs.vscode}
       $grim = ${lib.getExe pkgs.grim}
