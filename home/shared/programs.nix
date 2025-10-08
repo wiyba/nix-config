@@ -45,7 +45,7 @@ let
           };
           extraConfig = ''
             Host github.com
-              IdentityFile /etc/nixos/secrets/keys/multi.key
+              IdentityFile /etc/nixos/secrets/keys/github.key
               IdentitiesOnly yes
 
             Host vps
