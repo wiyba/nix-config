@@ -28,6 +28,7 @@ let
     obsidian # best notes app
     osu-lazer # gaem
     clash-verge-rev
+    vscode
   ];
 in
 {
@@ -69,7 +70,7 @@ in
 
   nix.gc = {
     automatic = true;
-    frequency = "weekly";
+    dates = "weekly";
     options = "--delete-older-than 7d";
   };
 

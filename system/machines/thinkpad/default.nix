@@ -10,7 +10,10 @@
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
     
-    loader.efi.canTouchEfiVariables = true;
+    loader.efi = {
+      canTouchEfiVariables = true;
+      efiSysMountPoint = "/boot";
+    };
     loader.grub = {
       enable = true;
       device = "nodev";
@@ -43,10 +46,6 @@
     lidSwitch = "suspend";
     lidSwitchExternalPower = "suspend";
     lidSwitchDocked = "ignore";
-    extraConfig = ''
-      HoldoffTimeoutSec=0
-      LidSwitchIgnoreInhibited=no
-    '';
   };
 
   services.fprintd.enable = true;
@@ -54,28 +53,6 @@
   security.pam.services.sudo.fprintAuth  = true;
   security.pam.services.polkit-1.fprintAuth = true;
   security.pam.services.hyprlock.fprintAuth = true;
-
-  environment.etc."systemd/system-sleep/99-brightness".text = ''
-    #!/bin/sh
-    set -eu
-    DEV="$(basename /sys/class/backlight/*)"
-    STATE="/var/lib/brightness/$DEV"
-    case "$1/$2" in
-      pre/*)
-        mkdir -p /var/lib/brightness
-        cat "/sys/class/backlight/$DEV/brightness" > "$STATE"
-        ;;
-      post/*)
-        if [ -r "$STATE" ]; then
-          cat "$STATE" > "/sys/class/backlight/$DEV/brightness"
-        fi
-        ;;
-    esac
-  '';
-
-  system.activationScripts.brightnessSleepHook.text = ''
-    chmod +x /etc/systemd/system-sleep/99-brightness
-  '';
 
   services.pipewire.wireplumber.extraConfig."51-x1c.conf" = {
     "monitor.alsa.rules" = [

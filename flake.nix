@@ -1,19 +1,6 @@
 {
   description = "nixos & home-manager configs by wiyba";
 
-  nixConfig = {
-    extra-substituters = [
-      "https://cache.nixos.org" 
-      "https://nix-community.cachix.org" 
-    ];
-    extra-trusted-public-keys = [ 
-      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-    ];
-
-    experimental-features = [ "nix-command" "flakes" ];
-  };
-
   inputs = {
     nixpkgs.url      = "nixpkgs/nixos-unstable";
     nur.url          = "github:nix-community/NUR";
@@ -21,7 +8,7 @@
     nix-darwin.url   = "github:LnL7/nix-darwin";
     flake-utils.url  = "github:numtide/flake-utils";
 
-    # nixpkgs fixed
+    #nixpkgs fixed
     #clash-verge.url  = "github:NixOS/nixpkgs/9e83b64f727c88a7711a2c463a7b16eedb69a84c";
 
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
@@ -44,7 +31,7 @@
         apple-computer = "aarch64-darwin";
       };
 
-     pkgsFor = system: import nixpkgs { inherit system overlays; config = { allowUnfree = true; allowInsecure = true; permittedInsecurePackages = [ "libsoup-2.74.3" ]; }; }; 
+     pkgsFor = system: import nixpkgs { inherit system overlays; config = { allowUnfree = true; }; }; 
 
       mkNixosSystem = host: nixpkgs.lib.nixosSystem {
         system  = hosts.${host};
@@ -53,7 +40,7 @@
           ./system/machines/${host}
           home-manager.nixosModules.home-manager
 
-          { nixpkgs.config = { allowUnfree = true; allowInsecure = true; permittedInsecurePackages = [ "libsoup-2.74.3" ]; }; }
+          { nixpkgs.config = { allowUnfree = true; }; }
           { nix.registry.nixpkgs.flake = nixpkgs; }
           { nixpkgs.overlays = overlays; }
         ];
@@ -67,7 +54,7 @@
           ./system/machines/${host}
           home-manager.darwinModules.home-manager
 
-          { nixpkgs.config = { allowUnfree = true; allowInsecure = true; permittedInsecurePackages = [ "libsoup-2.74.3" ]; }; }
+          { nixpkgs.config = { allowUnfree = true; }; }
           { nix.registry.nixpkgs.flake = nixpkgs; }
           { nixpkgs.overlays = overlays; }
         ];
@@ -99,7 +86,6 @@
           modules = [ 
             ./home/wm/hyprland/home.nix
             inputs.sops-nix.homeManagerModules.sops
-            { nixpkgs.config = { allowUnfree = true; allowInsecure = true; permittedInsecurePackages = [ "libsoup-2.74.3" ]; }; }
           ];
         };
         darwin = mkHome {
