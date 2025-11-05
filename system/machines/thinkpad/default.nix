@@ -21,6 +21,7 @@
       gfxmodeEfi = "2880x1800";
       useOSProber = true;
       theme = inputs.grub-themes.packages.${pkgs.system}.hyperfluent;
+      # custom installation scripts for tpm and secure boot support
       extraInstallCommands = ''
         ESP="${config.boot.loader.efi.efiSysMountPoint or "/boot"}"
         export PATH=${pkgs.efibootmgr}/bin:$PATH
@@ -48,28 +49,14 @@
     lidSwitchDocked = "ignore";
   };
 
+  # fprint scaner support
   services.fprintd.enable = true;
   security.pam.services.login.fprintAuth = true;
   security.pam.services.sudo.fprintAuth  = true;
   security.pam.services.polkit-1.fprintAuth = true;
   security.pam.services.hyprlock.fprintAuth = true;
-
-  services.pipewire.wireplumber.extraConfig."51-x1c.conf" = {
-    "monitor.alsa.rules" = [
-      {
-        "matches" = [
-          { "alsa.card_name" = "sof-hda-dsp"; }
-        ];
-        "actions" = {
-          "update-props" = {
-            "device.profile"       = "output:analog-surround-40+input:analog-stereo";
-            "api.acp.auto-profile" = false;
-          };
-        };
-      }
-    ];
-  };
- 
+  
+  # sign all files for secure boot support
   system.activationScripts.signEfiWithSbctl = {
     supportsDryActivation = true;
     text = ''
