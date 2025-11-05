@@ -81,10 +81,18 @@
           (nixpkgs.lib.filterAttrs (_: a: a == "x86_64-darwin" || a == "aarch64-darwin") hosts);
 
       homeConfigurations = {
+        base = mkHome {
+          system  = "x86_64-linux";
+          modules = [ 
+            ./home/base
+            inputs.sops-nix.homeManagerModules.sops
+          ];
+        };
         hyprland = mkHome {
           system  = "x86_64-linux";
           modules = [ 
-            ./home/wm/hyprland/home.nix
+            ./home/base
+            ./home/hyprland
             inputs.sops-nix.homeManagerModules.sops
           ];
         };

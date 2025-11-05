@@ -1,13 +1,7 @@
 { config, pkgs, lib, inputs, ... }:
 
-let
-  nerdFonts = with (pkgs.nerd-fonts); [
-    jetbrains-mono
-  ];
-in
 {
   networking = {
-    extraHosts = "";
     networkmanager = {
       enable = true;
     };
@@ -19,25 +13,27 @@ in
       allowedTCPPorts = [ 22 ];
       allowedUDPPorts = [ ];
     };
-    proxy = {
-      default = "http://127.0.0.1:7897/";
-      allProxy = "http://127.0.0.1:7897/";
-      noProxy = "localhost,127.0.0.1,internal.domain";
-    };
+    # proxy = {
+    #   default = "http://127.0.0.1:7897/";
+    #   allProxy = "http://127.0.0.1:7897/";
+    #   noProxy = "localhost,127.0.0.1,internal.domain";
+    # };
+    extraHosts = ''
+      142.54.189.109 gew1-spclient.spotify.com
+      142.54.189.109 login5.spotify.com
+      142.54.189.109 spotify.com
+      142.54.189.109 api.spotify.com
+      142.54.189.109 appresolve.spotify.com
+      142.54.189.109 accounts.spotify.com
+      142.54.189.109 aet.spotify.com
+      142.54.189.109 open.spotify.com
+      142.54.189.109 spotifycdn.com
+      142.54.189.109 www.spotify.com
+    '';
   };
-
-  systemd.services.ModemManager = {
-    wantedBy = [ "multi-user.target" ];
-    serviceConfig = {
-      Restart     = "always";
-      RestartSec  = "2s";
-    };
-  };
-
 
   i18n = {
     defaultLocale = "en_US.UTF-8";
-
     extraLocaleSettings = {
       LC_TIME = "ru_RU.UTF-8";
       LC_NUMERIC = "ru_RU.UTF-8";
@@ -51,6 +47,7 @@ in
 
   environment.systemPackages = with pkgs; [
     home-manager
+    neovim
     vim
     micro
     curl
@@ -60,51 +57,31 @@ in
   ];
 
   services = {
-    avahi = {
-      enable = true;
-      nssmdns4 = true;
-    };
-
     openssh = {
       enable = true;
       allowSFTP = true;
     };
-
     sshd.enable = true;
-
-    printing = {
-      enable = true;
-    };
-
     libinput.enable = true;
   };
 
-  fonts.packages = with pkgs; [
-    font-awesome
-  ] ++ nerdFonts;
-  
-  programs.zsh.enable = true;
-  programs.steam.enable = true;
-  programs.clash-verge.enable = true;
-
-  security = {
-    sudo = {
-      # needed to run clash-verge's tun mode without issues
-      extraRules = [ { users = [ "wiyba" ]; commands = [{ command = "/nix/store/*/bin/clash-verge-service"; options = [ "NOPASSWD" "SETENV" ]; }]; }];
-    };
-  };
-
   console = {
-    packages = with pkgs; [ terminus_font ];
-    font = "${pkgs.terminus_font}/share/consolefonts/ter-v28n.psf.gz";
+    packages = [ pkgs.terminus_font ]; 
+    font = "ter-v28n";
     keyMap = "us";
   };
+
+  programs.zsh.enable = true;
 
   users.users.wiyba = {
     isNormalUser = true;
     extraGroups = [ "wheel" "networkmanager" "audio" "video" "input" ];
     shell = pkgs.zsh;
   };
+  
+  systemd.tmpfiles.rules = [
+    "d /etc/nixos 0755 wiyba users - -"
+  ];
 
   nix = {
     gc = {
@@ -113,23 +90,11 @@ in
       options = "--delete-older-than 7d";
     };
 
-    package = pkgs.nixVersions.latest;
-
     settings = {
       auto-optimise-store = true;
-
       trusted-users = [ "root" "wiyba" ];
-
       experimental-features = [ "nix-command" "flakes" ];
       warn-dirty = false;
-
-      substituters = [ "https://cache.nixos.org" ];
-      trusted-public-keys = [
-        "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-      ];
-
-      keep-outputs = true;
-      keep-derivations = true;
     };
   };
 }
