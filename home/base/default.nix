@@ -23,7 +23,7 @@ in
     ./scripts
     ./programs
     ./services
-    ../secrets
+    ./secrets
   ];
 
   systemd.user.services.polkit-agent = {
