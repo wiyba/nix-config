@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//etc/pam.d/**)",
+      "Bash(cat:*)",
+      "Read(//home/wiyba/.config/quickshell/**)",
+      "Bash(quickshell:*)",
+      "WebSearch",
+      "WebFetch(domain:quickshell.org)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
