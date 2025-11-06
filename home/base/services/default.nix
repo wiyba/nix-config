@@ -6,4 +6,4 @@ let
     };
   };
 in
-[ (map (name: ./. + "/${name}") (builtins.attrNames (builtins.readDir ./.))) ++ [ more ] ]
+(map (name: ./. + "/${name}") (builtins.attrNames (builtins.readDir ./.))) ++ [ more ]
