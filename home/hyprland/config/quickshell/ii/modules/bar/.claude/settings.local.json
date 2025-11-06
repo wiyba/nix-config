@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//home/wiyba/.config/quickshell/**)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
