@@ -48,10 +48,11 @@ in
 
   home = {
     inherit username homeDirectory packages;
+    stateVersion = "24.11";
 
     sessionVariables = {
-      BROWSER = "${lib.getExe pkgs.firefox-beta}";
       DISPLAY = ":0";
+      SHELL = "${lib.getExe pkgs.zsh}";
       EDITOR = "nvim";
       VISUAL = "nvim";
       GIT_ASKPASS = "";
