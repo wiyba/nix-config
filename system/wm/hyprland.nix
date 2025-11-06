@@ -47,7 +47,7 @@
         default_session = {
           command = "${pkgs.hyprland}/bin/Hyprland";
           user = "wiyba";
-	  restart = false;
+	        restart = false;
         };
       };
     };

@@ -15,12 +15,6 @@ let
     noto-fonts-emoji
   ] ++ nerdFonts;
 
-  audioPkgs = with pkgs; [
-    pavucontrol
-    playerctl
-    pulsemixer
-  ];
-
   packages = with pkgs; [
     loupe
     appeditor
@@ -35,11 +29,12 @@ let
     grim 
     slurp 
     wl-clipboard 
-    cliphist 
-    imagemagick 
     swww
     brightnessctl
-  ] ++ fontPkgs ++ audioPkgs;
+    pavucontrol
+    playerctl
+    pulsemixer
+  ] ++ fontPkgs;
 
 in
 {
