@@ -38,7 +38,7 @@ let
 
 in
 {
-  imports = [
+  imports = lib.concatMap import [
     ./programs
     ./scripts
     ./services

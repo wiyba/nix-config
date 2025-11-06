@@ -6,8 +6,7 @@ let
         enable = true;
         components = [ "ssh" "secrets" ];
       };
-      
     };
   };
 in
-(map (name: ./. + "/${name}") (builtins.attrNames (builtins.readDir ./.))) ++ [ more ]
+[ more ]
