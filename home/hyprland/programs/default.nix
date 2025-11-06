@@ -5,4 +5,8 @@ let
     };
   };
 in
-(map (name: ./. + "/${name}") (builtins.attrNames (builtins.readDir ./.))) ++ [ more ]
+[
+  ./dconf
+  ./firefox
+  ./kitty
+] ++ [ more ]
