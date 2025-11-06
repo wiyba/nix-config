@@ -5,5 +5,6 @@ let
 
     };
   };
+  servicesModules = map (name: ./. + "/${name}") (builtins.attrNames (builtins.readDir ./.));
 in
-(map (name: ./. + "/${name}") (builtins.attrNames (builtins.readDir ./.))) ++ [ more ]
+servicesModules ++ [ more ]

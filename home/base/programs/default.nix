@@ -55,6 +55,7 @@ let
         '';
       };
     };
+    programModules = map (name: ./. + "/${name}") (builtins.attrNames (builtins.readDir ./.));
   };
 in
-(map (name: ./. + "/${name}") (builtins.attrNames (builtins.readDir ./.))) ++ [ more ]
+programModules ++ [ more ]
