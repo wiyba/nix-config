@@ -19,7 +19,7 @@ in
 {
   programs.home-manager.enable = true;
 
-  imports = import [
+  imports = lib.concatMap import [
     ./scripts
     ./programs
     ./services
