@@ -1,4 +1,4 @@
-[{
+{
   sops = {
     defaultSopsFile = ./secrets.yaml;
     age.keyFile = "/etc/nixos/secrets/keys/sops-age.key";
@@ -9,4 +9,4 @@
     secrets.uuid = {};
     secrets.sid = {};
   };
-}]
+}

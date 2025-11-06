@@ -13,5 +13,5 @@ let
       ];
     };
 in
-[ scripts ]
+scripts
 
