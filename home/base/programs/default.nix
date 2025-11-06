@@ -56,6 +56,10 @@ let
       };
     };
   };
-  programModules = map (name: ./. + "/${name}") (builtins.attrNames (builtins.readDir ./.));
 in
-programModules ++ [ more ]
+[ 
+  ./fastfetch
+  ./git
+  ./neovim
+  ./zsh
+] ++ [ more ]
