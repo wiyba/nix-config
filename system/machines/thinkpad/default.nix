@@ -19,13 +19,6 @@
       enable = lib.mkForce false;
       configurationLimit = 5;
       consoleMode = "max";
-      
-      extraEntries = {
-        "windows.conf" = ''
-          title Windows
-          efi /EFI/Microsoft/Boot/bootmgfw.efi
-        '';
-      };
     };
 
     lanzaboote = {

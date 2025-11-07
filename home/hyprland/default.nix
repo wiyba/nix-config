@@ -12,7 +12,7 @@ let
     jetbrains-mono
     noto-fonts
     noto-fonts-cjk-sans
-    noto-fonts-emoji
+    noto-fonts-color-emoji
   ] ++ nerdFonts;
 
   packages = with pkgs; [
@@ -34,6 +34,7 @@ let
     pavucontrol
     playerctl
     pulsemixer
+    dex
   ] ++ fontPkgs;
 
 in
@@ -67,7 +68,10 @@ in
       --ozone-platform=wayland
     '';
     
-    "hypr".source = ./config/hyprland;
+    "hypr" = {
+      source = ./config/hyprland;
+      recursive = true;
+    };
   };
 
   xdg.portal = {
