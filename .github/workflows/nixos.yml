@@ -20,7 +20,7 @@ jobs:
       fail-fast: true
       matrix:
         host:
-          - nix-usb
+          - thinkpad
 
     steps:
       - uses: actions/checkout@v4
