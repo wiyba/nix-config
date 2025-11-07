@@ -7,18 +7,19 @@
     home-manager.url = "github:nix-community/home-manager";
     nix-darwin.url   = "github:LnL7/nix-darwin";
     flake-utils.url  = "github:numtide/flake-utils";
-
-    #nixpkgs fixed
-    #clash-verge.url  = "github:NixOS/nixpkgs/9e83b64f727c88a7711a2c463a7b16eedb69a84c";
-
+    grub-themes.url  = "github:jeslie0/nixos-grub-themes";
+    sops-nix.url     = "github:Mic92/sops-nix";
+    lanzaboote.url   = "github:nix-community/lanzaboote/v0.4.3";
+ 
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     nix-darwin.inputs.nixpkgs.follows   = "nixpkgs";
-
-    grub-themes.url = "github:jeslie0/nixos-grub-themes";
-    sops-nix.url = "github:Mic92/sops-nix";
+    sops-nix.inputs.nixpkgs.follows     = "nixpkgs";
+    lanzaboote.inputs.nixpkgs.follows   = "nixpkgs";
+    
+    grub-themes.inputs.nixpkgs.follows  = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, nur, home-manager, nix-darwin, flake-utils, ... } @ inputs:
+  outputs = { self, nixpkgs, nur, home-manager, nix-darwin, flake-utils,  lanzaboote, ... } @ inputs:
     let
       overlays = [ 
         nur.overlays.default
@@ -39,6 +40,7 @@
           ./system/configuration.nix
           ./system/machines/${host}
           home-manager.nixosModules.home-manager
+          lanzaboote.nixosModules.lanzaboote
 
           { nixpkgs.config = { allowUnfree = true; }; }
           { nix.registry.nixpkgs.flake = nixpkgs; }

@@ -68,7 +68,6 @@ in
     '';
     
     "hypr".source = ./config/hyprland;
-    "quickshell".source = ./config/quickshell;
   };
 
   xdg.portal = {
