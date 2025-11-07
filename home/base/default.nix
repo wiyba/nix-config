@@ -56,7 +56,7 @@ in
       EDITOR = "nvim";
       VISUAL = "nvim";
       GIT_ASKPASS = "";
-      SOPS_AGE_KEY_FILE = "/etc/nixos/home/secrets/keys/sops-age.key";
+      SOPS_AGE_KEY_FILE = "/etc/nixos/home/base/secrets/keys/sops-age.key";
     };
   };
 

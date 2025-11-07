@@ -10,16 +10,17 @@
     grub-themes.url  = "github:jeslie0/nixos-grub-themes";
     sops-nix.url     = "github:Mic92/sops-nix";
     lanzaboote.url   = "github:nix-community/lanzaboote/v0.4.3";
+    lazyvim.url      = "github:pfassina/lazyvim-nix";
  
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     nix-darwin.inputs.nixpkgs.follows   = "nixpkgs";
     sops-nix.inputs.nixpkgs.follows     = "nixpkgs";
     lanzaboote.inputs.nixpkgs.follows   = "nixpkgs";
-    
+    lazyvim.inputs.nixpkgs.follows      = "nixpkgs";
     grub-themes.inputs.nixpkgs.follows  = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, nur, home-manager, nix-darwin, flake-utils,  lanzaboote, ... } @ inputs:
+  outputs = { self, nixpkgs, nur, home-manager, nix-darwin, flake-utils,  lanzaboote, lazyvim, ... } @ inputs:
     let
       overlays = [ 
         nur.overlays.default
@@ -88,6 +89,7 @@
           modules = [ 
             ./home/base
             inputs.sops-nix.homeManagerModules.sops
+            inputs.lazyvim.homeManagerModules.default
           ];
         };
         hyprland = mkHome {
@@ -96,6 +98,7 @@
             ./home/base
             ./home/hyprland
             inputs.sops-nix.homeManagerModules.sops
+            inputs.lazyvim.homeManagerModules.default
           ];
         };
         darwin = mkHome {

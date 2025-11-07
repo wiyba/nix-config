@@ -35,22 +35,23 @@ let
           controlMaster = "no";
           controlPath = "~/.ssh/master-%r@%n:%p";
           controlPersist = "no";
+          identityFile = [ "~/.ssh/multi.key" ];
         };
         extraConfig = ''
           Host github.com
-            IdentityFile /etc/nixos/home/secrets/keys/multi.key
+            IdentityFile /home/wiyba/.ssh/multi.key
             IdentitiesOnly yes
 
           Host vps
             HostName wiyba.org 
             User root
-            IdentityFile /etc/nixos/home/secrets/keys/multi.key
+            IdentityFile /home/wiyba/.ssh/multi.key
             IdentitiesOnly yes
 
           Host home
             HostName home.wiyba.org
             User root
-            IdentityFile /etc/nixos/home/secrets/keys/multi.key
+            IdentityFile /home/wiyba/.ssh/multi.key
             IdentitiesOnly yes
         '';
       };
