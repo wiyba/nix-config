@@ -1,20 +1,7 @@
 { pkgs, config, ... }:
 
 let
-  extensions = with pkgs.nur.repos.rycee.firefox-addons; [
-    bitwarden
-    darkreader
-    # auto-accepts cookies, use only with privacy-badger & ublock-origin
-    istilldontcareaboutcookies
-    languagetool
-    link-cleaner
-    privacy-badger
-    ublock-origin
-    indie-wiki-buddy
-    return-youtube-dislikes
-    new-tab-override
-    sponsorblock
-  ];
+  extensions = with pkgs.nur.repos.rycee.firefox-addons; [ bitwarden ];
 
   # disable the annoying floating icon with camera and mic when on a call
   disableWebRtcIndicator = ''
@@ -27,6 +14,8 @@ let
 
   # ~/.mozilla/firefox/PROFILE_NAME/prefs.js | user.js
   settings = {
+    "extensions.autoDisableScopes" = 0;
+
     "app.normandy.first_run" = false;
     "app.shield.optoutstudies.enabled" = false;
 

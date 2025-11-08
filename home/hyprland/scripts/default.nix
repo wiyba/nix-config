@@ -1,17 +1,16 @@
 let
   scripts = { config, lib, pkgs, ... }:
     let
-      csw = pkgs.callPackage ./close-special-workspace.nix { };
-      kls = pkgs.callPackage ./keyboard-layout-switch.nix { };
-      gw  = pkgs.callPackage ./get-weather.nix { };
+      close-special-workspace = pkgs.callPackage ./close-special-workspace.nix { };
+      get-weather = pkgs.callPackage ./get-weather.nix { };
+      bitwarden-handler = pkgs.callPackage ./bitwarden-handler.nix { };
     in
     {
       home.packages = [
-        csw
-        kls
-        gw
+        close-special-workspace
+        get-weather
+        bitwarden-handler
       ];
     };
 in
 [ scripts ]
-

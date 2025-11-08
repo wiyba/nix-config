@@ -1,5 +1,6 @@
 { pkgs, lib, ... }:
 
+
 {
   programs = {
     dconf.enable = true;
@@ -31,6 +32,11 @@
     };
   };
 
+  security.pam.services = {
+    greetd.enableGnomeKeyring = true;
+    hyprlock = {};
+  };
+
   services = {
     blueman.enable = true;
 
@@ -45,11 +51,11 @@
       enable = true;
       settings = {
         default_session = {
-          command = "${pkgs.hyprland}/bin/Hyprland";
-          user = "wiyba";
-	        restart = false;
+          command = "${pkgs.tuigreet}/bin/tuigreet --time --remember --cmd ${pkgs.hyprland}/bin/Hyprland";
+          user = "greeter";
         };
       };
+      
     };
 
     pipewire = {
