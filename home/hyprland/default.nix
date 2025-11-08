@@ -44,6 +44,11 @@ let
     rmpc
     telegram-desktop
     equibop
+    socat
+    statix
+    ruff
+    filezilla
+    networkmanagerapplet
   ] ++ fontPkgs;
 
 in

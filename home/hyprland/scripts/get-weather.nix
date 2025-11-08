@@ -1,5 +1,5 @@
 { writeShellScriptBin, curl, jq, ... }:
-writeShellScriptBin "gw" ''
+writeShellScriptBin "get-weather" ''
   #!/bin/sh
   get_icon() {
       case $1 in

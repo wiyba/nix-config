@@ -1,6 +1,6 @@
 * {
 	font-family: "Symbols Nerd Font Mono", "CaskaydiaCove Nerd Font";
-	font-size: 20px;
+	font-size: 18px;
 }
 
 window#waybar {
@@ -35,6 +35,24 @@ window#waybar {
 }
 
 #network {
+	background-color: alpha(#282828, 0.5);
+	color: #ebdbb2;
+	padding-right: 10px;
+	padding-left: 10px;
+
+	border-radius: 5px;
+}
+
+#bluetooth {
+	background-color: alpha(#282828, 0.5);
+	color: #ebdbb2;
+	padding-right: 10px;
+	padding-left: 10px;
+
+	border-radius: 5px;
+}
+
+#language {
 	background-color: alpha(#282828, 0.5);
 	color: #ebdbb2;
 	padding-right: 10px;

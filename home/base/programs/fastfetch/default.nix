@@ -7,13 +7,13 @@
     settings = {
       logo = {
         # type = "none";
-        type   = "kitty";
-        source = "/home/wiyba/Pictures/nixos.png";
-        padding = { top = 1; right = 6; };
-        width  = 25;
-        height = 13;
-        color  = { "1" = "white"; };
-        # source = "${./cat}"; # cat
+        # type   = "kitty";
+        # source = "/home/wiyba/Pictures/nixos.png";
+        # padding = { top = 1; right = 6; };
+        # width  = 25;
+        # height = 13;
+        # color  = { "1" = "white"; };
+        source = "${./cat}"; # cat
       };
 
       display = { separator = " •  "; };
