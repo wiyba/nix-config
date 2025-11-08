@@ -49,6 +49,9 @@ let
     ruff
     filezilla
     networkmanagerapplet
+    vscode
+    nil
+    direnv
   ] ++ fontPkgs;
 
 in

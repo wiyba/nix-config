@@ -10,4 +10,5 @@ in
   ./firefox
   ./kitty
   ./waybar
+  ./vscode
 ] ++ [ more ]

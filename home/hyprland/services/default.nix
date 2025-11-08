@@ -10,5 +10,4 @@ let
   };
 in
 [
-  ./mpd
 ] ++ [ more ]
