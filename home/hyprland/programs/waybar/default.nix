@@ -35,7 +35,7 @@
         "custom/weather" = {
           format = "{}";
           interval = 300;
-          exec = "gw";
+          exec = "get-weather";
           tooltip = false;
         };
 
