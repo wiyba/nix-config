@@ -10,7 +10,7 @@
       italic_font             = "auto";
       bold_italic_font        = "auto";
       enable_audio_bell       = "no";
-      font_size               = 15.0;
+      font_size               = 12.0;
       window_padding_width    = 25;
       background_opacity      = 0.6;
       hide_window_decorations = "yes";
@@ -18,55 +18,57 @@
     };
 
     extraConfig = ''
-    # gruvbox dark by morhetz, https://github.com/morhetz/gruvbox
-# This work is licensed under the terms of the MIT license.
-# For a copy, see https://opensource.org/licenses/MIT.
+      cursor_shape beam
+      cursor_trail 1
 
-background  #282828
-foreground  #ebdbb2
+      map ctrl+c copy_or_interrupt
 
-cursor                #928374
+      map ctrl+f launch --location=hsplit --allow-remote-control kitty +kitten search.py @active-kitty-window-id
+      map kitty_mod+f launch --location=hsplit --allow-remote-control kitty +kitten search.py @active-kitty-window-id
 
-selection_foreground  #928374
-selection_background  #3c3836
+      map page_up scroll_page_up
+      map page_down scroll_page_down
 
-color0  #282828
-color8  #928374
+      map ctrl+plus change_font_size all +1
+      map ctrl+equal change_font_size all +1
+      map ctrl+kp_add change_font_size all +1
+      map ctrl+minus change_font_size all -1
+      map ctrl+underscore change_font_size all -1
+      map ctrl+kp_subtract change_font_size all -1
+      map ctrl+0 change_font_size all 0
+      map ctrl+kp_0 change_font_size all 0
 
-# red
-color1                #cc241d
-# light red
-color9                #fb4934
+      background #282828
+      foreground #ebdbb2
 
-# green
-color2                #98971a
-# light green
-color10               #b8bb26
+      cursor #928374
 
-# yellow
-color3                #d79921
-# light yellow
-color11               #fabd2d
+      selection_foreground #928374
+      selection_background #3c3836
 
-# blue
-color4                #458588
-# light blue
-color12               #83a598
+      color0 #282828
+      color8 #928374
 
-# magenta
-color5                #b16286
-# light magenta
-color13               #d3869b
+      color1 #cc241d
+      color9 #fb4934
 
-# cyan
-color6                #689d6a
-# lighy cyan
-color14               #8ec07c
+      color2 #98971a
+      color10 #b8bb26
 
-# light gray
-color7                #a89984
-# dark gray
-color15               #928374  
+      color3 #d79921
+      color11 #fabd2d
+
+      color4 #458588
+      color12 #83a598
+
+      color5 #b16286
+      color13 #d3869b
+
+      color6 #689d6a
+      color14 #8ec07c
+
+      color7 #a89984
+      color15 #928374
     '';
   };
 }

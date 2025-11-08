@@ -9,4 +9,5 @@ in
   ./dconf
   ./firefox
   ./kitty
+  ./waybar
 ] ++ [ more ]

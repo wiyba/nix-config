@@ -17,7 +17,7 @@
 
     loader.systemd-boot = {
       enable = lib.mkForce false;
-      configurationLimit = 5;
+      configurationLimit = 3;
       consoleMode = "max";
     };
 
@@ -42,6 +42,11 @@
       HandleLidSwitchDocked = "ignore";
     };
   };
+
+  systemd.tmpfiles.rules = [
+    "z /sys/class/leds/*/brightness 0666 - - - -"
+    "z /sys/class/leds/*/trigger 0666 - - - -"
+  ];
 
   services.fprintd.enable = true;
   security.pam.services.login.fprintAuth = true;
