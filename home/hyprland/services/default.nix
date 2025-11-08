@@ -9,4 +9,6 @@ let
     };
   };
 in
-[ more ]
+[
+  ./mpd
+] ++ [ more ]

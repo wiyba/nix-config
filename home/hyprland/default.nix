@@ -35,6 +35,15 @@ let
     playerctl
     pulsemixer
     dex
+    hyprpaper
+    hyprlock
+    hypridle
+    easyeffects
+    waybar
+    mpc
+    rmpc
+    telegram-desktop
+    equibop
   ] ++ fontPkgs;
 
 in
@@ -67,9 +76,9 @@ in
       --enable-features=UseOzonePlatform
       --ozone-platform=wayland
     '';
-    
+
     "hypr" = {
-      source = ./config/hyprland;
+      source = ./conf;
       recursive = true;
     };
   };
