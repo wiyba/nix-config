@@ -20,10 +20,10 @@
     grub-themes.inputs.nixpkgs.follows  = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, nur, home-manager, nix-darwin, flake-utils,  lanzaboote, lazyvim, ... } @ inputs:
+  outputs = { self, nixpkgs, home-manager, flake-utils, nix-darwin, ... } @ inputs:
     let
       overlays = [ 
-        nur.overlays.default
+        inputs.nur.overlays.default
       ];
 
       hosts = {
@@ -33,17 +33,17 @@
         apple-computer = "aarch64-darwin";
       };
 
-     pkgsFor = system: import nixpkgs { inherit system overlays; config = { allowUnfree = true; }; }; 
+      pkgsFor = system: import nixpkgs { inherit system overlays; config.allowUnfree = true; }; 
 
       mkNixosSystem = host: nixpkgs.lib.nixosSystem {
         system  = hosts.${host};
         modules = [
           ./system/configuration.nix
           ./system/machines/${host}
-          home-manager.nixosModules.home-manager
-          lanzaboote.nixosModules.lanzaboote
+          inputs.home-manager.nixosModules.home-manager
+          inputs.lanzaboote.nixosModules.lanzaboote
+          inputs.sops-nix.nixosModules.sops
 
-          { nixpkgs.config = { allowUnfree = true; }; }
           { nix.registry.nixpkgs.flake = nixpkgs; }
           { nixpkgs.overlays = overlays; }
         ];
@@ -55,9 +55,8 @@
         modules = [
           ./system/darwin.nix
           ./system/machines/${host}
-          home-manager.darwinModules.home-manager
+          inputs.home-manager.darwinModules.home-manager
 
-          { nixpkgs.config = { allowUnfree = true; }; }
           { nix.registry.nixpkgs.flake = nixpkgs; }
           { nixpkgs.overlays = overlays; }
         ];
@@ -84,26 +83,19 @@
           (nixpkgs.lib.filterAttrs (_: a: a == "x86_64-darwin" || a == "aarch64-darwin") hosts);
 
       homeConfigurations = {
-        base = mkHome {
+        home = mkHome {
           system  = "x86_64-linux";
           modules = [ 
-            ./home/base
-            inputs.sops-nix.homeManagerModules.sops
-            inputs.lazyvim.homeManagerModules.default
-          ];
-        };
-        hyprland = mkHome {
-          system  = "x86_64-linux";
-          modules = [ 
-            ./home/base
-            ./home/hyprland
+            ./home/home.nix
             inputs.sops-nix.homeManagerModules.sops
             inputs.lazyvim.homeManagerModules.default
           ];
         };
         darwin = mkHome {
           system  = "aarch64-darwin";
-          modules = [ ./home/wm/darwin/home.nix ];
+          modules = [ 
+            ./home/darwin/home.nix
+          ];
         };
       };
     };
