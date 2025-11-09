@@ -1,4 +1,4 @@
-{ config, pkgs, lib, inputs, ... }:
+{ pkgs, lib, ... }:
 
 {
   networking = {
@@ -13,11 +13,10 @@
       allowedTCPPorts = [ 22 ];
       allowedUDPPorts = [ ];
     };
-    # proxy = {
-    #   default = "http://127.0.0.1:7897/";
-    #   allProxy = "http://127.0.0.1:7897/";
-    #   noProxy = "localhost,127.0.0.1,internal.domain";
-    # };
+    proxy = {
+      allProxy = "http://127.0.0.1:7890/";
+      noProxy = "localhost,127.0.0.1";
+    };
     extraHosts = ''
       142.54.189.109 gew1-spclient.spotify.com
       142.54.189.109 login5.spotify.com
@@ -30,6 +29,11 @@
       142.54.189.109 spotifycdn.com
       142.54.189.109 www.spotify.com
     '';
+  };
+
+  hardware.bluetooth = {
+    enable = true;
+    settings.General.Enable = "Source,Sink,Media,Socket";
   };
 
   i18n = {
@@ -45,24 +49,43 @@
 
   time.timeZone = "Europe/Moscow";
 
-  environment.systemPackages = with pkgs; [
-    home-manager
-    neovim
-    vim
-    micro
-    curl
-    git
-    wget
-    lm_sensors
+  imports = lib.concatMap import [
+    ./services
+    ./sops
   ];
 
+  programs = {
+    zsh.enable = true;
+    dconf.enable = true;
+    uwsm.enable = true;
+    hyprland = { enable = true; withUWSM = true; };
+  };
+
   services = {
-    openssh = {
-      enable = true;
-      allowSFTP = true;
-    };
+    openssh = { enable = true; allowSFTP = true; };
     sshd.enable = true;
     libinput.enable = true;
+    seatd.enable = true;
+    blueman.enable = true;
+    gnome.gnome-keyring.enable = true;
+    desktopManager.plasma6.enable = true;
+  };
+
+  environment = {
+    systemPackages = with pkgs; [
+      home-manager
+      neovim
+      vim
+      micro
+      curl
+      git
+      wget
+      lm_sensors
+      kitty
+      wl-clipboard
+    ];
+    sessionVariables = { NIXOS_OZONE_WL = "1"; };
+    variables = { SOPS_AGE_KEY_FILE = "/etc/nixos/keys/sops-age.key"; };
   };
 
   console = {
@@ -71,12 +94,15 @@
     keyMap = "us";
   };
 
-  programs.zsh.enable = true;
-
   users.users.wiyba = {
     isNormalUser = true;
     extraGroups = [ "wheel" "networkmanager" "audio" "video" "input" ];
     shell = pkgs.zsh;
+  };
+  
+  security.pam.services = {
+    greetd.enableGnomeKeyring = true;
+    hyprlock = {};
   };
   
   systemd.tmpfiles.rules = [
