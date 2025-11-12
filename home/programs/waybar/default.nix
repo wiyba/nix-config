@@ -14,6 +14,7 @@
 
         "modules-left" = [
           "hyprland/workspaces"
+          "hyprland/window"
         ];
 
         "modules-center" = [
@@ -23,20 +24,28 @@
         ];
 
         "modules-right" = [
+          "custom/proxy"
           "network"
           "bluetooth"
           "hyprland/language"
           "pulseaudio"
-          "backlight"
           "battery"
           "tray"
         ];
 
         "custom/weather" = {
-          format = "{}";
           interval = 300;
           exec = "get-weather";
-          tooltip = false;
+          return-type = "json";
+          hide-empty-text = true;
+        };
+
+        "custom/proxy" = {
+          interval = 5;
+          exec = "proxy-status";
+          on-click = "proxy-switch";
+          return-type = "json";
+          hide-empty-text = true;
         };
 
         tray = {
@@ -71,7 +80,7 @@
         network = {
           format-wifi = "  {essid}";
           format-ethernet = "  {ifname}";
-          format-disconnected = "  DISC";
+          format-disconnected = "󰪎  DISC";
           format-alt = "  {ipaddr}";
           tooltip-format = "ifname:\t{ifname}\nipaddr:\t{ipaddr}\nmask:\t{netmask}\ngwaddr:\t{gwaddr}\nessid:\t{essid}\nfreq:\t{frequency} GHz\nsignal:\t{signaldBm} dBm";
         };
@@ -80,7 +89,7 @@
           format = "󰂯  {status}";
           format-connected = "󰂯  {device_alias}";
           format-connected-battery = "󰂯  {device_alias}";
-          format-on = "󰂯  DISC";
+          format-on = "󰂲  DISC";
           on-click = "blueman-manager";
           tooltip-format = "{controller_alias}\t{controller_address}";
           tooltip-format-connected = "{controller_alias}\t{controller_address}\n\n{device_enumerate}";
@@ -89,18 +98,24 @@
         };
 
         "hyprland/language" = {
-            format = "  {}";
-            format-en = "US";
-            format-ru = "RU";
-            keyboard-name = "at-translated-set-2-keyboard";
+          format = "  {}";
+          format-en = "US";
+          format-ru = "RU";
+        };
+
+        "hyprland/window" = {
+          format = "{class}";
+          # rewrite = {};
+
         };
 
         pulseaudio = {
-          format = "  {volume}%";
-          format-muted = "  MUTED";
-          format-bluetooth = "  {volume}%";
-          format-bluetooth-muted = "  MUTED";
+          format = "{icon}  {volume}%";
+          format-muted = "󰖁  MUTED";
+          format-bluetooth = "{icon}  {volume}%";
+          format-bluetooth-muted = "󰖁  MUTED";
           on-click = "pavucontrol";
+          format-icons = { default = ["󰕿" "󰕿" "󰕿" "󰕿" "󰖀" "󰖀" "󰖀" "󰕾" "󰕾" "󰕾" "󰕾" "󰕾" "󰕾" "󰕾" "󰕾" "󰕾" "󰕾" "󰕾" "󰕾" "󰕾"]; };
           tooltip = false;
         };
       }

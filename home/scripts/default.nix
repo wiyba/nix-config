@@ -6,6 +6,8 @@ let
       close-special-workspace = pkgs.callPackage ./close-special-workspace.nix { };
       get-weather = pkgs.callPackage ./get-weather.nix { };
       bitwarden-handler = pkgs.callPackage ./bitwarden-handler.nix { };
+      proxy-status = pkgs.callPackage ./proxy-status.nix { };
+      proxy-switch = pkgs.callPackage ./proxy-switch.nix { };
     in
     {
       home.packages = [
@@ -14,6 +16,8 @@ let
         close-special-workspace
         get-weather
         bitwarden-handler
+        proxy-status
+        proxy-switch
       ];
     };
 in

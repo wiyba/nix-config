@@ -83,6 +83,7 @@
       lm_sensors
       kitty
       wl-clipboard
+      usb-modeswitch
     ];
     sessionVariables = { NIXOS_OZONE_WL = "1"; };
     variables = { SOPS_AGE_KEY_FILE = "/etc/nixos/keys/sops-age.key"; };

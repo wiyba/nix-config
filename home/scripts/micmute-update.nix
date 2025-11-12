@@ -5,7 +5,7 @@ let
   awk = "${pkgs.gawk}/bin/awk";
 in
 pkgs.writeShellScriptBin "micmute-update" ''
-  #!/usr/bin/env bash
+  #!/bin/sh
   set -euo pipefail
   LED="/sys/class/leds/platform::micmute/brightness"
   MAX="$(cat "$(dirname "$LED")/max_brightness" 2>/dev/null || echo 1)"
