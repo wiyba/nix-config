@@ -5,7 +5,7 @@ let
   micmute-update = "${pkgs.callPackage ./micmute-update.nix { }}/bin/micmute-update";
 in
 pkgs.writeShellScriptBin "pactl-listner" ''
-  #!/usr/bin/env bash
+  #!/bin/sh
   set -euo pipefail
   OUT_SCRIPT="${mute-update}"
   MIC_SCRIPT="${micmute-update}"

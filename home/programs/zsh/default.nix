@@ -3,23 +3,17 @@
 {
   programs.zsh = {
     enable = true;
-    enableCompletion = true;
+    enableCompletion = false;
 
     initContent = ''
-      setopt HIST_FIND_NO_DUPS
-      setopt HIST_IGNORE_ALL_DUPS
-      setopt SHARE_HISTORY
-      HISTFILE=~/.zsh_history
-      HISTSIZE=10000
-      SAVEHIST=10000
-
+      command_not_found_handler() { return 127 }
       source ${./headline.zsh-theme}
     '';
 
     zplug = {
       enable = true;
       plugins = [
-        { name = "zsh-users/zsh-syntax-highlighting"; }
+        #{ name = "zsh-users/zsh-syntax-highlighting"; }
         { name = "zdharma-continuum/fast-syntax-highlighting"; }
         { name = "marlonrichert/zsh-autocomplete"; }
       ];
@@ -32,8 +26,10 @@
 			ll = "${pkgs.eza}/bin/eza -lha --icons=auto --sort=name --group-directories-first";
 			ld = "${pkgs.eza}/bin/eza -lhD --icons=auto";
 			lt = "${pkgs.eza}/bin/eza --icons=auto --tree";
-			cat = "bat";
-		}; 
+      up = "nix flake update --flake /etc/nixos";
+      switch-nixos = "sudo nixos-rebuild switch --flake /etc/nixos#";
+      switch-home = "home-manager switch --flake /etc/nixos#home";
+    };
   };
 }
 

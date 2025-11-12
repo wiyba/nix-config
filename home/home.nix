@@ -3,6 +3,20 @@ let
   username = "wiyba";
   homeDirectory = "/home/${username}";
   configHome = "${homeDirectory}/.config";
+
+  nerdFonts = with pkgs.nerd-fonts; [
+    symbols-only
+    caskaydia-cove
+  ];
+  
+  fontPkgs = with pkgs; [
+    font-awesome
+    material-design-icons
+    jetbrains-mono
+    noto-fonts
+    noto-fonts-cjk-sans
+    noto-fonts-color-emoji
+  ] ++ nerdFonts;
   
   packages = with pkgs; [
     dig
@@ -12,7 +26,31 @@ let
     fd
     killall
     xsel
-  ];
+    loupe
+    age
+    sops
+    unzip
+    zip
+    grim 
+    slurp 
+    wl-clipboard 
+    brightnessctl
+    pavucontrol
+    playerctl
+    dex
+    easyeffects
+    mpc
+    rmpc
+    telegram-desktop
+    equibop
+    socat
+    statix
+    ruff
+    filezilla
+    vscode
+    nil
+    direnv
+  ] ++ fontPkgs;
 in
 {
   imports = [
@@ -27,6 +65,7 @@ in
   ];
 
   programs.home-manager.enable = true;
+  fonts.fontconfig.enable = true;
   
   # important!!!
   plasma.enable = false;

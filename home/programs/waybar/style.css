@@ -34,6 +34,24 @@ window#waybar {
 	color: #282828;
 }
 
+#window {
+	background-color: alpha(#282828, 0.5);
+	color: #ebdbb2;
+	padding-right: 10px;
+	padding-left: 10px;
+
+	border-radius: 5px;
+}
+
+#custom-proxy {
+	background-color: alpha(#282828, 0.5);
+	color: #ebdbb2;
+	padding-right: 10px;
+	padding-left: 10px;
+
+	border-radius: 5px;
+}
+
 #network {
 	background-color: alpha(#282828, 0.5);
 	color: #ebdbb2;
