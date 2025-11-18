@@ -19,17 +19,15 @@
   boot.kernelParams = [ "acpi_backlight=native" ];
   boot.extraModulePackages = [ ];
 
-  fileSystems."/" =
-    {
-      device = "/dev/nvme0n1p5";
-      fsType = "ext4";
-    };
+  fileSystems."/" = {
+    device = "/dev/mapper/cryptroot";
+    fsType = "ext4";
+  };
 
-  fileSystems."/boot" =
-    {
-      device = "/dev/nvme0n1p1";
-      fsType = "vfat";
-    };
+  fileSystems."/boot" = {
+    device = "/dev/nvme0n1p1";
+    fsType = "vfat";
+  };
 
   swapDevices = [ ];
 

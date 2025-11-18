@@ -50,6 +50,7 @@
 
         tray = {
           spacing = 10;
+          ignored-items = ["blueman-applet" "nm-applet" ".blueman-applet-wrapped"];
         };
 
         "clock#date" = {
@@ -81,7 +82,7 @@
           format-wifi = "  {essid}";
           format-ethernet = "  {ifname}";
           format-disconnected = "󰪎  DISC";
-          format-alt = "  {ipaddr}";
+          on-click = "kitty --class nmtui nmtui";
           tooltip-format = "ifname:\t{ifname}\nipaddr:\t{ipaddr}\nmask:\t{netmask}\ngwaddr:\t{gwaddr}\nessid:\t{essid}\nfreq:\t{frequency} GHz\nsignal:\t{signaldBm} dBm";
         };
 
