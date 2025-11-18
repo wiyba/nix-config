@@ -1,14 +1,14 @@
 { config, pkgs, lib, ... }:
 let
   kdePackages = with pkgs.kdePackages; [
-    kate
-    filelight
-    discover
-    dolphin
-    ark
-    okular
-    gwenview
-    spectacle
+    # kate
+    # filelight
+    # discover
+    # dolphin
+    # ark
+    # okular
+    # gwenview
+    # spectacle
   ];
 in
 {

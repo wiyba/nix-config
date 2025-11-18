@@ -68,7 +68,7 @@
     seatd.enable = true;
     blueman.enable = true;
     gnome.gnome-keyring.enable = true;
-    desktopManager.plasma6.enable = true;
+    # desktopManager.plasma6.enable = true;
   };
 
   environment = {

@@ -50,6 +50,8 @@ let
     vscode
     nil
     direnv
+    ntfs3g
+    jetbrains.idea-ultimate
   ] ++ fontPkgs;
 in
 {
@@ -88,6 +90,63 @@ in
       publicShare = homeDirectory;
       templates = homeDirectory;
     };
+
+    desktopEntries = {
+      "blueman-adapters" = {
+        name = "Bluetooth Adapters";
+        noDisplay = true;
+      };
+      "gvim" = {
+        name = "GVim";
+        noDisplay = true;
+      };
+      "micro" = {
+        name = "Micro";
+        noDisplay = true;
+      };
+      "nvim" = {
+        name = "Neovim wrapper";
+        noDisplay = true;
+      };
+      "vim" = {
+        name = "Vim";
+        noDisplay = true;
+      };
+      "btop" = {
+        name = "btop++";
+        noDisplay = true;
+      };
+      "htop" = {
+        name = "Htop";
+        noDisplay = true;
+      };
+      "kitty" = {
+        name = "kitty";
+        noDisplay = true;
+      };
+      "org.gnome.Loupe" = {
+        name = "Image Viewer";
+        noDisplay = true;
+      };
+      "org.pulseaudio.pavucontrol" = {
+        name = "Volume Control";
+        noDisplay = true;
+      };
+
+      code = {
+        name = "Visual Studio Code";
+        genericName = "Text Editor";
+        exec = "code %F";
+        icon = "/home/wiyba/.nix-profile/share/pixmaps/vscode.png";
+        categories = [ "Utility" "TextEditor" "Development" "IDE" ];
+        mimeType = [ "text/plain" ];
+        startupNotify = true;
+        settings = {
+          StartupWMClass = "Code";
+        };
+      };
+    };
+
     portal = {
       enable = true;
       xdgOpenUsePortal = true;

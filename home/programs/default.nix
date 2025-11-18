@@ -26,4 +26,5 @@ in
   ./waybar
   ./vscode
   ./spotify
+  ./fuzzel
 ] ++ [ more ]

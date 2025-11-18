@@ -13,6 +13,7 @@
     lazyvim.url = "github:pfassina/lazyvim-nix";
     hyprlauncher.url = "github:hyprwm/hyprlauncher";
     spicetify-nix.url = "github:Gerg-L/spicetify-nix";
+    nixos-boot.url = "github:Melkor333/nixos-boot";
 
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
@@ -22,6 +23,7 @@
     grub-themes.inputs.nixpkgs.follows = "nixpkgs";
     hyprlauncher.inputs.nixpkgs.follows = "nixpkgs";
     spicetify-nix.inputs.nixpkgs.follows = "nixpkgs";
+    nixos-boot.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
@@ -63,6 +65,7 @@
             inputs.home-manager.nixosModules.home-manager
             inputs.lanzaboote.nixosModules.lanzaboote
             inputs.sops-nix.nixosModules.sops
+            inputs.nixos-boot.nixosModules.default
 
             { nix.registry.nixpkgs.flake = nixpkgs; }
             { nixpkgs.overlays = overlays; }
