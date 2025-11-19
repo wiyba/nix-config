@@ -67,6 +67,7 @@
     libinput.enable = true;
     seatd.enable = true;
     blueman.enable = true;
+    flatpak.enable = true;
     gnome.gnome-keyring.enable = true;
     # desktopManager.plasma6.enable = true;
   };
@@ -90,8 +91,8 @@
   };
 
   console = {
-    packages = [ pkgs.terminus_font ]; 
-    font = "ter-v28n";
+    # packages = [ pkgs.terminus_font ]; 
+    # font = "${pkgs.terminus_font}/share/consolefonts/ter-v28n.psf.gz";
     keyMap = "us";
   };
 

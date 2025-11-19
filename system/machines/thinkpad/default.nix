@@ -3,18 +3,13 @@
 {
   imports = [ ./hardware-configuration.nix ];
 
-  nixos-boot = {
-    enable = true;
-    duration = 5;
-  };
-
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
+
     initrd = {
       systemd.enable = true;
-      verbose = false;
-      luks.devices = {
-      cryptroot = {
+      verbose = true;
+      luks.devices.cryptroot = {
         device = "/dev/nvme0n1p2";
         preLVM = true;
         allowDiscards = true;
@@ -22,25 +17,8 @@
       };
     };
 
-    # configured in nixos-boot={};
-    # plymouth = {
-    #   enable = true;
-    #   theme = "lone";
-    #   themePackages = [ pkgs.adi1090x-plymouth-themes ];
-    # };
+    kernelParams = [ "video=2880x1800@60" ];
 
-    consoleLogLevel = 0;
-    kernelParams = [
-      "quiet"
-      "splash"
-      "boot.shell_on_fail"
-      "loglevel=3"
-      "rd.systemd.show_status=false"
-      "rd.udev.log_level=3"
-      "udev.log_priority=3"
-      "video=2880x1800"
-    ];
-    
     loader.efi = {
       canTouchEfiVariables = true;
       efiSysMountPoint = "/boot";
@@ -62,8 +40,8 @@
     ModemManager = {
       wantedBy = [ "multi-user.target" ];
       serviceConfig = {
-        Restart     = "always";
-        RestartSec  = "2s";
+        Restart = "always";
+        RestartSec = "2s";
       };
     };
     modem-fix = {
@@ -113,19 +91,20 @@
   ];
 
   security = {
-     tmp2 = {
+    tpm2 = {
       enable = true;
       tctiEnvironment.enable = true;
-    }; 
+    };
 
-    fprintd.enable = true;
     pam.services = {
       login.fprintAuth = true;
-      sudo.fprintAuth  = true;
+      sudo.fprintAuth = true;
       polkit-1.fprintAuth = true;
       hyprlock.fprintAuth = true;
     };
   };
+
+  services.fprintd.enable = true;
 
   networking.hostName = "thinkpad";
 
