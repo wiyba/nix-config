@@ -23,7 +23,6 @@
     grub-themes.inputs.nixpkgs.follows = "nixpkgs";
     hyprlauncher.inputs.nixpkgs.follows = "nixpkgs";
     spicetify-nix.inputs.nixpkgs.follows = "nixpkgs";
-    nixos-boot.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =

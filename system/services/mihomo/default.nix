@@ -5,7 +5,7 @@ let
     owner = "Zephyruso";
     repo = "zashboard";
     rev = "refs/heads/gh-pages";
-    sha256 = "sha256-qQgW9fpd1us/Qtk27hjLrR/ouBwhlo7LXvwMRWt5jFc=";
+    sha256 = "sha256-WiTSub2cdVqtuviz7wIoShA5DMXqsOVn2SwVwLEKtPA=";
   };
 in
 {

@@ -30,6 +30,7 @@ let
     age
     sops
     unzip
+    cava
     zip
     grim 
     slurp 
@@ -42,7 +43,8 @@ let
     mpc
     rmpc
     telegram-desktop
-    equibop
+    obs-studio
+    discord-canary
     socat
     statix
     ruff
@@ -51,7 +53,7 @@ let
     nil
     direnv
     ntfs3g
-    jetbrains.idea-ultimate
+#    jetbrains.idea-ultimate
   ] ++ fontPkgs;
 in
 {
@@ -174,6 +176,13 @@ in
         pkgs.xdg-desktop-portal-hyprland
         pkgs.xdg-desktop-portal-termfilechooser
       ];
+    };
+
+    configFile = {
+      "rmpc" = {
+        source = ./dotfiles/config/rmpc;
+        recursive = true;
+      };
     };
   };
 

@@ -4,6 +4,6 @@ let
   dir = "/home/wiyba/Music/";
 in
 writeShellScriptBin "sync-music" ''
-  ${rsync} -avz --delete root@home.wiyba.org:/opt/navidrome/music/ ${dir}
+  ${rsync} -avz --delete root@home.wiyba.org:/opt/navidrome/ ${dir}
 ''
 
