@@ -29,6 +29,8 @@
       up = "nix flake update --flake /etc/nixos";
       switch-nixos = "sudo nixos-rebuild switch --flake /etc/nixos#";
       switch-home = "home-manager switch --flake /etc/nixos#home";
+
+      ssh = "TERM=xterm-256color ssh";
     };
   };
 }
