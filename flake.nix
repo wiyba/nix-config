@@ -13,6 +13,7 @@
     lazyvim.url = "github:pfassina/lazyvim-nix";
     hyprlauncher.url = "github:hyprwm/hyprlauncher";
     spicetify-nix.url = "github:Gerg-L/spicetify-nix";
+    zapret-discord-youtube.url = "github:kartavkun/zapret-discord-youtube";
     nixos-boot.url = "github:Melkor333/nixos-boot";
 
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
@@ -65,6 +66,7 @@
             inputs.lanzaboote.nixosModules.lanzaboote
             inputs.sops-nix.nixosModules.sops
             inputs.nixos-boot.nixosModules.default
+            inputs.zapret-discord-youtube.nixosModules.default
 
             { nix.registry.nixpkgs.flake = nixpkgs; }
             { nixpkgs.overlays = overlays; }

@@ -53,6 +53,11 @@ let
     nil
     direnv
     ntfs3g
+    prismlauncher
+    packwiz
+    mtr
+    nodejs
+    pnpm
 #    jetbrains.idea-ultimate
   ] ++ fontPkgs;
 in

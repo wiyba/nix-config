@@ -31,6 +31,11 @@
     '';
   };
 
+  # services.zapret-discord-youtube = {
+  #   enable = true;
+  #   config = "general(ALT10)";
+  # };
+
   hardware.bluetooth = {
     enable = true;
     settings.General.Enable = "Source,Sink,Media,Socket";
