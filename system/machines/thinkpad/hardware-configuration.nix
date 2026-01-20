@@ -1,7 +1,16 @@
-{ config, lib, pkgs, modulesPath, ... }:
+{ lib, ... }:
 
 {
-  boot.initrd.availableKernelModules = [ "xhci_pci" "thunderbolt" "nvme" "uas" "sd_mod" "usbhid" "xe" "i915" ];
+  boot.initrd.availableKernelModules = [
+    "xhci_pci"
+    "thunderbolt"
+    "nvme"
+    "uas"
+    "sd_mod"
+    "usbhid"
+    "xe"
+    "i915"
+  ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [
     "kvm-intel"

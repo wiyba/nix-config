@@ -13,5 +13,6 @@ in
     enable = true;
     configFile = "/etc/mihomo/config.yaml";
     webui = zashboard;
+    tunMode = true;
   };
 }

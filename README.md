@@ -1,4 +1,4 @@
-nix-config [![ci-badge](https://img.shields.io/static/v1?label=Built%20with&message=nix&color=blue&style=flat&logo=nixos&link=https://nixos.org&labelColor=111212)](https://wiyba.org) [![build nixos](https://github.com/wiyba/nix-config/actions/workflows/nixos.yml/badge.svg)](https://github.com/wiyba/nix-config/actions/workflows/nixos.yml) [![build home](https://github.com/wiyba/nix-config/actions/workflows/home.yml/badge.svg)](https://github.com/wiyba/nix-config/actions/workflows/home.yml) 
+nix-config [![ci-badge](https://img.shields.io/static/v1?label=Built%20with&message=nix&color=blue&style=flat&logo=nixos&link=https://nixos.org&labelColor=111212)](https://wiyba.org) [![build nixos](https://github.com/wiyba/nix-config/actions/workflows/nixos.yml/badge.svg)](https://github.com/wiyba/nix-config/actions/workflows/nixos.yml) 
 ==========
 
 my current but kinda newbie [nixos](https://nixos.org/) and [home manager](https://github.com/nix-community/home-manager/) configs

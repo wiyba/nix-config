@@ -1,25 +1,23 @@
 { pkgs, ... }:
 
 {
-  imports =
-    [
-      ./hardware-configuration.nix
-      ../../wm/hyprland.nix
-    ];
+  imports = [
+    ./hardware-configuration.nix
+  ];
 
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
-    
+
     loader.efi = {
-	canTouchEfiVariables = false;
-    };    
+      canTouchEfiVariables = false;
+    };
 
     loader.grub = {
-     	enable = true;
-     	device = "nodev";
-     	efiSupport = true;
-	useOSProber = false;
-	efiInstallAsRemovable = true;
+      enable = true;
+      device = "nodev";
+      efiSupport = true;
+      useOSProber = false;
+      efiInstallAsRemovable = true;
     };
   };
 
