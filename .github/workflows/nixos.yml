@@ -6,11 +6,13 @@ on:
       - 'flake.nix'
       - 'flake.lock'
       - 'system/**'
+      - 'home/**'
   pull_request:
     paths:
       - 'flake.nix'
       - 'flake.lock'
       - 'system/**'
+      - 'home/**'
 
 jobs:
   build:
