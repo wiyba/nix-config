@@ -75,6 +75,7 @@ let
       vlc
       libreoffice
       chromium
+      gh
     ]
     ++ fontPkgs;
 in
