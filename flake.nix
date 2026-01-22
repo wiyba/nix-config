@@ -55,6 +55,22 @@
           ];
           specialArgs = { inherit inputs host; };
         };
+      mkServer =
+        { host, system }:
+        nixpkgs.lib.nixosSystem {
+          inherit system;
+          modules = [
+            ./server/configuration.nix
+            ./server/machines/${host}
+            inputs.home-manager.nixosModules.home-manager
+            inputs.sops-nix.nixosModules.sops
+
+            { nix.registry.nixpkgs.flake = nixpkgs; }
+            { nixpkgs.overlays = overlays; }
+          ];
+          specialArgs = { inherit inputs host; };
+        };
+ 
       mkHome =
         { system, modules }:
         home-manager.lib.homeManagerConfiguration {
@@ -80,6 +96,10 @@
           host = "thinkpad";
           system = "x86_64-linux";
         };
+        server = mkServer {
+          host = "server";
+          system = "x86_64-linux";
+        }; 
       };
 
       homeConfigurations = {

@@ -28,15 +28,12 @@ let
     file
     openssl
     jq
-    htop
     btop
   ];
 in
 {
   imports = lib.concatMap import [ ./programs ];
 
-  programs.home-manager.enable = true;
-  xdg.enable = true;
   home = {
     inherit packages;
     username = "root";
@@ -50,12 +47,5 @@ in
     };
   };
 
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 7d";
-  };
-
-  targets.genericLinux.enable = true;
   news.display = "silent";
 }
