@@ -22,12 +22,12 @@
         IdentityFile /home/wiyba/.ssh/multi.key
         IdentitiesOnly yes
 
-      Host nl.wiyba.org
+      Host status.wiyba.org
         User root
         IdentityFile /home/wiyba/.ssh/multi.key
         IdentitiesOnly yes
 
-      Host uk.wiyba.org
+      Host draw.wiyba.org
         User root
         IdentityFile /home/wiyba/.ssh/multi.key
         IdentitiesOnly yes

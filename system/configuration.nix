@@ -14,8 +14,8 @@
       enable = true;
     };
     firewall = {
-      enable = false;
-      allowedTCPPorts = [ 22 ];
+      enable = true;
+      allowedTCPPorts = [ ];
       allowedUDPPorts = [ ];
     };
     proxy = {
@@ -35,11 +35,6 @@
       142.54.189.109 www.spotify.com
     '';
   };
-
-  # services.zapret-discord-youtube = {
-  #   enable = true;
-  #   config = "general(ALT10)";
-  # };
 
   hardware.bluetooth = {
     enable = true;
@@ -69,6 +64,8 @@
     dconf.enable = true;
     uwsm.enable = true;
     steam.enable = true;
+    nix-ld.enable = true;
+    nix-index-database.comma.enable = true;
     hyprland = {
       enable = true;
       withUWSM = true;
@@ -80,7 +77,6 @@
       enable = true;
       allowSFTP = true;
     };
-    sshd.enable = true;
     libinput.enable = true;
     seatd.enable = true;
     blueman.enable = true;
@@ -94,7 +90,6 @@
         userServices = true;
       };
     };
-    # desktopManager.plasma6.enable = true;
   };
 
   environment = {
@@ -138,14 +133,6 @@
     shell = pkgs.zsh;
   };
 
-  programs.nix-ld = {
-    enable = true;
-    libraries = with pkgs; [
-      stdenv.cc.cc.lib
-      zlib
-    ];
-  };
-
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
@@ -160,10 +147,9 @@
 
   security.pam.services = {
     greetd.enableGnomeKeyring = true;
-    hyprlock = { };
+    hyprlock.enableGnomeKeyring = true;
   };
 
-  # make nixos config accessible by anyone
   systemd.tmpfiles.rules = [
     "d /etc/nixos 0755 wiyba users - -"
   ];

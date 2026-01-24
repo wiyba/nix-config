@@ -1,6 +1,8 @@
-{ lib, ... }:
+{ lib, inputs, ... }:
 
 {
+  imports = [ inputs.nixos-hardware.nixosModules.lenovo-thinkpad-x1 ];
+
   boot.initrd.availableKernelModules = [
     "xhci_pci"
     "thunderbolt"
@@ -37,8 +39,6 @@
     device = "/dev/nvme0n1p1";
     fsType = "vfat";
   };
-
-  swapDevices = [ ];
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 

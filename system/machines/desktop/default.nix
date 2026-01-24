@@ -1,9 +1,7 @@
 { pkgs, ... }:
 
 {
-  imports = [
-    ./hardware-configuration.nix
-  ];
+  imports = [ ./hardware-configuration.nix ];
 
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
@@ -21,7 +19,7 @@
     };
   };
 
-  networking.hostName = "ms-7c39";
+  networking.hostName = "desktop";
 
   system.stateVersion = "24.11";
 }
