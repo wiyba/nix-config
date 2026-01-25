@@ -73,43 +73,50 @@
       ];
     };
 
-    services.hyprpaper.settings = {
-      wallpaper = lib.mkForce [
-        {
-          monitor = "DP-1";
-          path = "/etc/nixos/imgs/gruvbox-dark-blue.png";
-          fit_mode = "cover";
-        }
-        {
-          monitor = "DP-2";
-          path = "/etc/nixos/imgs/gruvbox-dark-blue.png";
-          fit_mode = "cover";
-        }
-        {
-          monitor = "";
-          path = "/etc/nixos/imgs/gruvbox-dark-blue.png";
-          fit_mode = "cover";
-        }
-      ];
-    };
-
-    services.hypridle.settings = {
-      general = {
-        lock_cmd = "pidof hyprlock || hyprlock";
-        before_sleep_cmd = "loginctl lock-session";
-        after_sleep_cmd = "hyprctl dispatch dpms on";
-        ignore_dbus_inhibit = false;
+    services = {
+      hyprpaper.settings = {
+        wallpaper = lib.mkForce [
+          {
+            monitor = "DP-1";
+            path = "/etc/nixos/imgs/gruvbox-dark-blue.png";
+            fit_mode = "cover";
+          }
+          {
+            monitor = "DP-2";
+            path = "/etc/nixos/imgs/gruvbox-dark-blue.png";
+            fit_mode = "cover";
+          }
+          {
+            monitor = "";
+            path = "/etc/nixos/imgs/gruvbox-dark-blue.png";
+            fit_mode = "cover";
+          }
+        ];
       };
 
-      listener = [
-        {
-          timeout = 600;
-          on-timeout = "hyprctl dispatch dpms off";
-          on-resume = "hyprctl dispatch dpms on";
-        }
-      ];
+      hypridle.settings = {
+        general = {
+          lock_cmd = "pidof hyprlock || hyprlock";
+          before_sleep_cmd = "loginctl lock-session";
+          after_sleep_cmd = "hyprctl dispatch dpms on";
+          ignore_dbus_inhibit = false;
+        };
+
+        listener = [
+          {
+            timeout = 600;
+            on-timeout = "loginctl lock-session";
+          }
+        ];
+      };
     };
   };
 
+  services.pipewire.extraConfig.pipewire."10-sample-rate" = {
+    "context.properties" = {
+      "default.clock.rate" = 192000;
+      "default.clock.allowed-rates" = [ 192000 ];
+    };
+  };
   system.stateVersion = "24.11";
 }
