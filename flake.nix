@@ -61,7 +61,7 @@
     in
     {
       nixosConfigurations = {
-        ms-7c39 = mkSystem {
+        desktop = mkSystem {
           host = "desktop";
           system = "x86_64-linux";
           base = ./system; 
