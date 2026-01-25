@@ -385,15 +385,16 @@ in
           "float, class:^(firefox-beta)$, title:.*Bitwarden.*"
         ];
 
-        workspace = [
-          "special:special, gapsout:30"
-        ];
+        windowrule = [ "render_unfocused on, match:initial_title Supersonic" ];
+
+        workspace = [ "special:special, gapsout:30" ];
 
         layerrule = [
           "xray on, match:namespace .*"
 
           "no_anim on, match:namespace walker"
           "no_anim on, match:namespace selection"
+
           "no_anim on, match:namespace overview"
           "no_anim on, match:namespace anyrun"
           "no_anim on, match:namespace indicator.*"
