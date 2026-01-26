@@ -18,12 +18,12 @@
       allowedTCPPorts = [ ];
       allowedUDPPorts = [ ];
     };
-    proxy = {
-      allProxy = "http://127.0.0.1:7890/";
-      httpProxy = "http://127.0.0.1:7890/";
-      httpsProxy = "http://127.0.0.1:7890/";
-      noProxy = "localhost,127.0.0.1";
-    };
+    # proxy = {
+    #   allProxy = "http://127.0.0.1:7890/";
+    #   httpProxy = "http://127.0.0.1:7890/";
+    #   httpsProxy = "http://127.0.0.1:7890/";
+    #   noProxy = "localhost,127.0.0.1";
+    # };
     extraHosts = ''
       142.54.189.109 gew1-spclient.spotify.com
       142.54.189.109 login5.spotify.com
