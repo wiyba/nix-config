@@ -8,7 +8,7 @@
         user = "wiyba";
       };
       default_session = {
-        command = "${pkgs.tuigreet}/bin/tuigreet --cmd ${pkgs.uwsm}/bin/uwsm start hyprland-uwsm.desktop";
+        command = "${pkgs.tuigreet}/bin/tuigreet --cmd uwsm start hyprland-uwsm.desktop";
         user = "greeter";
       };
     };

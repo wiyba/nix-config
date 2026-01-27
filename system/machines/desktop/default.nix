@@ -9,6 +9,8 @@
   imports = [
     ./hardware-configuration.nix
     inputs.lanzaboote.nixosModules.lanzaboote
+    inputs.nixos-hardware.nixosModules.common-cpu-intel
+    inputs.nixos-hardware.nixosModules.common-gpu-amd
   ];
 
   boot = {
@@ -36,6 +38,9 @@
       enable = true;
       pkiBundle = "/var/lib/sbctl";
     };
+    extraModprobeConfig = ''
+      options hid_apple fnmode=0
+    '';
   };
 
   environment.systemPackages = with pkgs; [
@@ -65,11 +70,11 @@
         "3, monitor:DP-1"
         "4, monitor:DP-1"
         "5, monitor:DP-1"
-        "6, monitor:DP-2, default:true"
-        "7, monitor:DP-2"
-        "8, monitor:DP-2"
-        "9, monitor:DP-2"
-        "10, monitor:DP-2"
+        "6, monitor:DP-1"
+        "7, monitor:DP-1"
+        "8, monitor:DP-1"
+        "9, monitor:DP-1"
+        "10, monitor:DP-2, default:true"
       ];
     };
 
@@ -114,8 +119,8 @@
 
   services.pipewire.extraConfig.pipewire."10-sample-rate" = {
     "context.properties" = {
-      "default.clock.rate" = 192000;
-      "default.clock.allowed-rates" = [ 192000 ];
+      "default.clock.rate" = 48000;
+      "default.clock.quantum" = 1024;
     };
   };
   system.stateVersion = "24.11";

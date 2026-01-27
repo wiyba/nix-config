@@ -74,8 +74,8 @@ let
       openssl
       vlc
       libreoffice
-      chromium
       gh
+      appimage-run
     ]
     ++ fontPkgs;
 in
@@ -83,13 +83,13 @@ in
   imports = [
     ./plasma.nix
     ./hyprland.nix
+    ./themes
+    ./sops
   ]
   ++ lib.concatMap import [
     ./scripts
     ./programs
     ./services
-    ./sops
-    ./themes
   ];
 
   programs.home-manager.enable = true;
