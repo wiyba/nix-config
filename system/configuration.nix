@@ -9,9 +9,11 @@
   networking = {
     networkmanager = {
       enable = true;
-    };
-    modemmanager = {
-      enable = true;
+      insertNameservers = [
+        "1.1.1.1"
+        "8.8.8.8"
+      ];
+      connectionConfig."ipv4.ignore-auto-dns" = true;
     };
     firewall = {
       enable = true;
@@ -107,6 +109,8 @@
       wl-clipboard
       usb-modeswitch
       uxplay
+      libsecret
+      seahorse
     ];
     sessionVariables = {
       NIXOS_OZONE_WL = "1";

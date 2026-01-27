@@ -24,12 +24,10 @@
         ];
 
         "modules-right" = [
-          # "custom/proxy"
+          "custom/proxy"
           "network"
-          "bluetooth"
           "hyprland/language"
           "pulseaudio"
-          "battery"
           "tray"
         ];
 
@@ -41,7 +39,7 @@
         };
 
         "custom/proxy" = {
-          interval = 1;
+          interval = 60;
           exec = "proxy-status";
           on-click = "proxy-switch";
           return-type = "json";

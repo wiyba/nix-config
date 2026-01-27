@@ -68,9 +68,11 @@ in
           "dbus-update-activation-environment --all"
           "sleep 1 && dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
           "sway-audio-idle-inhibit"
-          "pactl-listner"
+          "pactl-listner" # put it into thinkpad host
           "bitwarden-handler"
           "polkit-gnome-authentication-agent-1"
+          "easyeffects --gapplication-service"
+          "appimage-run /home/wiyba/.local/bin/musicpresence-2.3.5-linux-x86_64.AppImage" # add musicpresence github release fetch
         ];
 
         "$mainMod" = "SUPER";
@@ -179,7 +181,7 @@ in
           follow_mouse = 1;
           off_window_axis_events = 2;
           mouse_refocus = false;
-          sensitivity = 0.2;
+          sensitivity = 0.0;
           accel_profile = "flat";
 
           touchpad = {
@@ -233,6 +235,9 @@ in
         };
 
         bind = [
+          ", XF86AudioPrev, exec, playerctl previous"
+          ", XF86AudioPlay, exec, playerctl play-pause"
+          ", XF86AudioNext, exec, playerctl next"
           ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
           ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
           ", XF86AudioRaiseVolume, exec, wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%+"
@@ -310,6 +315,9 @@ in
         windowrulev2 = [
           "noblur, class:^()$, title:^()$"
 
+          "float, title:^(Friends List)(.*)$"
+          "float, title:^(Steam Settings)(.*)$"
+
           "center, title:^(Open File)(.*)$"
           "float, title:^(Open File)(.*)$"
           "center, title:^(Select a File)(.*)$"
@@ -385,7 +393,11 @@ in
           "float, class:^(firefox-beta)$, title:.*Bitwarden.*"
         ];
 
-        windowrule = [ "render_unfocused on, match:initial_title Supersonic" ];
+        windowrule = [
+          "render_unfocused on, match:initial_title Supersonic"
+          "float true, match:initial_title Steam Settings"
+          "float true, match:initial_title Friends List"
+        ];
 
         workspace = [ "special:special, gapsout:30" ];
 
