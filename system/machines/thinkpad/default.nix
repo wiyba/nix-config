@@ -1,7 +1,15 @@
-{ pkgs, lib, ... }:
+{
+  pkgs,
+  lib,
+  inputs,
+  ...
+}:
 
 {
-  imports = [ ./hardware-configuration.nix ];
+  imports = [
+    ./hardware-configuration.nix
+    inputs.lanzaboote.nixosModules.lanzaboote
+  ];
 
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
