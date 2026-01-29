@@ -49,18 +49,6 @@
     usePredictableInterfaceNames = lib.mkForce true;
   };
 
-  services.nginx = {
-    enable = true;
-    recommendedProxySettings = true;
-
-    virtualHosts = {
-      "stockholm.wiyba.org" = {
-        enableACME = true;
-        forceSSL = false;
-      };
-    };
-  };
-
   security.acme = {
     acceptTerms = true;
     defaults.email = "admin@wiyba.org";
