@@ -44,6 +44,7 @@
       curl
       git
       wget
+      gh
     ];
 
     variables = {
