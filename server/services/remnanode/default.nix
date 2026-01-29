@@ -12,8 +12,9 @@
 
       environment = {
         NODE_PORT = "2222";
-        SECRET_KEY = "";
       };
+
+      environmentFiles = [ "/run/secrets/remnanode.env" ];
 
       volumes = [
         "/var/log/remnanode:/var/log/remnanode"

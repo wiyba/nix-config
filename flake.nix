@@ -71,8 +71,8 @@
           system = "x86_64-linux";
           base = ./system;
         };
-        server = mkSystem {
-          host = "server";
+        stockholm = mkSystem {
+          host = "stockholm";
           system = "x86_64-linux";
           base = ./server;
         };

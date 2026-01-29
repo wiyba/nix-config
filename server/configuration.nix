@@ -1,15 +1,21 @@
 {
   pkgs,
   inputs,
-  lib,
   ...
 }:
 
 {
-  imports = lib.concatMap import [
+  imports = [
     ./sops
-    ./services
+    ./services/hysteria
+    ./services/remnanode
   ];
+
+  networking.firewall = {
+    enable = true;
+    allowedTCPPorts = [ 22 ];
+    allowedUDPPorts = [ ];
+  };
 
   i18n = {
     defaultLocale = "en_US.UTF-8";
@@ -22,11 +28,12 @@
     };
   };
 
-  time.timeZone = "Europe/London";
-
   services.openssh = {
     enable = true;
     allowSFTP = true;
+    settings = {
+      PasswordAuthentication = false;
+    };
   };
 
   environment = {
