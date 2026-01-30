@@ -1,5 +1,4 @@
 [
-  ./dbus
   ./greetd
   ./pipewire
   ./systemd

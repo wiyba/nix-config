@@ -30,26 +30,24 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    spicetify-nix = {
-      url = "github:Gerg-L/spicetify-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     nixos-hardware.url = "github:NixOS/nixos-hardware";
   };
 
   outputs =
     { nixpkgs, ... } @ inputs:
     let
-      overlays = [ inputs.nur.overlays.default ];
+      overlays = [
+        inputs.nur.overlays.default
+        (import ./overlays)
+      ];
 
       mkSystem =
         { host, system, base }:
         nixpkgs.lib.nixosSystem {
           inherit system;
           modules = [
-            "${base}/configuration.nix"
-            "${base}/machines/${host}"
+            (base + "/configuration.nix")
+            (base + "/machines/${host}")
             inputs.home-manager.nixosModules.home-manager
             inputs.nix-index-database.nixosModules.nix-index
             inputs.sops-nix.nixosModules.sops

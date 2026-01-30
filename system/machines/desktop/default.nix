@@ -15,6 +15,7 @@
 
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
+    kernelParams = [ "video=2560x1440@60" ];
 
     initrd = {
       systemd.enable = true;
@@ -48,7 +49,6 @@
     efibootmgr
     wev
     libinput
-    tpm2-tss
   ];
 
   #systemd.tmpfiles.rules = [
@@ -57,64 +57,37 @@
 
   networking.hostName = "desktop";
 
-  home-manager.users.wiyba = {
-    wayland.windowManager.hyprland.settings = {
-      monitor = [
-        "DP-1,2560x1440@144,0x1440,1" # ,bitdepth,10,cm,hdr,sdrbrightness,1.4"
-        "DP-2,2560x1440@75,0x0,1"
-      ];
+  home-manager.users.wiyba.xdg.configFile = {
+    "hypr/hyprland-host.conf".text = ''
+      monitor=DP-1,2560x1440@144,0x1440,1 #,bitdepth,10,cm,hdr,sdrbrightness,1.4"
+      monitor=DP-2,2560x1440@75,0x0,1
 
-      workspace = [
-        "1, monitor:DP-1, default:true"
-        "2, monitor:DP-1"
-        "3, monitor:DP-1"
-        "4, monitor:DP-1"
-        "5, monitor:DP-1"
-        "6, monitor:DP-1"
-        "7, monitor:DP-1"
-        "8, monitor:DP-1"
-        "9, monitor:DP-1"
-        "10, monitor:DP-2, default:true"
-      ];
-    };
+      cursor {
+        default_monitor=DP-1
+      }
 
-    services = {
-      hyprpaper.settings = {
-        wallpaper = lib.mkForce [
-          {
-            monitor = "DP-1";
-            path = "/etc/nixos/imgs/gruvbox-dark-blue.png";
-            fit_mode = "cover";
-          }
-          {
-            monitor = "DP-2";
-            path = "/etc/nixos/imgs/gruvbox-dark-blue.png";
-            fit_mode = "cover";
-          }
-          {
-            monitor = "";
-            path = "/etc/nixos/imgs/gruvbox-dark-blue.png";
-            fit_mode = "cover";
-          }
-        ];
-      };
-
-      hypridle.settings = {
-        general = {
-          lock_cmd = "pidof hyprlock || hyprlock";
-          before_sleep_cmd = "loginctl lock-session";
-          after_sleep_cmd = "hyprctl dispatch dpms on";
-          ignore_dbus_inhibit = false;
-        };
-
-        listener = [
-          {
-            timeout = 600;
-            on-timeout = "loginctl lock-session";
-          }
-        ];
-      };
-    };
+      workspace=1, monitor:DP-1, default:true
+      workspace=2, monitor:DP-1
+      workspace=3, monitor:DP-1
+      workspace=4, monitor:DP-1
+      workspace=5, monitor:DP-1
+      workspace=6, monitor:DP-1
+      workspace=7, monitor:DP-1
+      workspace=8, monitor:DP-1
+      workspace=9, monitor:DP-1
+    '';
+    "hypr/hypridle.conf".text = ''
+      general {
+        after_sleep_cmd=hyprctl dispatch dpms on
+        before_sleep_cmd=loginctl lock-session
+        ignore_dbus_inhibit=false
+        lock_cmd=pidof hyprlock || hyprlock
+      }
+      listener {
+        on-timeout=loginctl lock-session
+        timeout=3600
+      }
+    '';
   };
 
   services.pipewire.extraConfig.pipewire."10-sample-rate" = {

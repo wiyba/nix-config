@@ -2,6 +2,7 @@
   pkgs,
   lib,
   inputs,
+  host,
   ...
 }:
 
@@ -60,7 +61,7 @@
 
   imports = lib.concatMap import [
     ./services
-    ./sops
+    ./secrets
   ];
 
   programs = {
@@ -96,21 +97,23 @@
     };
   };
 
+  xdg.portal = {
+    enable = true;
+    extraPortals = with pkgs; [
+      kdePackages.xdg-desktop-portal-kde
+    ];
+  };
+
   environment = {
     systemPackages = with pkgs; [
       neovim
-      vim
-      micro
       curl
       git
       wget
       lm_sensors
-      kitty
       wl-clipboard
       usb-modeswitch
-      uxplay
       libsecret
-      seahorse
     ];
     sessionVariables = {
       NIXOS_OZONE_WL = "1";
@@ -142,13 +145,8 @@
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
-    extraSpecialArgs = { inherit inputs; };
-    sharedModules = [
-      inputs.sops-nix.homeManagerModules.sops
-      inputs.lazyvim.homeManagerModules.default
-      inputs.spicetify-nix.homeManagerModules.spicetify
-    ];
-    users.wiyba = import ./home/home.nix;
+    extraSpecialArgs = { inherit inputs host; };
+    users.wiyba = import ../home/wm/hyprland;
   };
 
   security.pam.services = {
