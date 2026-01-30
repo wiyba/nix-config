@@ -97,7 +97,6 @@
   systemd.tmpfiles.rules = [
     "z /sys/class/leds/*/brightness 0666 - - - -"
     "z /sys/class/leds/*/trigger 0666 - - - -"
-    "d /var/cache/tuigreet 0755 greeter greeter -"
   ];
 
   security = {
@@ -118,58 +117,41 @@
 
   networking.hostName = "thinkpad";
 
-  home-manager.users.wiyba = {
-    wayland.windowManager.hyprland.settings = {
-      monitor = [
-        "eDP-1,2880x1800@60,auto,1.3333"
-        ",preferred,auto,1"
-      ];
+  home-manager.users.wiyba.xdg.configFile = {
+    "hypr/hyprland-host.conf".text = ''
+      exec-once=pactl-listner
+      
+      monitor=eDP-1,2880x1800@60,0x0,1
+      monitor=,preferred,auto,1
 
-      workspace = [
-        "1, monitor:eDP-1, default:true"
-        "2, monitor:eDP-1"
-        "3, monitor:eDP-1"
-        "4, monitor:eDP-1"
-        "5, monitor:eDP-1"
-      ];
-    };
-
-    services.hyprpaper.settings = {
-      wallpaper = lib.mkForce [
-        {
-          monitor = "eDP-1";
-          path = "/etc/nixos/imgs/gruvbox-dark-blue.png";
-          fit_mode = "cover";
-        }
-        {
-          monitor = "";
-          path = "/etc/nixos/imgs/gruvbox-dark-blue.png";
-          fit_mode = "cover";
-        }
-      ];
-    };
-
-    services.hypridle.settings = {
-      general = {
-        lock_cmd = "pidof hyprlock || hyprlock";
-        before_sleep_cmd = "loginctl lock-session";
-        after_sleep_cmd = "hyprctl dispatch dpms on";
-        ignore_dbus_inhibit = false;
-      };
-
-      listener = [
-        {
-          timeout = 540;
-          on-timeout = "brightnessctl -s && brightnessctl set 11%- && brightnessctl set +1%";
-          on-resume = "brightnessctl -r";
-        }
-        {
-          timeout = 600;
-          on-timeout = "hyprctl dispatch dpms off";
-          on-resume = "hyprctl dispatch dpms on";
-        }
-      ];
-    };
+      workspace=1, monitor:eDP-1, default:true
+      workspace=2, monitor:eDP-1
+      workspace=3, monitor:eDP-1
+      workspace=4, monitor:eDP-1
+      workspace=5, monitor:eDP-1
+      workspace=6, monitor:eDP-1
+      workspace=7, monitor:eDP-1
+      workspace=8, monitor:eDP-1
+      workspace=9, monitor:eDP-1
+    '';
+    "hypr/hypridle.conf".text = ''
+      general {
+        after_sleep_cmd=hyprctl dispatch dpms on
+        before_sleep_cmd=loginctl lock-session
+        ignore_dbus_inhibit=false
+        lock_cmd=pidof hyprlock || hyprlock
+      }
+      listener {
+        on-resume=brightnessctl -r
+        on-timeout=brightnessctl -s && brightnessctl set 11%- && brightnessctl set +1%
+        timeout=540
+      }
+      listener {
+        on-resume=hyprctl dispatch dpms on
+        on-timeout=hyprctl dispatch dpms off
+        timeout=600
+      }
+    '';
   };
 
   system.stateVersion = "24.11";

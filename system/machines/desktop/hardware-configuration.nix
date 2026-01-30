@@ -1,10 +1,4 @@
-{
-  config,
-  lib,
-  pkgs,
-  modulesPath,
-  ...
-}:
+{ lib, ... }:
 
 {
   boot.initrd.availableKernelModules = [
