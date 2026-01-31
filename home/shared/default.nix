@@ -32,9 +32,8 @@ let
     eza # ls but better
     file # file
     filezilla # sftp gui client
-    gh # cli for github
     jq # json parser
-    kdePackages.dolphin # file manager
+    nemo # file manager
     mtr # better traceroute
     nil # lsp for nix
     nitch # preconfigured fastfetch
@@ -64,6 +63,64 @@ in
   xdg = {
     inherit configHome;
     enable = true;
+
+    mimeApps = {
+      enable = true;
+      defaultApplications =
+        let
+          firefox = "firefox-beta.desktop";
+          vlc = "vlc.desktop";
+          code = "code.desktop";
+        in
+        lib.genAttrs [
+          "video/mp4"
+          "video/x-matroska"
+          "video/webm"
+          "video/x-msvideo"
+          "video/quicktime"
+          "video/mpeg"
+          "video/x-flv"
+          "video/ogg"
+          "video/3gpp"
+          "video/x-ogm+ogg"
+          "audio/mpeg"
+          "audio/flac"
+          "audio/ogg"
+          "audio/wav"
+          "audio/x-wav"
+          "audio/aac"
+          "audio/mp4"
+          "audio/x-vorbis+ogg"
+          "audio/webm"
+        ] (_: vlc)
+        // lib.genAttrs [
+          "text/html"
+          "text/xml"
+          "application/xhtml+xml"
+          "application/pdf"
+          "x-scheme-handler/http"
+          "x-scheme-handler/https"
+        ] (_: firefox)
+        // lib.genAttrs [
+          "text/plain"
+          "text/x-python"
+          "text/x-shellscript"
+          "text/x-csrc"
+          "text/x-chdr"
+          "text/x-c++src"
+          "text/x-java"
+          "text/javascript"
+          "text/css"
+          "text/markdown"
+          "text/x-rust"
+          "text/x-go"
+          "application/json"
+          "application/xml"
+          "application/x-yaml"
+          "application/toml"
+          "application/x-zerosize"
+        ] (_: code);
+    };
   };
 
   home = {

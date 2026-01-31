@@ -16,7 +16,7 @@
         email = "account@wiyba.org";
       };
 
-      credential."https://github.com".helper = "!gh auth git-credential";
+      credential."https://github.com".helper = "store";
 
       core.editor = "nvim";
       init.defaultBranch = "main";

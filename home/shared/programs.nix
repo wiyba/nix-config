@@ -55,5 +55,6 @@ in
   ../programs/vscode
   ../programs/albert
   ../programs/musicpresence
+  ../programs/easyeffects
   more
 ]

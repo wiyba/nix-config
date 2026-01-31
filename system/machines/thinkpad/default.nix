@@ -119,7 +119,7 @@
 
   home-manager.users.wiyba.xdg.configFile = {
     "hypr/hyprland-host.conf".text = ''
-      exec-once=pactl-listner
+      exec-once=pactl-listener 
       
       monitor=eDP-1,2880x1800@60,0x0,1
       monitor=,preferred,auto,1
@@ -134,13 +134,7 @@
       workspace=8, monitor:eDP-1
       workspace=9, monitor:eDP-1
     '';
-    "hypr/hypridle.conf".text = ''
-      general {
-        after_sleep_cmd=hyprctl dispatch dpms on
-        before_sleep_cmd=loginctl lock-session
-        ignore_dbus_inhibit=false
-        lock_cmd=pidof hyprlock || hyprlock
-      }
+    "hypr/hypridle-host.conf".text = ''
       listener {
         on-resume=brightnessctl -r
         on-timeout=brightnessctl -s && brightnessctl set 11%- && brightnessctl set +1%

@@ -59,14 +59,10 @@
 
   home-manager.users.wiyba.xdg.configFile = {
     "hypr/hyprland-host.conf".text = ''
-      monitor=DP-1,2560x1440@144,0x1440,1 #,bitdepth,10,cm,hdr,sdrbrightness,1.4"
-      monitor=DP-2,2560x1440@75,0x0,1
+      monitor=DP-1,2560x1440@144,0x0,1 #,bitdepth,10,cm,hdr,sdrbrightness,1.4"
+      monitor=DP-2,2560x1440@75,0x-1440,1
 
-      cursor {
-        default_monitor=DP-1
-      }
-
-      workspace=1, monitor:DP-1, default:true
+      workspace=1, monitor:DP-1, default:true, on-created-empty:footclient
       workspace=2, monitor:DP-1
       workspace=3, monitor:DP-1
       workspace=4, monitor:DP-1
@@ -76,13 +72,7 @@
       workspace=8, monitor:DP-1
       workspace=9, monitor:DP-1
     '';
-    "hypr/hypridle.conf".text = ''
-      general {
-        after_sleep_cmd=hyprctl dispatch dpms on
-        before_sleep_cmd=loginctl lock-session
-        ignore_dbus_inhibit=false
-        lock_cmd=pidof hyprlock || hyprlock
-      }
+    "hypr/hypridle-host.conf".text = ''
       listener {
         on-timeout=loginctl lock-session
         timeout=3600

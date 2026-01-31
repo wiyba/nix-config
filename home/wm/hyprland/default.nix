@@ -23,8 +23,6 @@ let
     hypridle # idle daemon for hyprland
     hyprlock # lockscreen for hyprland
     hyprpaper # wallpaper daemon for hyprland
-    kooha # screen recorder
-    loupe # image viewer
     pavucontrol # pulseaudio gui
     playerctl # player controller
     swaynotificationcenter # notifications daemon
@@ -69,6 +67,7 @@ in
 
       "hypr/hyprlock.conf".text = (builtins.readFile ./hyprlock.conf);
       "hypr/hyprpaper.conf".text = (builtins.readFile ./hyprpaper.conf);
+      "hypr/hypridle.conf".text = (builtins.readFile ./hypridle.conf);
     };
 
     portal = {
