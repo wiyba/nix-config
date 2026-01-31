@@ -1,4 +1,4 @@
-name: build
+name: build systems
 
 on:
   push:
@@ -24,7 +24,6 @@ jobs:
         host:
           - thinkpad
           - desktop
-          - stockholm
 
     steps:
       - uses: actions/checkout@v4

@@ -27,6 +27,18 @@
     ];
   };
 
+  fileSystems."/mnt" = {
+    device = "/dev/sda1";
+    fsType = "ntfs";
+    options = [
+      "uid=1000"
+      "gid=100"
+      "dmask=022"
+      "fmask=133"
+      "x-gvfs-show"
+    ];
+  };
+
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 
   hardware.enableRedistributableFirmware = true;

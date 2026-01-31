@@ -13,6 +13,11 @@
         mode = "0600";
         path = "/home/wiyba/.ssh/multi.key";
       };
+      secrets.github = {
+        owner = "wiyba";
+        mode = "0600";
+        path = "/home/wiyba/.git-credentials";
+      };
     };
   }
 ]
