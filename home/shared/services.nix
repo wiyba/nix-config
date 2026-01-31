@@ -7,6 +7,8 @@ let
         enable = true;
         components = [ "secrets" ];
       };
+
+      blueman-applet.enable = false;
     };
   };
 in

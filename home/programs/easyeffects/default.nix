@@ -112,7 +112,13 @@ in {
   services.easyeffects.enable = true;
   home.activation.easyeffects = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     mkdir -p "$HOME/.config/easyeffects/db"
-    [ ! -f "$HOME/.config/easyeffects/db/easyeffectsrc" ] && cp ${easyeffectsrc} "$HOME/.config/easyeffects/db/easyeffectsrc" && chmod u+w "$HOME/.config/easyeffects/db/easyeffectsrc"
-    [ ! -f "$HOME/.config/easyeffects/db/equalizerrc" ] && cp ${equalizerrc} "$HOME/.config/easyeffects/db/equalizerrc" && chmod u+w "$HOME/.config/easyeffects/db/equalizerrc"
+    if [ ! -f "$HOME/.config/easyeffects/db/easyeffectsrc" ]; then
+      cp ${easyeffectsrc} "$HOME/.config/easyeffects/db/easyeffectsrc"
+      chmod u+w "$HOME/.config/easyeffects/db/easyeffectsrc"
+    fi
+    if [ ! -f "$HOME/.config/easyeffects/db/equalizerrc" ]; then
+      cp ${equalizerrc} "$HOME/.config/easyeffects/db/equalizerrc"
+      chmod u+w "$HOME/.config/easyeffects/db/equalizerrc"
+    fi
   '';
 }

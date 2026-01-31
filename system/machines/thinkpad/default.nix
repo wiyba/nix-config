@@ -121,7 +121,7 @@
     "hypr/hyprland-host.conf".text = ''
       exec-once=pactl-listener 
       
-      monitor=eDP-1,2880x1800@60,0x0,1
+      monitor=eDP-1,2880x1800@60,0x0,1.5
       monitor=,preferred,auto,1
 
       workspace=1, monitor:eDP-1, default:true
@@ -133,6 +133,10 @@
       workspace=7, monitor:eDP-1
       workspace=8, monitor:eDP-1
       workspace=9, monitor:eDP-1
+
+      decoration:blur:enabled = false
+      decoration:shadow:enabled = false
+      decoration:inactive_opacity = 1.0
     '';
     "hypr/hypridle-host.conf".text = ''
       listener {
