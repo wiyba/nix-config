@@ -1,12 +1,5 @@
-{ lib, pkgs, ... }:
+{ ... }:
 {
-  home.packages = with pkgs; [
-    diff-so-fancy
-    git-crypt
-    hub
-    tig
-  ];
-
   programs.git = {
     enable = true;
 
