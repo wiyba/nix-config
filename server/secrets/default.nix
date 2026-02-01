@@ -49,12 +49,6 @@
       path = "/root/.git-credentials";
       content = "https://wiyba:${config.sops.placeholder.github_token}@github.com";
     };
-
-    secrets.multi = {
-      owner = "root";
-      mode = "0600";
-      path = "/root/.ssh/multi.key";
-    };
   };
 
   environment.extraInit = ''
