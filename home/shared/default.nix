@@ -64,6 +64,19 @@ in
     inherit configHome;
     enable = true;
 
+    userDirs = {
+      enable = true;
+      createDirectories = true;
+      download = "${homeDirectory}/Downloads";
+      videos = "${homeDirectory}/Videos";
+      music = "${homeDirectory}/Music";
+      pictures = "${homeDirectory}/Pictures";
+      desktop = homeDirectory;
+      documents = homeDirectory;
+      publicShare = homeDirectory;
+      templates = homeDirectory;
+    };
+
     mimeApps = {
       enable = true;
       defaultApplications =

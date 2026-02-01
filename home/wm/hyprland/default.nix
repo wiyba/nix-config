@@ -74,16 +74,15 @@ in
       enable = true;
       config = {
         common = {
-          default = [ "kde" "hyprland" "gtk" ];
+          default = [ "hyprland" "gtk" ];
         };
         hyprland = {
-          default = [ "hyprland" "kde" "gtk" ];
+          default = [ "hyprland" "gtk" ];
           "org.freedesktop.impl.portal.ScreenCast" = "hyprland";
           "org.freedesktop.impl.portal.Screenshot" = "hyprland";
         };
       };
       extraPortals = with pkgs; [
-        kdePackages.xdg-desktop-portal-kde
         xdg-desktop-portal-hyprland
         xdg-desktop-portal-gtk
       ];

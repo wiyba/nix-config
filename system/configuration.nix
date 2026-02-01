@@ -1,6 +1,5 @@
 {
   pkgs,
-  lib,
   inputs,
   host,
   ...
@@ -59,9 +58,12 @@
 
   time.timeZone = "Europe/Moscow";
 
-  imports = lib.concatMap import [
-    ./services
+  imports = [
     ./secrets
+    ./services/greetd
+    ./services/mihomo
+    ./services/pipewire
+    ./services/systemd
   ];
 
   programs = {
@@ -86,6 +88,8 @@
     seatd.enable = true;
     blueman.enable = true;
     flatpak.enable = true;
+    udisks2.enable = true;
+    gvfs.enable = true;
     gnome.gnome-keyring.enable = true;
     avahi = {
       enable = true;
@@ -95,13 +99,6 @@
         userServices = true;
       };
     };
-  };
-
-  xdg.portal = {
-    enable = true;
-    extraPortals = with pkgs; [
-      kdePackages.xdg-desktop-portal-kde
-    ];
   };
 
   environment = {

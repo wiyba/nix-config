@@ -1,24 +1,24 @@
-{ lib, pkgs, ... }:
+{ pkgs, ... }:
+
 {
-  home.packages = with pkgs; [
+  environment.systemPackages = with pkgs; [
     diff-so-fancy
     git-crypt
-    hub
     tig
   ];
 
   programs.git = {
     enable = true;
 
-    settings = {
+    config = {
       user = {
         name = "wiyba";
         email = "account@wiyba.org";
       };
 
-      credential."https://github.com".helper = "!gh auth git-credential";
+      credential."https://github.com".helper = "store";
 
-      core.editor = "nvim";
+      core.editor = "vim";
       init.defaultBranch = "main";
 
       alias = {
@@ -36,9 +36,5 @@
         rc = "rebase --continue";
       };
     };
-
-    ignores = [
-      ".DS_Store"
-    ];
   };
 }

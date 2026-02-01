@@ -1,21 +1,20 @@
 {
   pkgs,
-  inputs,
   ...
 }:
 
 {
   imports = [
-    ./sops
+    ./programs/git
+    ./programs/ssh
+    ./programs/zsh
+    ./secrets
     ./services/hysteria
     ./services/remnanode
+    ./services/sshd
   ];
 
-  networking.firewall = {
-    enable = true;
-    allowedTCPPorts = [ 22 ];
-    allowedUDPPorts = [ ];
-  };
+  networking.firewall.enable = true;
 
   i18n = {
     defaultLocale = "en_US.UTF-8";
@@ -28,40 +27,35 @@
     };
   };
 
-  services.openssh = {
-    enable = true;
-    allowSFTP = true;
-    settings = {
-      PasswordAuthentication = false;
-    };
-  };
-
   environment = {
     systemPackages = with pkgs; [
-      neovim
-      vim
       micro
+      vim
       curl
-      git
       wget
       gh
+      btop
+      dig
+      eza
+      age
+      sops
+      mtr
+      jq
+      file
+      nitch
     ];
 
     variables = {
       SOPS_AGE_KEY_FILE = "/etc/nixos/keys/sops-age.key";
+      EDITOR = "vim";
+      VISUAL = "vim";
+      GIT_ASKPASS = "";
     };
   };
 
   console.keyMap = "us";
 
-  programs.zsh.enable = true;
   users.users.root.shell = pkgs.zsh;
-
-  home-manager = {
-    useGlobalPkgs = true;
-    extraSpecialArgs = { inherit inputs; };
-    users.root = import ./home/home.nix;
-  };
 
   nix = {
     gc = {

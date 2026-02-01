@@ -11,7 +11,7 @@
       extraOptions = [ "--network=host" ];
 
       environment = {
-        NODE_PORT = "2222";
+        NODE_PORT = "2323";
       };
 
       environmentFiles = [ "/run/secrets/remnanode.env" ];
