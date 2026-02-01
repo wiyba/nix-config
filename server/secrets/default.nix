@@ -40,5 +40,26 @@
       path = "/run/secrets/remnanode.env";
       mode = "0400";
     };
+
+    secrets.github_token = { };
+
+    templates."git-credentials" = {
+      owner = "root";
+      mode = "0600";
+      path = "/root/.git-credentials";
+      content = "https://wiyba:${config.sops.placeholder.github_token}@github.com";
+    };
+
+    secrets.multi = {
+      owner = "root";
+      mode = "0600";
+      path = "/root/.ssh/multi.key";
+    };
   };
+
+  environment.extraInit = ''
+    if [ -r /run/secrets/github_token ]; then
+      export GITHUB_TOKEN="$(cat /run/secrets/github_token)"
+    fi
+  '';
 }

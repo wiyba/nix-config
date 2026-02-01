@@ -9,14 +9,9 @@
     gtk = {
       enable = true;
 
-      theme = {
-        name = "Adwaita-dark";
-        package = pkgs.gnome-themes-extra;
-      };
-
       iconTheme = {
-        name = "breeze-dark";
-        package = pkgs.kdePackages.breeze-icons;
+        name = "Papirus-Dark";
+        package = pkgs.papirus-icon-theme;
       };
 
       cursorTheme = {
@@ -37,7 +32,6 @@
     qt = {
       enable = true;
       platformTheme.name = "gtk3";
-      style.name = "Breeze";
     };
 
     home.pointerCursor = {

@@ -1,24 +1,17 @@
-{ pkgs, config, ... }:
+{ pkgs, ... }:
 
 {
   programs.zsh = {
     enable = true;
-    enableCompletion = false;
-    dotDir = "${config.xdg.configHome}/zsh";
 
-    initContent = ''
+    autosuggestions.enable = true;
+    syntaxHighlighting.enable = true;
+
+    interactiveShellInit = ''
       command_not_found_handler() { return 127 }
       source ${./headline.zsh-theme}
+      bindkey '^ ' autosuggest-accept
     '';
-
-    zplug = {
-      enable = true;
-      plugins = [
-        #{ name = "zsh-users/zsh-syntax-highlighting"; }
-        { name = "zdharma-continuum/fast-syntax-highlighting"; }
-        { name = "marlonrichert/zsh-autocomplete"; }
-      ];
-    };
 
     shellAliases = {
       c = "clear";
@@ -28,7 +21,6 @@
       ld = "${pkgs.eza}/bin/eza -lhD --icons=auto";
       lt = "${pkgs.eza}/bin/eza --icons=auto --tree";
       up = "nix flake update --flake /etc/nixos";
-      switch-home = "home-manager switch --flake /etc/nixos#server";
 
       ssh = "TERM=xterm-256color ssh";
     };
