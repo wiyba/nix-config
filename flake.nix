@@ -74,6 +74,11 @@
           system = "x86_64-linux";
           base = ./server;
         };
+	london = mkSystem {
+	  host = "london";
+	  system = "x86_64-linux";
+	  base = ./server;
+	};
       };
     };
 }

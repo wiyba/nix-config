@@ -14,7 +14,7 @@
   boot.tmp.cleanOnBoot = true;
 
   networking = {
-    hostName = "stockholm";
+    hostName = "london";
     domain = "wiyba.org";
 
     dhcpcd.enable = false;
@@ -22,22 +22,33 @@
       "1.1.1.1"
       "8.8.8.8"
     ];
-    defaultGateway = "10.0.0.1";
+    defaultGateway = "45.154.197.1";
+    defaultGateway6 = "2a12:ab46:5344::1";
     interfaces.ens3 = {
-      ipv4 = {
-        addresses = [
-          {
-            address = "87.121.105.20";
-            prefixLength = 32;
-          }
-        ];
-        routes = [
-          {
-            address = "10.0.0.1";
-            prefixLength = 32;
-          }
-        ];
-      };
+      ipv4.addresses = [
+        {
+          address = "45.154.197.120";
+          prefixLength = 24;
+        }
+      ];
+      ipv4.routes = [
+        {
+          address = "45.154.197.1";
+          prefixLength = 32;
+        }
+      ];
+      ipv6.addresses = [
+        {
+          address = "2a12:ab46:5344:96::a";
+          prefixLength = 64;
+        }
+      ];
+      ipv6.routes = [
+        {
+          address = "2a12:ab46:5344::1";
+          prefixLength = 128;
+        }
+      ];
     };
     usePredictableInterfaceNames = lib.mkForce true;
   };
@@ -47,11 +58,11 @@
     defaults.email = "admin@wiyba.org";
   };
 
-  time.timeZone = "Europe/Stockholm";
+  time.timeZone = "Europe/London";
 
   users.users.root.openssh.authorizedKeys.keys = [
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBQmY892Awak26eH1iK0aEj7nILjGddlayY7e+fAwRV0 wiyba.org"
   ];
 
-  system.stateVersion = "24.11";
+  system.stateVersion = "23.11";
 }
