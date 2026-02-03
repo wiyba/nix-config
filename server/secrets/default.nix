@@ -4,10 +4,10 @@
     defaultSopsFile = ./secrets.yaml;
     age.keyFile = "/etc/nixos/keys/sops-age.key";
 
-    secrets.hysteria-users = {
-      owner = "root";
-      mode = "0400";
-    };
+    secrets.hysteria-users = { };
+    secrets."remnanode-${config.networking.hostName}" = { };
+    secrets.github_token = { };
+
     templates.hysteria-config = {
       content = ''
         acme:
@@ -29,10 +29,6 @@
       path = "/etc/hysteria/config.yaml";
       mode = "0444";
     };
-    secrets."remnanode-${config.networking.hostName}" = {
-      owner = "root";
-      mode = "0400";
-    };
     templates.remnanode-env = {
       content = ''
         SECRET_KEY=${config.sops.placeholder."remnanode-${config.networking.hostName}"}
@@ -40,9 +36,6 @@
       path = "/run/secrets/remnanode.env";
       mode = "0400";
     };
-
-    secrets.github_token = { };
-
     templates."git-credentials" = {
       owner = "root";
       mode = "0600";

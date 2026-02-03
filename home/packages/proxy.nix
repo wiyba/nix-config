@@ -49,7 +49,7 @@ let
 
   profileSwitch = writeShellScriptBin "proxy-profile-switch" ''
     CURRENT=$(${c} -s "${api}/proxies" | ${j} -r '.proxies.PROXY.now')
-    PROXIES=(NETHERLANDS RUSSIA)
+    PROXIES=(london-hyst2 stockholm-hyst2 london-vless stockholm-vless)
 
     for i in "''${!PROXIES[@]}"; do
       if [ "''${PROXIES[$i]}" = "$CURRENT" ]; then

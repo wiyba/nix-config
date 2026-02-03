@@ -25,20 +25,10 @@ let
     "browser.contentblocking.category" = "standard"; # "strict"
     "browser.ctrlTab.recentlyUsedOrder" = false;
 
-    "browser.download.useDownloadDir" = false;
-    "browser.download.viewableInternally.typeWasRegistered.svg" = true;
-    "browser.download.viewableInternally.typeWasRegistered.webp" = true;
-    "browser.download.viewableInternally.typeWasRegistered.xml" = true;
-
-    "browser.search.region" = "RU";
-    "browser.search.widget.inNavBar" = true;
-
     "browser.shell.checkDefaultBrowser" = false;
     "browser.tabs.loadInBackground" = true;
-    "browser.urlbar.placeholderName" = "Google";
-    "browser.urlbar.showSearchSuggestionsFirst" = false;
+    "browser.link.open_newwindow" = true;
 
-    # disable all the annoying quick actions
     "browser.urlbar.quickactions.enabled" = false;
     "browser.urlbar.quickactions.showPrefs" = false;
     "browser.urlbar.shortcuts.quickactions" = false;
@@ -60,6 +50,7 @@ let
 
     "extensions.activeThemeID" = "{fd4fdeb0-5a65-4978-81c5-3488d4d56426}";
 
+    "extensions.extensions.activeThemeID" = "{fd4fdeb0-5a65-4978-81c5-3488d4d56426}";
     "extensions.update.enabled" = false;
     "extensions.webcompat.enable_picture_in_picture_overrides" = true;
     "extensions.webcompat.enable_shims" = true;
@@ -73,34 +64,24 @@ let
 
     "privacy.donottrackheader.enabled" = true;
 
-    # Yubikey
-    "security.webauth.u2f" = true;
-    "security.webauth.webauthn" = true;
-    "security.webauth.webauthn_enable_softtoken" = true;
-    "security.webauth.webauthn_enable_usbtoken" = true;
-
     "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
 
-    "browser.startup.homepage" = "https://wiyba.org/newtab";
+    "browser.startup.homepage" = "https://search.wiyba.org";
 
-    # No session restore
     "browser.sessionstore.resume_from_crash" = false;
     "browser.sessionstore.max_resumed_crashes" = 0;
 
-    # No sponsored suggestions
     "browser.urlbar.suggest.quicksuggest.nonsponsored" = false;
     "browser.urlbar.suggest.quicksuggest.sponsored" = false;
     "browser.urlbar.quicksuggest.enabled" = false;
 
     "privacy.sanitize.sanitizeOnShutdown" = true;
-    "privacy.sanitize.pending" =
-      ''[{"id":"shutdown","itemsToClear":["formdata","browsingHistoryAndDownloads"],"options":{}}]'';
+    "privacy.sanitize.pending" = ''[{"id":"shutdown","itemsToClear":["formdata","browsingHistoryAndDownloads"],"options":{}}]'';
     "browser.bookmarks.file" = "";
     "privacy.clearOnShutdown_v2.siteSettings" = false;
     "privacy.clearOnShutdown_v2.cache" = false;
     "privacy.clearOnShutdown_v2.cookiesAndStorage" = false;
-
-    # urlbar suggestions
+    
     "browser.urlbar.suggest.bookmark" = false;
     "browser.urlbar.suggest.topsites" = false;
     "browser.urlbar.suggest.engines" = false;
