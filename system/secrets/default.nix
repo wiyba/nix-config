@@ -15,6 +15,7 @@
     secrets.github_token = { };
 
     templates.mihomo-config = {
+    templates.mihomo-config = {
       content = ''
         mixed-port: 7890
         mode: rule
@@ -95,8 +96,10 @@
           - IP-CIDR,205.201.62.0/24,PROXY
           - IP-CIDR,209.206.40.0/21,PROXY
           - GEOSITE,roblox,PROXY
+  - GEOSITE,rutracker,PROXY
           - GEOSITE,rutracker,PROXY
         # direct
+  - GEOSITE,category-forums,DIRECT
           - GEOSITE,category-forums,DIRECT
           - GEOSITE,category-games,DIRECT
           - GEOSITE,category-dev,DIRECT
