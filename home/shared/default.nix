@@ -48,7 +48,7 @@ let
     vscode # code editor
     zip # compress files
     qbittorrent # best and only torrent client
-    osu-lazer # circles gaem
+    # osu-lazer # circles gaem
   ] ++ fontPkgs;
 
 in
