@@ -45,6 +45,7 @@
   };
 
   networking.modemmanager.enable = true;
+  networking.usePredictableInterfaceNames = lib.mkForce true;
 
   systemd.services = {
     ModemManager = {
@@ -120,7 +121,7 @@
   home-manager.users.wiyba.xdg.configFile = {
     "hypr/hyprland-host.conf".text = ''
       exec-once=pactl-listener 
-      
+
       monitor=eDP-1,2880x1800@60,0x0,1.5
       monitor=,preferred,auto,1
 
