@@ -15,7 +15,6 @@
     secrets.github_token = { };
 
     templates.mihomo-config = {
-    templates.mihomo-config = {
       content = ''
 mixed-port: 7890
 mode: rule
