@@ -47,6 +47,8 @@
   networking.modemmanager.enable = true;
   networking.usePredictableInterfaceNames = lib.mkForce true;
 
+  services.mihomo.enable = true;
+
   systemd.services = {
     ModemManager = {
       wantedBy = [ "multi-user.target" ];

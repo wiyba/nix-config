@@ -7,6 +7,7 @@ let
   nerdFonts = with pkgs.nerd-fonts; [
     symbols-only
     caskaydia-cove
+    jetbrains-mono
   ];
 
   fontPkgs =
@@ -21,35 +22,38 @@ let
     ]
     ++ nerdFonts;
 
-  packages = with pkgs; [
-    age # age
-    any-nix-shell # zsh support for nix shell
-    appimage-run # tool to run appimage in nixos
-    btop # htop but better
-    claude-code # cli llm
-    discord-canary # another messanger
-    easyeffects # best eq app
-    eza # ls but better
-    file # file
-    filezilla # sftp gui client
-    jq # json parser
-    nemo # file manager
-    mtr # better traceroute
-    nil # lsp for nix
-    nitch # preconfigured fastfetch
-    ntfs3g # ntfs driver
-    packwiz # minecraft modpacks manager
-    prismlauncher # minecraft launcher
-    sops # sops
-    supersonic-wayland # music player for subsonic api
-    telegram-desktop # messanger
-    unzip # decompress files
-    vlc # media player
-    vscode # code editor
-    zip # compress files
-    qbittorrent # best and only torrent client
-    # osu-lazer # circles gaem
-  ] ++ fontPkgs;
+  packages =
+    with pkgs;
+    [
+      age # age
+      any-nix-shell # zsh support for nix shell
+      appimage-run # tool to run appimage in nixos
+      btop # htop but better
+      claude-code # cli llm
+      discord-canary # another messanger
+      easyeffects # best eq app
+      eza # ls but better
+      file # file
+      filezilla # sftp gui client
+      jq # json parser
+      nemo # file manager
+      mtr # better traceroute
+      nil # lsp for nix
+      nitch # preconfigured fastfetch
+      ntfs3g # ntfs driver
+      packwiz # minecraft modpacks manager
+      prismlauncher # minecraft launcher
+      sops # sops
+      supersonic-wayland # music player for subsonic api
+      telegram-desktop # messanger
+      unzip # decompress files
+      vlc # media player
+      vscode # code editor
+      zip # compress files
+      qbittorrent # best and only torrent client
+      # osu-lazer # circles gaem
+    ]
+    ++ fontPkgs;
 
 in
 {
@@ -145,8 +149,6 @@ in
       BROWSER = "${lib.getExe pkgs.firefox-beta}";
       DISPLAY = ":0";
       SHELL = "${lib.getExe pkgs.zsh}";
-      EDITOR = "nvim";
-      VISUAL = "code --wait";
       GIT_ASKPASS = "";
     };
   };

@@ -34,7 +34,7 @@
   };
 
   outputs =
-    { nixpkgs, ... } @ inputs:
+    { nixpkgs, ... }@inputs:
     let
       overlays = [
         inputs.nur.overlays.default
@@ -42,7 +42,11 @@
       ];
 
       mkSystem =
-        { host, system, base }:
+        {
+          host,
+          system,
+          base,
+        }:
         nixpkgs.lib.nixosSystem {
           inherit system;
           modules = [
@@ -62,7 +66,7 @@
         desktop = mkSystem {
           host = "desktop";
           system = "x86_64-linux";
-          base = ./system; 
+          base = ./system;
         };
         thinkpad = mkSystem {
           host = "thinkpad";
@@ -74,11 +78,11 @@
           system = "x86_64-linux";
           base = ./server;
         };
-	london = mkSystem {
-	  host = "london";
-	  system = "x86_64-linux";
-	  base = ./server;
-	};
+        london = mkSystem {
+          host = "london";
+          system = "x86_64-linux";
+          base = ./server;
+        };
       };
     };
 }
