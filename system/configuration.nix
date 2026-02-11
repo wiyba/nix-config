@@ -6,45 +6,6 @@
 }:
 
 {
-  networking = {
-    networkmanager = {
-      enable = true;
-      insertNameservers = [
-        "1.1.1.1"
-        "8.8.8.8"
-      ];
-      connectionConfig."ipv4.ignore-auto-dns" = true;
-    };
-    firewall = {
-      enable = true;
-      allowedTCPPorts = [ ];
-      allowedUDPPorts = [ ];
-    };
-    # proxy = {
-    #   allProxy = "http://127.0.0.1:7890/";
-    #   httpProxy = "http://127.0.0.1:7890/";
-    #   httpsProxy = "http://127.0.0.1:7890/";
-    #   noProxy = "localhost,127.0.0.1";
-    # };
-    extraHosts = ''
-      142.54.189.109 gew1-spclient.spotify.com
-      142.54.189.109 login5.spotify.com
-      142.54.189.109 spotify.com
-      142.54.189.109 api.spotify.com
-      142.54.189.109 appresolve.spotify.com
-      142.54.189.109 accounts.spotify.com
-      142.54.189.109 aet.spotify.com
-      142.54.189.109 open.spotify.com
-      142.54.189.109 spotifycdn.com
-      142.54.189.109 www.spotify.com
-    '';
-  };
-
-  hardware.bluetooth = {
-    enable = true;
-    settings.General.Enable = "Source,Sink,Media,Socket";
-  };
-
   i18n = {
     defaultLocale = "en_US.UTF-8";
     extraLocaleSettings = {
