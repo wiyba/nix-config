@@ -56,21 +56,13 @@
       ExecStart = "${pkgs.python3}/bin/python3 ${pkgs.writeText "health.py" ''
 from http.server import HTTPServer, BaseHTTPRequestHandler
 import subprocess
-
-class Handler(BaseHTTPRequestHandler):
+class H(BaseHTTPRequestHandler):
     def do_GET(self):
-        if self.path == "/health":
-            r = subprocess.run(["systemctl", "is-active", "--quiet", "hysteria-server"])
-            self.send_response(200 if r.returncode == 0 else 503)
-            self.send_header("Content-Type", "text/plain")
-            self.end_headers()
-            self.wfile.write(b"OK" if r.returncode == 0 else b"Service Unavailable")
-        else:
-            self.send_response(404)
-            self.end_headers()
-    def log_message(self, *args): pass
-
-HTTPServer(("127.0.0.1", 8000), Handler).serve_forever()
+        c = 200 if subprocess.run(["systemctl", "is-active", "-q", "hysteria-server"]).returncode == 0 else 503
+        self.send_response(c)
+        self.end_headers()
+    def log_message(self, *a): pass
+HTTPServer(("127.0.0.1", 8000), H).serve_forever()
 ''}";
     };
   };
