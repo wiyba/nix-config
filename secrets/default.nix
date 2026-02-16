@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, lib, host, ... }:
 {
   environment.extraInit = ''
     if [ -r /run/secrets/github_token ]; then
@@ -8,26 +8,17 @@
 
   sops = {
     defaultSopsFile = ./secrets.yaml;
-    age.keyFile = "/etc/nixos/keys/sops-age.key";
+    age.keyFile = "/etc/nixos/secrets/sops-age.key";
 
     secrets.hysteria-auth = { };
     secrets.vless-auth = { };
     secrets.github_token = { };
 
-    secrets.navidrome-env = {
+    secrets.navidrome-env = lib.mkIf (host == "home") {
       owner = "navidrome";
     };
-    secrets.cloudflare = { };
-
-    secrets.remnawave = {
-      path = "/etc/remnawave/.env";
-      owner = "root";
-      mode = "0600";
-    };
-    secrets.remnasub = {
-      path = "/etc/remnawave/sub.env";
-      owner = "root";
-      mode = "0600";
+    secrets.acme-env = lib.mkIf (host == "home") {
+      owner = "acme";
     };
 
     secrets.multi = {
@@ -43,4 +34,3 @@
     };
   };
 }
-

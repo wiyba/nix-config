@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 {
   networking.firewall.allowedTCPPorts = [
     80
@@ -11,7 +11,9 @@
     after = [
       "network.target"
       "sops-nix.service"
+      "acme-${config.networking.fqdn}.service"
     ];
+    wants = [ "acme-finished-${config.networking.fqdn}.target" ];
     wantedBy = [ "multi-user.target" ];
     serviceConfig = {
       Type = "simple";

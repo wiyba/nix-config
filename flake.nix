@@ -63,8 +63,8 @@
     in
     {
       nixosConfigurations = {
-        desktop = mkSystem {
-          host = "desktop";
+        home = mkSystem {
+          host = "home";
           system = "x86_64-linux";
           base = ./system;
         };

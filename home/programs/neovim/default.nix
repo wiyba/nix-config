@@ -29,7 +29,7 @@
     prettierd # web
     black # python
     isort # python improrts
-    nixfmt-rfc-style # nix
+    nixfmt # nix
     shfmt # shell
 
     gcc

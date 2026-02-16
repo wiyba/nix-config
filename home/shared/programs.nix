@@ -10,8 +10,11 @@ let
 
       btop = {
         enable = true;
+        package = pkgs.btop.override {
+          rocmSupport = true;
+        };
         settings = {
-          color_theme = "${pkgs.btop}/share/btop/themes/gruvbox_material_dark.theme";
+          color_theme = "gruvbox_material_dark";
           rounded_corners = true;
           proc_sorting = "cpu direct";
           update_ms = 1000;
@@ -55,6 +58,5 @@ in
   ../programs/vscode
   ../programs/albert
   ../programs/musicpresence
-  ../programs/easyeffects
   more
 ]
