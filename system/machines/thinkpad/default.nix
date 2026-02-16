@@ -44,11 +44,6 @@
     };
   };
 
-  networking.modemmanager.enable = true;
-  networking.usePredictableInterfaceNames = lib.mkForce true;
-
-  services.mihomo.enable = true;
-
   systemd.services = {
     ModemManager = {
       wantedBy = [ "multi-user.target" ];
@@ -70,9 +65,6 @@
           ${pkgs.systemd}/bin/systemctl restart ModemManager.service
           sleep 1
           ${pkgs.modemmanager}/bin/mmcli -S
-          echo "done"
-          echo "done"
-          echo "done"
           echo "done"
           exit 0
         '';
@@ -118,11 +110,11 @@
 
   services.fprintd.enable = true;
 
-  networking.hostName = "thinkpad";
-
   home-manager.users.wiyba.xdg.configFile = {
     "hypr/hyprland-host.conf".text = ''
-      exec-once=pactl-listener 
+      bind=SUPER, L, exec, hyprlock
+
+      exec-once=pactl-listener
 
       monitor=eDP-1,2880x1800@60,0x0,1.5
       monitor=,preferred,auto,1
@@ -140,6 +132,9 @@
       decoration:blur:enabled = false
       decoration:shadow:enabled = false
       decoration:inactive_opacity = 1.0
+
+      misc:key_press_enables_dpms = true
+      misc:mouse_move_enables_dpms = true
     '';
     "hypr/hypridle-host.conf".text = ''
       listener {

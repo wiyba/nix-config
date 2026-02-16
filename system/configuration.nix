@@ -20,11 +20,14 @@
   time.timeZone = "Europe/Moscow";
 
   imports = [
-    ./secrets
-    ./services/greetd
-    ./services/mihomo
-    ./services/pipewire
-    ./services/systemd
+    ../secrets
+    ./modules/greetd
+    ./modules/media
+    ./modules/mihomo
+    ./modules/networking
+    ./modules/nginx
+    ./modules/pipewire
+    ./modules/systemd
   ];
 
   programs = {
@@ -43,7 +46,13 @@
   services = {
     openssh = {
       enable = true;
+      ports = [ 2222 ];
       allowSFTP = true;
+      settings = {
+        PasswordAuthentication = false;
+        KbdInteractiveAuthentication = false;
+        PermitRootLogin = "prohibit-password";
+      };
     };
     libinput.enable = true;
     seatd.enable = true;
@@ -76,9 +85,9 @@
     sessionVariables = {
       NIXOS_OZONE_WL = "1";
     };
-    variables = {
-      SOPS_AGE_KEY_FILE = "/etc/nixos/keys/sops-age.key";
-    };
+    # variables = {
+    #   SOPS_AGE_KEY_FILE = "/etc/nixos/keys/sops-age.key";
+    # };
   };
 
   users.users.wiyba = {
@@ -90,8 +99,12 @@
       "video"
       "input"
       "dialout"
+      "media"
     ];
     shell = pkgs.zsh;
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBQmY892Awak26eH1iK0aEj7nILjGddlayY7e+fAwRV0 wiyba.org"
+    ];
   };
 
   home-manager = {
@@ -128,6 +141,14 @@
         "flakes"
       ];
       warn-dirty = false;
+      substituters = [
+        "https://cache.nixos.org"
+        "https://nix-community.cachix.org"
+      ];
+      trusted-public-keys = [
+        "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+      ];
     };
   };
   nixpkgs.config.allowUnfree = true;

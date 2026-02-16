@@ -1,11 +1,11 @@
 { host, ... }:
 let                                                                                                                              
   modules = {                                                                                                               
-    desktop = [ "custom/proxy" "network" "hyprland/language" "pulseaudio" "tray" ];                                              
+    home = [ "custom/proxy" "network" "hyprland/language" "pulseaudio" "tray" ];                                              
     thinkpad = [ "custom/proxy" "network" "bluetooth" "hyprland/language" "pulseaudio" "battery" "tray" ];                                   
   };
   monitors = {                                                                                                               
-    desktop = "DP-1";                                              
+    home = "DP-1";                                              
     thinkpad = "eDP-1";                                   
   };
 in

@@ -10,15 +10,14 @@
 
     templates.hysteria-config = {
       content = ''
-        acme:
-          domains:
-            - ${config.networking.fqdn}
-          email: admin@wiyba.org
+        tls:
+          cert: /var/lib/acme/${config.networking.fqdn}/fullchain.pem
+          key: /var/lib/acme/${config.networking.fqdn}/key.pem
         trafficStats:
           listen: 127.0.0.1:9999
         auth:
           type: userpass
-          userpass: 
+          userpass:
             ${config.sops.placeholder.hysteria-users}
         masquerade:
           type: proxy

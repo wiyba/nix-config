@@ -28,10 +28,8 @@ let
       age # age
       any-nix-shell # zsh support for nix shell
       appimage-run # tool to run appimage in nixos
-      btop # htop but better
       claude-code # cli llm
       discord-canary # another messanger
-      easyeffects # best eq app
       eza # ls but better
       file # file
       filezilla # sftp gui client
@@ -140,6 +138,21 @@ in
           "application/x-zerosize"
         ] (_: code);
     };
+
+    # desktopEntries = {
+    #   discord-canary = {
+    #     name = "Discord Canary";
+    #     comment = "All-in-one voice and text chat for gamers";
+    #     exec = "env all_proxy=socks5://127.0.0.1:7890 DiscordCanary";
+    #     icon = "discord-canary";
+    #     terminal = false;
+    #     type = "Application";
+    #     categories = [ "Network" "InstantMessaging" ];
+    #     settings = {
+    #       StartupWMClass = "discord-canary";
+    #     };
+    #   };
+    # };
   };
 
   home = {
