@@ -51,7 +51,8 @@
       Type = "simple";
       Restart = "always";
       RestartSec = 5;
-      DynamicUser = true;
+      User = "nobody";
+      Group = "nogroup";
       ExecStart = "${pkgs.python3}/bin/python3 ${pkgs.writeText "health.py" ''
 from http.server import HTTPServer, BaseHTTPRequestHandler
 import subprocess
