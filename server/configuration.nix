@@ -10,7 +10,6 @@
     ./programs/zsh
     ./secrets
     ./services/hysteria
-    ./services/remnanode
     ./services/sshd
   ];
 
