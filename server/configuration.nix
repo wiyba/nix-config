@@ -5,11 +5,11 @@
 
 {
   imports = [
+    ./secrets
+    ./modules/networking
     ./programs/git
     ./programs/ssh
     ./programs/zsh
-    ./secrets
-    ./services/hysteria
     ./services/sshd
   ];
 

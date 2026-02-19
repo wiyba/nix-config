@@ -93,7 +93,6 @@ rules:
       };
     })
 
-    # thinkpad
     (lib.mkIf (host == "thinkpad") {
       systemd.services.mihomo = {
         description = "mihomo Daemon";

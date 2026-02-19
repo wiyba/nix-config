@@ -12,6 +12,10 @@
     inputs.lanzaboote.nixosModules.lanzaboote
     inputs.nixos-hardware.nixosModules.common-cpu-intel
     inputs.nixos-hardware.nixosModules.common-gpu-amd
+    ../../modules/media
+    ../../services/nginx
+    ../../services/mihomo
+    ../../services/hysteria-auth
   ];
 
   boot = {
@@ -89,7 +93,7 @@ masquerade:
       monitor=DP-1,2560x1440@144,0x0,1
       monitor=DP-2,2560x1440@75,0x-1440,1
 
-      workspace=1, monitor:DP-1, default:true, on-created-empty:footclient
+      workspace=1, monitor:DP-1, default:true
       workspace=2, monitor:DP-1
       workspace=3, monitor:DP-1
       workspace=4, monitor:DP-1
@@ -98,12 +102,6 @@ masquerade:
       workspace=7, monitor:DP-1
       workspace=8, monitor:DP-1
       workspace=9, monitor:DP-1
-    '';
-    "hypr/hypridle-host.conf".text = ''
-      listener {
-        on-timeout=hyprctl dispatch dpms off
-        timeout=600
-      }
     '';
   };
 

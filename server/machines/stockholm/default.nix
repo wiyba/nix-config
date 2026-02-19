@@ -1,6 +1,9 @@
-{ pkgs, lib, ... }:
+{ pkgs, ... }:
 {
-  imports = [ ./hardware-configuration.nix ];
+  imports = [ 
+    ./hardware-configuration.nix 
+    ../../services/hysteria
+  ];
 
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
@@ -12,92 +15,6 @@
 
   zramSwap.enable = true;
   boot.tmp.cleanOnBoot = true;
-
-  networking = {
-    hostName = "stockholm";
-    domain = "wiyba.org";
-
-    dhcpcd.enable = false;
-    nameservers = [
-      "1.1.1.1"
-      "8.8.8.8"
-    ];
-    defaultGateway = "10.0.0.1";
-    interfaces.ens3 = {
-      ipv4 = {
-        addresses = [
-          {
-            address = "87.121.105.20";
-            prefixLength = 32;
-          }
-        ];
-        routes = [
-          {
-            address = "10.0.0.1";
-            prefixLength = 32;
-          }
-        ];
-      };
-    };
-    usePredictableInterfaceNames = lib.mkForce true;
-  };
-
-  # Health check HTTP server
-  systemd.services.hysteria-health = {
-    description = "Hysteria Health Check";
-    after = [ "network.target" ];
-    wantedBy = [ "multi-user.target" ];
-    serviceConfig = {
-      Type = "simple";
-      Restart = "always";
-      RestartSec = 5;
-      User = "nobody";
-      Group = "nogroup";
-      ExecStart = "${pkgs.python3}/bin/python3 ${pkgs.writeText "health.py" ''
-        from http.server import HTTPServer, BaseHTTPRequestHandler
-        import subprocess
-        class H(BaseHTTPRequestHandler):
-            def do_GET(self):
-                c = 200 if subprocess.run(["systemctl", "is-active", "-q", "hysteria-server"]).returncode == 0 else 503
-                self.send_response(c)
-                self.end_headers()
-            def log_message(self, *a): pass
-        HTTPServer(("127.0.0.1", 8000), H).serve_forever()
-      ''}";
-    };
-  };
-
-  # Nginx with rate limiting for /health endpoint
-  services.nginx = {
-    enable = true;
-    recommendedTlsSettings = true;
-    recommendedProxySettings = true;
-    appendHttpConfig = ''
-      limit_req_zone $binary_remote_addr zone=health_limit:1m rate=10r/s;
-    '';
-    virtualHosts."stockholm.wiyba.org" = {
-      forceSSL = true;
-      enableACME = true;
-      locations."/health" = {
-        proxyPass = "http://127.0.0.1:8000";
-        extraConfig = ''
-          limit_req zone=health_limit burst=5 nodelay;
-          limit_req_status 429;
-        '';
-      };
-      locations."/" = {
-        proxyPass = "http://127.0.0.1:9999";
-      };
-    };
-  };
-
-  security.acme = {
-    acceptTerms = true;
-    defaults.email = "admin@wiyba.org";
-    certs."stockholm.wiyba.org".reloadServices = [ "hysteria-server" ];
-  };
-
-  users.users.nginx.extraGroups = [ "acme" ];
 
   time.timeZone = "Europe/Stockholm";
 

@@ -20,14 +20,15 @@
   time.timeZone = "Europe/Moscow";
 
   imports = [
-    ../secrets
-    ./modules/greetd
-    ./modules/media
-    ./modules/mihomo
+    ./secrets
     ./modules/networking
-    ./modules/nginx
-    ./modules/pipewire
-    ./modules/systemd
+    ./programs/git
+    ./programs/ssh
+    ./programs/zsh
+    ./services/greetd
+    ./services/pipewire
+    ./services/ssh
+    ./services/systemd
   ];
 
   programs = {
@@ -44,16 +45,6 @@
   };
 
   services = {
-    openssh = {
-      enable = true;
-      ports = [ 2222 ];
-      allowSFTP = true;
-      settings = {
-        PasswordAuthentication = false;
-        KbdInteractiveAuthentication = false;
-        PermitRootLogin = "prohibit-password";
-      };
-    };
     libinput.enable = true;
     seatd.enable = true;
     blueman.enable = true;
@@ -61,14 +52,6 @@
     udisks2.enable = true;
     gvfs.enable = true;
     gnome.gnome-keyring.enable = true;
-    avahi = {
-      enable = true;
-      nssmdns4 = true;
-      publish = {
-        enable = true;
-        userServices = true;
-      };
-    };
   };
 
   environment = {
@@ -82,12 +65,10 @@
       usb-modeswitch
       libsecret
     ];
-    sessionVariables = {
+    variables = {
       NIXOS_OZONE_WL = "1";
+      SOPS_AGE_KEY_FILE = "/etc/nixos/system/secrets/sops-age.key";
     };
-    # variables = {
-    #   SOPS_AGE_KEY_FILE = "/etc/nixos/keys/sops-age.key";
-    # };
   };
 
   users.users.wiyba = {
@@ -100,10 +81,6 @@
       "input"
       "dialout"
       "media"
-    ];
-    shell = pkgs.zsh;
-    openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBQmY892Awak26eH1iK0aEj7nILjGddlayY7e+fAwRV0 wiyba.org"
     ];
   };
 
