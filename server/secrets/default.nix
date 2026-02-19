@@ -25,9 +25,6 @@
           proxy:
             url: https://status.wiyba.org/
             rewriteHost: true
-          listenHTTP: :80 
-          listenHTTPS: :443 
-          forceHTTPS: true
       '';
       path = "/etc/hysteria/config.yaml";
       mode = "0444";
