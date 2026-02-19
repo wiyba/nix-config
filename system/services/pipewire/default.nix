@@ -16,7 +16,6 @@
     };
   };
 
-  # home-specific sample rate
   services.pipewire.extraConfig.pipewire."10-sample-rate" = lib.mkIf (host == "home") {
     "context.properties" = {
       "default.clock.rate" = 48000;
