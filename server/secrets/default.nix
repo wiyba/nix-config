@@ -5,7 +5,7 @@
     age.keyFile = "/etc/nixos/keys/sops-age.key";
 
     secrets.hysteria-users = { };
-    secrets."remnanode-${config.networking.hostName}" = { };
+    secrets.hysteria-secret = { };
     secrets.github_token = { };
 
     templates.hysteria-config = {
@@ -15,25 +15,20 @@
           key: /var/lib/acme/${config.networking.fqdn}/key.pem
         trafficStats:
           listen: 127.0.0.1:9999
+          secret: ${config.sops.placeholder.hysteria-secret}
         auth:
-          type: userpass
-          userpass:
-            ${config.sops.placeholder.hysteria-users}
+          type: http
+          http:
+            url: https://hyst.wiyba.org/auth
+            insecure: false
         masquerade:
           type: proxy
           proxy:
-            url: https://excalidraw.com/
+            url: https://status.wiyba.org/
             rewriteHost: true
       '';
       path = "/etc/hysteria/config.yaml";
       mode = "0444";
-    };
-    templates.remnanode-env = {
-      content = ''
-        SECRET_KEY=${config.sops.placeholder."remnanode-${config.networking.hostName}"}
-      '';
-      path = "/run/secrets/remnanode.env";
-      mode = "0400";
     };
     templates."git-credentials" = {
       owner = "root";

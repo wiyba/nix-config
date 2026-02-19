@@ -54,16 +54,16 @@
       User = "nobody";
       Group = "nogroup";
       ExecStart = "${pkgs.python3}/bin/python3 ${pkgs.writeText "health.py" ''
-from http.server import HTTPServer, BaseHTTPRequestHandler
-import subprocess
-class H(BaseHTTPRequestHandler):
-    def do_GET(self):
-        c = 200 if subprocess.run(["systemctl", "is-active", "-q", "hysteria-server"]).returncode == 0 else 503
-        self.send_response(c)
-        self.end_headers()
-    def log_message(self, *a): pass
-HTTPServer(("127.0.0.1", 8000), H).serve_forever()
-''}";
+        from http.server import HTTPServer, BaseHTTPRequestHandler
+        import subprocess
+        class H(BaseHTTPRequestHandler):
+            def do_GET(self):
+                c = 200 if subprocess.run(["systemctl", "is-active", "-q", "hysteria-server"]).returncode == 0 else 503
+                self.send_response(c)
+                self.end_headers()
+            def log_message(self, *a): pass
+        HTTPServer(("127.0.0.1", 8000), H).serve_forever()
+      ''}";
     };
   };
 
@@ -85,7 +85,9 @@ HTTPServer(("127.0.0.1", 8000), H).serve_forever()
           limit_req_status 429;
         '';
       };
-      locations."/".return = "404";
+      locations."/" = {
+        proxyPass = "http://127.0.0.1:9999";
+      };
     };
   };
 
