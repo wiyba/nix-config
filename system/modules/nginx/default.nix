@@ -9,6 +9,12 @@
       recommendedGzipSettings = true;
 
       virtualHosts = {
+        "sub.wiyba.org" = {
+	  forceSSL = true;
+	  useACMEHost = "wiyba.org";
+	  locations."/".proxyPass = "http://127.0.0.1:12345";
+	};
+
         "media.wiyba.org" = {
           forceSSL = true;
           useACMEHost = "wiyba.org";
@@ -33,22 +39,10 @@
           '';
         };
 
-        "wave.wiyba.org" = {
+        "hyst.wiyba.org" = {
           forceSSL = true;
           useACMEHost = "wiyba.org";
-          locations."/".proxyPass = "http://127.0.0.1:3000";
-        };
-
-        "sub.wiyba.org" = {
-          forceSSL = true;
-          useACMEHost = "wiyba.org";
-          locations."/".proxyPass = "http://127.0.0.1:3010";
-          locations."/".extraConfig = ''
-            proxy_set_header X-Forwarded-Host $host;
-            proxy_set_header X-Forwarded-Port $server_port;
-            proxy_send_timeout 60s;
-            proxy_read_timeout 60s;
-          '';
+          locations."/".proxyPass = "http://127.0.0.1:8888";
         };
       };
     };

@@ -55,42 +55,16 @@ proxies:
     port: 443
     password: ${config.sops.placeholder.hysteria-auth}
     skip-cert-verify: true
-  - name: stockholm-vless
-    type: vless
-    server: stockholm.wiyba.org
-    port: 443
-    uuid: ${config.sops.placeholder.vless-auth}
-    network: tcp
-    tls: true
-    udp: true
-    flow: xtls-rprx-vision
-    servername: www.microsoft.com
-    reality-opts:
-      public-key: xrwkG2xAfrB_JU0tLX4GDfW_rhkuSsJyY39vNF0VdCY
-  - name: london-vless
-    type: vless
-    server: london.wiyba.org
-    port: 443
-    uuid: ${config.sops.placeholder.vless-auth}
-    network: tcp
-    tls: true
-    udp: true
-    flow: xtls-rprx-vision
-    servername: www.microsoft.com
-    reality-opts:
-      public-key: xrwkG2xAfrB_JU0tLX4GDfW_rhkuSsJyY39vNF0VdCY
 
 proxy-groups:
   - name: LONDON
     type: select
     proxies:
       - london-hyst
-      - london-vless
   - name: STOCKHOLM
     type: select
     proxies:
       - stockholm-hyst
-      - stockholm-vless
 
 rules:
 # direct overrides
