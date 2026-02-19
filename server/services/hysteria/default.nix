@@ -53,20 +53,20 @@
         ''}";
       };
     };
-
-    services.nginx = {
-      enable = true;
-      recommendedTlsSettings = true;
-      recommendedProxySettings = true;
-      recommendedGzipSettings = true;
-
-      virtualHosts."${config.networking.fqdn}" = {
-        forceSSL = true;
-        enableACME = true;
-        locations."/health".proxyPass = "http://127.0.0.1:8000";
-        locations."/".proxyPass = "http://127.0.0.1:9999";
-      };
-    };
-    users.users.nginx.extraGroups = [ "acme" ];
   };
+
+  services.nginx = {
+    enable = true;
+    recommendedTlsSettings = true;
+    recommendedProxySettings = true;
+    recommendedGzipSettings = true;
+
+    virtualHosts."${config.networking.fqdn}" = {
+      forceSSL = true;
+      enableACME = true;
+      locations."/health".proxyPass = "http://127.0.0.1:8000";
+      locations."/".proxyPass = "http://127.0.0.1:9999";
+    };
+  };
+  users.users.nginx.extraGroups = [ "acme" ];
 }
