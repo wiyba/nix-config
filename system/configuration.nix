@@ -22,7 +22,6 @@
   imports = [
     ./secrets
     ./modules/networking
-    ./programs/git
     ./programs/ssh
     ./programs/zsh
     ./services/greetd
@@ -82,6 +81,7 @@
       "input"
       "dialout"
       "media"
+      "hysteria"
     ];
   };
 

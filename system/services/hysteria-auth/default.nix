@@ -1,55 +1,72 @@
 { pkgs, ... }:
 let
+  src = pkgs.fetchFromGitHub {
+    owner = "wiyba";
+    repo = "hyst-panel";
+    rev = "0ddf61eb7e49510bb47e01b59d62a31979db7fc2";
+    sha256 = "19lp0rsinay3fhzy2z5l81253pzybdxqla2hbrbl4whzbcgjgb6a";
+  };
+
   env = pkgs.python3.withPackages (ps: with ps; [
-    fastapi uvicorn httpx jinja2 pydantic requests annotated-types
-    anyio certifi charset-normalizer click h11 httpcore idna
-    markupsafe starlette typing-extensions
+    fastapi uvicorn httpx jinja2
   ]);
+
   cli = pkgs.writeShellScriptBin "hyst-panel" ''
-    exec ${env}/bin/python /home/wiyba/Projects/hyst-panel/main.py "$@"
+    export HYST_DB_PATH="/var/lib/hyst-panel/app.db"
+    exec ${env}/bin/python ${src}/main.py "$@"
   '';
 in
 {
-  environment.systemPackages = [ env cli ];
+  users.groups.hysteria = {};
+  users.users.hysteria = {
+    isSystemUser = true;
+    group = "hysteria";
+    home = "/var/lib/hyst-panel";
+  };
+
+  environment.systemPackages = [ cli ];
+
   systemd.services.hyst-panel-setup = {
-    description = "setup hyst-panel";
+    description = "Import hyst-panel users";
     wantedBy = [ "multi-user.target" ];
     before = [ "hyst-panel.service" ];
-    after = [ "network-online.target" "sops-nix.service" ];
-    wants = [ "network-online.target" ];
+    after = [ "sops-nix.service" ];
     requiredBy = [ "hyst-panel.service" ];
 
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      User = "root";
+      User = "hysteria";
+      Group = "hysteria";
+      StateDirectory = "hyst-panel";
+      StateDirectoryMode = "0770";
     };
+
+    environment.HYST_DB_PATH = "/var/lib/hyst-panel/app.db";
+
     script = ''
-      if [ ! -d "/home/wiyba/Projects/hyst-panel/.git" ]; then
-        ${pkgs.git}/bin/git clone https://github.com/wiyba/hyst-panel.git /home/wiyba/Projects/hyst-panel
-      else
-        cd /home/wiyba/Projects/hyst-panel
-        ${pkgs.git}/bin/git pull
-      fi
-      cd /home/wiyba/Projects/hyst-panel
-      ${env}/bin/python main.py import /run/secrets/hysteria-users
-      chown -R wiyba:users /home/wiyba/Projects/hyst-panel
+      ${env}/bin/python ${src}/main.py import /run/secrets/hysteria-users
     '';
   };
 
   systemd.services.hyst-panel = {
-    description = "hyst-panel";
+    description = "Hysteria auth panel";
     wantedBy = [ "multi-user.target" ];
     after = [ "network-online.target" "hyst-panel-setup.service" ];
     wants = [ "network-online.target" ];
 
     serviceConfig = {
       Type = "simple";
-      User = "wiyba";
-      WorkingDirectory = "/home/wiyba/Projects/hyst-panel";
-      ExecStart = "${env}/bin/python main.py run";
+      User = "hysteria";
+      Group = "hysteria";
+      StateDirectory = "hyst-panel";
+      StateDirectoryMode = "0770";
+      WorkingDirectory = src;
+      ExecStart = "${env}/bin/python ${src}/main.py run";
       Restart = "on-failure";
       RestartSec = 5;
     };
+
+    environment.HYST_DB_PATH = "/var/lib/hyst-panel/app.db";
   };
 }

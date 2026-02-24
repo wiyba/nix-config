@@ -11,7 +11,11 @@
     age.keyFile = "/etc/nixos/system/secrets/sops-age.key";
 
     secrets.hysteria-auth = { };
-    secrets.hysteria-users = { };
+    secrets.hysteria-users = {
+      owner = "hysteria";
+      mode = "0640";
+      group = "hysteria";
+    };
     secrets.github_token = { };
 
     secrets.navidrome-env = lib.mkIf (host == "home") {
@@ -31,13 +35,6 @@
       owner = "wiyba";
       mode = "0600";
       path = "/home/wiyba/.git-credentials";
-      content = "https://wiyba:${config.sops.placeholder.github_token}@github.com";
-    };
-
-    templates."git-creds-root" = {
-      owner = "root";
-      mode = "0600";
-      path = "/root/.git-credentials";
       content = "https://wiyba:${config.sops.placeholder.github_token}@github.com";
     };
   };
