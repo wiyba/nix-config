@@ -10,7 +10,6 @@ let
     [
       font-awesome
       material-design-icons
-      jetbrains-mono
       noto-fonts
       noto-fonts-cjk-sans # chinese and japanese languages
       noto-fonts-color-emoji # emojis
@@ -34,7 +33,7 @@ in
 {
   imports = [
     ../../shared
-    ../../programs/foot
+    ../../programs/kitty
     ../../programs/waybar
   ];
 

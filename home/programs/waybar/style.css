@@ -8,7 +8,7 @@ window#waybar {
 }
 
 #workspaces button {
-	background-color: alpha(#282828, 0.5);
+	background-color: transparent;
 	padding: 5px 10px 5px 10px;
 	margin-right: 5px;
 	color: #ebdbb2;
@@ -35,7 +35,6 @@ window#waybar {
 }
 
 #window {
-	background-color: alpha(#282828, 0.5);
 	color: #ebdbb2;
 	padding-right: 10px;
 	padding-left: 10px;
@@ -44,7 +43,6 @@ window#waybar {
 }
 
 #custom-proxy {
-	background-color: alpha(#282828, 0.5);
 	color: #ebdbb2;
 	padding-right: 10px;
 	padding-left: 10px;
@@ -53,7 +51,6 @@ window#waybar {
 }
 
 #network {
-	background-color: alpha(#282828, 0.5);
 	color: #ebdbb2;
 	padding-right: 10px;
 	padding-left: 10px;
@@ -62,7 +59,6 @@ window#waybar {
 }
 
 #bluetooth {
-	background-color: alpha(#282828, 0.5);
 	color: #ebdbb2;
 	padding-right: 10px;
 	padding-left: 10px;
@@ -71,7 +67,6 @@ window#waybar {
 }
 
 #language {
-	background-color: alpha(#282828, 0.5);
 	color: #ebdbb2;
 	padding-right: 10px;
 	padding-left: 10px;
@@ -80,7 +75,6 @@ window#waybar {
 }
 
 #pulseaudio {
-	background-color: alpha(#282828, 0.5);
 	color: #ebdbb2;
 
 	padding-right: 10px;
@@ -90,7 +84,6 @@ window#waybar {
 }
 
 #backlight {
-	background-color: alpha(#282828, 0.5);
 	color: #ebdbb2;
 
 	padding-right: 10px;
@@ -100,7 +93,6 @@ window#waybar {
 }
 
 #clock {
-	background-color: alpha(#282828, 0.5);
 	color: #ebdbb2;
 
 	padding-right: 10px;
@@ -110,7 +102,6 @@ window#waybar {
 }
 
 #custom-weather {
-	background-color: alpha(#282828, 0.5);
 	color: #ebdbb2;
 	padding-right: 10px;
 	padding-left: 10px;
@@ -118,7 +109,6 @@ window#waybar {
 }
 
 #battery {
-	background-color: alpha(#282828, 0.5);
 	color: #ebdbb2;
 
 	padding-right: 10px;
@@ -128,8 +118,6 @@ window#waybar {
 }
 
 #tray {
-	background-color: alpha(#282828, 0.5);
-
 	padding-right: 10px;
 	padding-left: 10px;
 

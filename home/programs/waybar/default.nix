@@ -35,10 +35,9 @@ in
         "modules-right" = modules.${host};
 
         "custom/weather" = {
-          interval = 300;
+          interval = 10;
           exec = "get-weather";
           return-type = "json";
-          hide-empty-text = true;
         };
 
         "custom/proxy" = {
