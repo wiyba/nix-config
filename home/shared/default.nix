@@ -15,7 +15,6 @@ let
     [
       font-awesome
       material-design-icons
-      jetbrains-mono
       noto-fonts
       noto-fonts-cjk-sans
       noto-fonts-color-emoji

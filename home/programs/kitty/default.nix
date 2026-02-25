@@ -11,7 +11,7 @@
       bold_italic_font = "auto";
       enable_audio_bell = "no";
       font_size = 12.0;
-      window_padding_width = 25;
+      window_padding_width = 15;
       background_opacity = 1.0;
       hide_window_decorations = "yes";
       confirm_os_window_close = 0;

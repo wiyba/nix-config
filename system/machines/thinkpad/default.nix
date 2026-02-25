@@ -9,6 +9,7 @@
   imports = [
     ./hardware-configuration.nix
     inputs.lanzaboote.nixosModules.lanzaboote
+    ../../services/mihomo
   ];
 
   boot = {
@@ -44,12 +45,28 @@
     };
   };
 
+  hardware.bluetooth.enable = true;
+
   systemd.services = {
     ModemManager = {
       wantedBy = [ "multi-user.target" ];
       serviceConfig = {
         Restart = "always";
         RestartSec = "2s";
+      };
+    };
+    fprint-fix = {
+      description = "Reset fingerprint sensor after resume";
+      wantedBy = [ "post-resume.target" ];
+      after = [ "post-resume.target" ];
+      before = [ "fprintd.service" ];
+      serviceConfig = {
+        Type = "oneshot";
+        ExecStart = pkgs.writeShellScript "fprint-fix" ''
+          ${pkgs.usb-modeswitch}/bin/usb_modeswitch -v 06cb -p 0123 -R || true
+          sleep 1
+          ${pkgs.systemd}/bin/systemctl restart --no-block fprintd.service || true
+        '';
       };
     };
     modem-fix = {
@@ -109,6 +126,30 @@
   };
 
   services.fprintd.enable = true;
+
+  services.power-profiles-daemon.enable = false;
+
+  services.tlp = {
+    enable = true;
+    settings = {
+      CPU_SCALING_GOVERNOR_ON_AC = "performance";
+      CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
+
+      CPU_ENERGY_PERF_POLICY_ON_AC = "performance";
+      CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
+
+      CPU_MIN_PERF_ON_AC = 0;
+      CPU_MAX_PERF_ON_AC = 100;
+      CPU_MIN_PERF_ON_BAT = 0;
+      CPU_MAX_PERF_ON_BAT = 30;
+
+      CPU_BOOST_ON_AC = 1;
+      CPU_BOOST_ON_BAT = 0;
+
+      START_CHARGE_THRESH_BAT0 = 75;
+      STOP_CHARGE_THRESH_BAT0 = 80;
+    };
+  };
 
   home-manager.users.wiyba.xdg.configFile = {
     "hypr/hyprland-host.conf".text = ''

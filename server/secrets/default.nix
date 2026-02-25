@@ -20,6 +20,12 @@
           type: http
           http:
             url: https://hyst.wiyba.org/auth
+        acl:
+          inline:
+            - reject(127.0.0.0/8)
+            - reject(10.0.0.0/8)
+            - reject(172.16.0.0/12)
+            - reject(192.168.0.0/16)
         masquerade:
           type: proxy
           proxy:

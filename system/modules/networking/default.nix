@@ -46,6 +46,7 @@
           internalInterfaces = [ "enp0s20f0u1" ];
         };
 
+
         firewall = {
           enable = false;
           allowedTCPPorts = [ 80 443 2222 ];
@@ -59,6 +60,8 @@
     (lib.mkIf (host == "thinkpad") {
       networking = {
         hostName = "thinkpad";
+        useDHCP = false;
+        networkmanager.enable = true;
         modemmanager.enable = true;
         usePredictableInterfaceNames = lib.mkForce true;
       };

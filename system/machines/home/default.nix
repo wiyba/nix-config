@@ -13,6 +13,7 @@
     inputs.nixos-hardware.nixosModules.common-cpu-intel
     inputs.nixos-hardware.nixosModules.common-gpu-amd
     ../../modules/media
+    ../../services/ssh
     ../../services/nginx
     ../../services/mihomo
     ../../services/hysteria-auth
@@ -62,6 +63,12 @@ trafficStats:
 auth:
   type: password
   password: ${config.sops.placeholder.hysteria-auth}
+acl:
+  inline:
+    - reject(127.0.0.0/8)
+    - reject(10.0.0.0/8)
+    - reject(172.16.0.0/12)
+    - reject(192.168.0.0/16)
 masquerade:
   type: proxy
   proxy:

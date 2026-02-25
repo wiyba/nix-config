@@ -36,6 +36,7 @@
     dconf.enable = true;
     uwsm.enable = true;
     steam.enable = true;
+    gamescope.enable = true;
     nix-ld.enable = true;
     nix-index-database.comma.enable = true;
     hyprland = {
