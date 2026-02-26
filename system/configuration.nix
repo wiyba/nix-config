@@ -35,10 +35,7 @@
     dconf.enable = true;
     uwsm.enable = true;
     steam.enable = true;
-    gamescope = {
-      enable = true;
-      capSysNice = true;
-    };
+    gamescope.enable = true;
     gamemode.enable = true;
     nh = {
       enable = true;
