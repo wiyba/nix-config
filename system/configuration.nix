@@ -35,7 +35,15 @@
     dconf.enable = true;
     uwsm.enable = true;
     steam.enable = true;
-    gamescope.enable = true;
+    gamescope = {
+      enable = true;
+      capSysNice = true;
+    };
+    gamemode.enable = true;
+    nh = {
+      enable = true;
+      flake = "/etc/nixos";
+    };
     nix-ld.enable = true;
     nix-index-database.comma.enable = true;
     hyprland = {
