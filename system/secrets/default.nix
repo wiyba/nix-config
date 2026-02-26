@@ -1,4 +1,9 @@
-{ config, lib, host, ... }:
+{
+  config,
+  lib,
+  host,
+  ...
+}:
 {
   environment.extraInit = ''
     if [ -r /run/secrets/github_token ]; then
@@ -11,7 +16,7 @@
     age.keyFile = "/etc/nixos/system/secrets/sops-age.key";
 
     secrets.hysteria-auth = { };
-    secrets.hysteria-users = {
+    secrets.hysteria-users = lib.mkIf (host == "home") {
       owner = "hysteria";
       mode = "0640";
       group = "hysteria";
