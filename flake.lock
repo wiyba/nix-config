@@ -230,6 +230,22 @@
         "type": "indirect"
       }
     },
+    "nixpkgs-navidrome": {
+      "locked": {
+        "lastModified": 1769903805,
+        "narHash": "sha256-YQbqKvQKJ+oSRwMn5iirXxlgh+oDq+JgMjbDxwGFZ7U=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "46336d4d6980ae6f136b45c8507b17787eb186a0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "46336d4d6980ae6f136b45c8507b17787eb186a0",
+        "type": "github"
+      }
+    },
     "nixpkgs_2": {
       "locked": {
         "lastModified": 1771848320,
@@ -299,6 +315,7 @@
         "nix-index-database": "nix-index-database",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs",
+        "nixpkgs-navidrome": "nixpkgs-navidrome",
         "nur": "nur",
         "sops-nix": "sops-nix"
       }

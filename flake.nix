@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-unstable";
+    nixpkgs-navidrome.url = "github:NixOS/nixpkgs/46336d4d6980ae6f136b45c8507b17787eb186a0";
     nur.url = "github:nix-community/NUR";
 
     home-manager = {
@@ -38,7 +39,7 @@
     let
       overlays = [
         inputs.nur.overlays.default
-        (import ./overlays)
+        (import ./overlays { inherit inputs; })
       ];
 
       mkSystem =

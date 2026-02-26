@@ -24,6 +24,9 @@
     secrets.acme-env = lib.mkIf (host == "home") {
       owner = "acme";
     };
+    secrets.cloudflare = lib.mkIf (host == "home") {
+      owner = "acme";
+    };
 
     secrets.ssh = {
       owner = "wiyba";

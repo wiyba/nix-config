@@ -40,8 +40,8 @@ tun:
   inet6-address: null
   mtu: 9000
   strict-route: true
-  exclude-interface:
-    - enp0s20f0u1
+#  exclude-interface:
+#    - enp0s20f0u1
 
 proxies:
   - name: stockholm-hyst
