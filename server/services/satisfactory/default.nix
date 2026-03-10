@@ -29,7 +29,7 @@ in
       StateDirectory = "satisfactory";
       WorkingDirectory = "/var/lib/satisfactory";
 
-      ExecStartPre = "${steamcmd} +force_install_dir ${installDir} +login anonymous +app_update 1690800 validate +quit";
+      ExecStartPre = "${steamcmd} +@sSteamCmdForcePlatformType linux +force_install_dir ${installDir} +login anonymous +app_update 1690800 validate +quit";
       ExecStart = "${steam-run} ${installDir}/FactoryServer.sh -unattended -multihome=0.0.0.0";
 
       Restart = "on-failure";
