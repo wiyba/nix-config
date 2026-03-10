@@ -38,7 +38,6 @@ tun:
   auto-detect-interface: true
   inet4-address: 198.18.0.1/16
   inet6-address: null
-  mtu: 9000
   strict-route: true
 #  exclude-interface:
 #    - enp0s20f0u1
@@ -50,13 +49,11 @@ proxies:
     port: 443
     udp: true
     password: ${config.sops.placeholder.hysteria-auth}
-    skip-cert-verify: true
   - name: london-hyst
     type: hysteria2
     server: london.wiyba.org
     port: 443
     password: ${config.sops.placeholder.hysteria-auth}
-    skip-cert-verify: true
 
 proxy-groups:
   - name: LONDON
@@ -114,7 +111,6 @@ tun:
   auto-detect-interface: true
   inet4-address: 198.18.0.1/16
   inet6-address: null
-  mtu: 9000
   strict-route: true
 
 proxies:
@@ -124,9 +120,9 @@ proxies:
     port: 8443
     password: ${config.sops.placeholder.trojan-auth}
     udp: true
+    sni: home.wiyba.org
     alpn:
       - h2
-    skip-cert-verify: true
 
 proxy-groups:
   - name: PROXY

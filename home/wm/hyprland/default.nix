@@ -54,7 +54,6 @@ in
 
   fonts.fontconfig.enable = true;
 
-  systemd.user.startServices = lib.mkForce "suggest";
 
   xdg = {
     configFile = {
