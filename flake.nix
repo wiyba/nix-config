@@ -32,6 +32,11 @@
     };
 
     nixos-hardware.url = "github:NixOS/nixos-hardware";
+
+    hyst-panel = {
+      url = "github:wiyba/hyst-panel";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =

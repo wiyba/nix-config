@@ -41,6 +41,16 @@ let
       packwiz # minecraft modpacks manager
       prismlauncher # minecraft launcher
       sops # sops
+      loupe # image viewer
+      mediainfo # media info
+      theclicker # autoclicker
+      volatility3 # mem dump viewer
+      flac # tagging support
+      sqlite # cli sqlite db viewer
+      scanmem # memory scanner
+      dnsutils # dnsutils
+      tcpdump # tcp dump
+      python3 # python3
       supersonic-wayland # music player for subsonic api
       telegram-desktop # messanger
       unzip # decompress files
@@ -48,7 +58,7 @@ let
       vscode # code editor
       zip # compress files
       qbittorrent # best and only torrent client
-      # osu-lazer # circles gaem
+      osu-lazer # circles gaem
     ]
     ++ fontPkgs;
 
@@ -57,7 +67,7 @@ in
   programs.home-manager.enable = true;
 
   imports = lib.concatMap import [
-    ../packages
+    ../scripts
     ../themes
     ./programs.nix
     ./services.nix

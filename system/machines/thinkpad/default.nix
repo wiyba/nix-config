@@ -45,6 +45,14 @@
     };
   };
 
+  networking = {
+    hostName = "thinkpad";
+    useDHCP = false;
+    networkmanager.enable = true;
+    modemmanager.enable = true;
+    usePredictableInterfaceNames = lib.mkForce true;
+  };
+
   hardware.bluetooth.enable = true;
 
   systemd.services = {

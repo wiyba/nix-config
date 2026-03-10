@@ -1,4 +1,4 @@
-{ pkgs, lib, host, ... }:
+{ pkgs, lib, ... }:
 let
   nerdFonts = with pkgs.nerd-fonts; [
     symbols-only
@@ -27,7 +27,6 @@ let
     swaynotificationcenter # notifications daemon
     sway-audio-idle-inhibit # idle inhibitor
     wl-clipboard # clipboard support
-    wofi # app launcher
   ] ++ fontPkgs;
 in
 {
@@ -65,7 +64,6 @@ in
       '';
 
       "hypr/hyprlock.conf".text = (builtins.readFile ./hyprlock.conf);
-      "hypr/hyprpaper.conf".text = (builtins.readFile ./hyprpaper.conf);
       "hypr/hypridle.conf".text = (builtins.readFile ./hypridle.conf);
     };
 

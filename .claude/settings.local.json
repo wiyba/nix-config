@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:chromium.googlesource.com)",
+      "Bash(top:*)",
+      "Bash(*)"
+    ]
+  }
+}

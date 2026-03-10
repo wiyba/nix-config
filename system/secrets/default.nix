@@ -1,9 +1,4 @@
-{
-  config,
-  lib,
-  host,
-  ...
-}:
+{ config, ... }:
 {
   environment.extraInit = ''
     if [ -r /run/secrets/github_token ]; then
@@ -16,22 +11,8 @@
     age.keyFile = "/etc/nixos/system/secrets/sops-age.key";
 
     secrets.hysteria-auth = { };
-    secrets.hysteria-users = lib.mkIf (host == "home") {
-      owner = "hysteria";
-      mode = "0640";
-      group = "hysteria";
-    };
+    secrets.trojan-auth = { };
     secrets.github_token = { };
-
-    secrets.navidrome-env = lib.mkIf (host == "home") {
-      owner = "navidrome";
-    };
-    secrets.acme-env = lib.mkIf (host == "home") {
-      owner = "acme";
-    };
-    secrets.cloudflare = lib.mkIf (host == "home") {
-      owner = "acme";
-    };
 
     secrets.ssh = {
       owner = "wiyba";

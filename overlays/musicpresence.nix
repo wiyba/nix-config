@@ -1,4 +1,4 @@
-{ lib, stdenv, fetchurl, autoPatchelfHook, makeWrapper, libGL, libxkbcommon, xorg, wayland, fontconfig, freetype, dbus, glib, libgpg-error, e2fsprogs, xkeyboard_config, qt6 }:
+{ lib, stdenv, fetchurl, autoPatchelfHook, makeWrapper, libGL, libxkbcommon, libxcb, libx11, wayland, fontconfig, freetype, dbus, glib, libgpg-error, e2fsprogs, xkeyboard_config, qt6 }:
 
 stdenv.mkDerivation rec {
   pname = "musicpresence";
@@ -14,8 +14,8 @@ stdenv.mkDerivation rec {
   buildInputs = [
     libGL
     libxkbcommon
-    xorg.libxcb
-    xorg.libX11
+    libxcb
+    libx11
     wayland
     fontconfig
     freetype
