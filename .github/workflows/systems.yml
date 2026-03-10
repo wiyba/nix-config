@@ -23,7 +23,7 @@ jobs:
       matrix:
         host:
           - thinkpad
-          - desktop
+          - home
 
     steps:
       - uses: actions/checkout@v4

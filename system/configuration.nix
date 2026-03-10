@@ -21,13 +21,9 @@
 
   imports = [
     ./secrets
-    ./modules/networking
-    ./programs/ssh
-    ./programs/zsh
     ./services/greetd
     ./services/pipewire
     ./services/ssh
-    ./services/systemd
   ];
 
   programs = {
@@ -97,10 +93,20 @@
     users.wiyba = import ../home/wm/hyprland;
   };
 
+  environment.etc."chromium/policies/managed/custom.json".text = builtins.toJSON {
+    SavingBrowserHistoryDisabled = true;
+    ClearBrowsingDataOnExitList = [ "download_history" ];
+  };
+
   security.pam.services = {
     greetd.enableGnomeKeyring = true;
     hyprlock.enableGnomeKeyring = true;
   };
+
+  services.udev.extraRules = ''
+    KERNEL=="hidraw*", SUBSYSTEM=="hidraw", MODE="0666"
+    SUBSYSTEM=="usb", MODE="0666"
+  '';
 
   systemd.tmpfiles.rules = [
     "d /etc/nixos 0755 wiyba users - -"

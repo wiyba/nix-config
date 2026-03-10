@@ -12,11 +12,9 @@
     inputs.lanzaboote.nixosModules.lanzaboote
     inputs.nixos-hardware.nixosModules.common-cpu-intel
     inputs.nixos-hardware.nixosModules.common-gpu-amd
-    ../../modules/media
-    ../../services/ssh
     ../../services/nginx
     ../../services/mihomo
-    ../../services/hysteria-auth
+    ../../services/hyst-panel
   ];
 
   boot = {
@@ -45,6 +43,71 @@
     '';
   };
 
+  networking = {
+    hostName = "home";
+    domain = "wiyba.org";
+    useDHCP = false;
+
+    networkmanager = {
+      enable = true;
+      ensureProfiles.profiles = {
+        enp0s20f0u1 = {
+          connection = {
+            id = "enp0s20f0u1";
+            type = "ethernet";
+            interface-name = "enp0s20f0u1";
+          };
+          ipv4 = {
+            address1 = "192.168.1.1/24";
+            method = "shared";
+          };
+        };
+
+        enp4s0 = {
+          connection = {
+            id = "enp4s0";
+            type = "ethernet";
+            interface-name = "enp4s0";
+          };
+          ipv4 = {
+            address1 = "192.168.10.2/24";
+            dns = "1.1.1.1;8.8.8.8;";
+            ignore-auto-dns = "true";
+            method = "auto";
+          };
+        };
+      };
+    };
+
+    nat = {
+      enable = true;
+      externalInterface = "enp4s0";
+      internalInterfaces = [ "enp0s20f0u1" ];
+    };
+
+    firewall = {
+      enable = false;
+      allowedTCPPorts = [
+        80
+        443
+        2222
+      ];
+      allowedUDPPorts = [ 443 ];
+      trustedInterfaces = [ "enp0s20f0u1" ];
+    };
+  };
+
+  # printing
+  services.printing = {
+    enable = true;
+    drivers = [ pkgs.hplip ];
+  };
+  services.avahi = {
+    enable = true;
+    nssmdns4 = true;
+    openFirewall = true;
+  };
+
   environment.systemPackages = with pkgs; [
     sbctl
     efibootmgr
@@ -52,42 +115,47 @@
     libinput
   ];
 
-  # hysteria server
-  sops.templates.hysteria-config = {
-    content = ''
-tls:
-  cert: /var/lib/acme/wiyba.org/fullchain.pem
-  key: /var/lib/acme/wiyba.org/key.pem
-trafficStats:
-  listen: 127.0.0.1:9999
-auth:
-  type: password
-  password: ${config.sops.placeholder.hysteria-auth}
-acl:
-  inline:
-    - reject(127.0.0.0/8)
-    - reject(10.0.0.0/8)
-    - reject(172.16.0.0/12)
-    - reject(192.168.0.0/16)
-masquerade:
-  type: proxy
-  proxy:
-    url: https://home.wiyba.org/
-    rewriteHost: true
-    '';
-    path = "/etc/hysteria/config.yaml";
-    mode = "0444";
+  # singbox trojan
+  sops.templates.singbox-config = {
+    content = builtins.toJSON {
+      inbounds = [
+        {
+          type = "trojan";
+          listen = "0.0.0.0";
+          listen_port = 8443;
+          users = [
+            {
+              name = "sb-test";
+              password = "${config.sops.placeholder.trojan-auth}";
+            }
+          ];
+          tls = {
+            enabled = true;
+            alpn = [ "h2" ];
+            certificate_path = "/var/lib/acme/wiyba.org/fullchain.pem";
+            key_path = "/var/lib/acme/wiyba.org/key.pem";
+          };
+        }
+      ];
+      outbounds = [
+        { type = "direct"; }
+      ];
+    };
+    path = "/etc/sing-box/config.json";
+    mode = "0600";
   };
-
-  systemd.services.hysteria-server = {
-    description = "Hysteria Server";
-    after = [ "network.target" "sops-nix.service" "acme-wiyba.org.service" ];
+  systemd.services.sing-box = {
+    description = "sing-box";
+    after = [
+      "network.target"
+      "sops-nix.service"
+      "acme-wiyba.org.service"
+    ];
     wants = [ "acme-finished-wiyba.org.target" ];
     wantedBy = [ "multi-user.target" ];
     serviceConfig = {
       Type = "simple";
-      ExecStart = "${pkgs.hysteria}/bin/hysteria server";
-      Environment = "HYSTERIA_LOG_LEVEL=error";
+      ExecStart = "${pkgs.sing-box}/bin/sing-box run -c /etc/sing-box/config.json";
       Restart = "always";
       User = "root";
     };
@@ -95,6 +163,7 @@ masquerade:
 
   home-manager.users.wiyba.xdg.configFile = {
     "hypr/hyprland-host.conf".text = ''
+      exec= pkill hyprpaper; hyprpaper
       bind=SUPER, L, exec, hyprctl dispatch dpms toggle
 
       monitor=DP-1,2560x1440@144,0x0,1
@@ -110,6 +179,76 @@ masquerade:
       workspace=8, monitor:DP-1
       workspace=9, monitor:DP-1
     '';
+    "hypr/hyprpaper.conf".text = ''
+      preload=/etc/nixos/imgs/nix4.png
+      wallpaper {
+          monitor=DP-1
+          fit_mode=cover
+          path=/etc/nixos/imgs/nix4-oled.png
+      }
+      wallpaper {
+          monitor=DP-2
+          path=
+      }
+      splash=false
+    '';
+  };
+
+  #gaems
+  services.terraria = {
+    enable = true;
+    openFirewall = true;
+    messageOfTheDay = "добро пожлаовать в комююююютер веби!";
+    worldPath = "/var/lib/terraria/sin-vzriva-pirojka.wld";
+  };
+
+  #media
+  users.groups.media = { };
+  services.jellyfin = {
+    enable = true;
+    group = "media";
+    dataDir = "/media/jellyfin";
+    hardwareAcceleration = {
+      enable = true;
+      type = "vaapi";
+      device = "/dev/dri/renderD128";
+    };
+    transcoding = {
+      enableHardwareEncoding = true;
+      enableToneMapping = true;
+      enableSubtitleExtraction = true;
+      hardwareDecodingCodecs = {
+        h264 = true;
+        hevc = true;
+        hevc10bit = true;
+        vp9 = true;
+        av1 = true;
+      };
+      hardwareEncodingCodecs = {
+        hevc = true;
+        av1 = true;
+      };
+    };
+  };
+  users.users.jellyfin.extraGroups = [
+    "video"
+    "render"
+  ];
+  services.navidrome = {
+    enable = true;
+    group = "media";
+    settings = {
+      DataFolder = "/media/navidrome";
+      MusicFolder = "/media/music";
+      PlaylistsPath = "/media/navidrome/playlists";
+      UILoginBackgroundUrl = "https://i.pinimg.com/736x/b0/fc/d9/b0fcd999b0e3d3f3ef4336db0e218838.jpg";
+      "LastFM.Enabled" = true;
+      "LastFM.Language" = "ru";
+    };
+  };
+  systemd.services.navidrome.serviceConfig.EnvironmentFile = config.sops.secrets.navidrome-env.path;
+  sops.secrets.navidrome-env = {
+    owner = "navidrome";
   };
 
   system.stateVersion = "24.11";

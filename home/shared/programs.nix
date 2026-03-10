@@ -58,5 +58,7 @@ in
   ../programs/vscode
   ../programs/albert
   ../programs/musicpresence
+  ../programs/chromium
+  ../programs/zed
   more
 ]

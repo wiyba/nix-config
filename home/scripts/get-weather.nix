@@ -13,8 +13,8 @@
 
     get_icon() {
         case $1 in
-            01d|02d) icon="";;
-            01n|02n) icon="";;
+            01d|02d) icon="";;
+            01n|02n) icon="";;
             03d|03n|04d|04n) icon="󰖐";;
             09d|09n|10d|10n) icon="󰖖";;
             11d|11n) icon="󰖓";;

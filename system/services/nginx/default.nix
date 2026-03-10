@@ -1,6 +1,12 @@
 { ... }:
 
 {
+  sops.secrets.acme-env = {
+    owner = "acme";
+  };
+  sops.secrets.cloudflare = {
+    owner = "acme";
+  };
   services.nginx = {
     enable = true;
     recommendedTlsSettings = true;
@@ -37,6 +43,19 @@
         useACMEHost = "wiyba.org";
         locations."/".proxyPass = "http://127.0.0.1:8888";
       };
+
+      "wiyba.org" = {                                                                                                                                                                                                                                                                          
+        forceSSL = true;                                                                                                                                                                                                                                                               
+        useACMEHost = "wiyba.org";                                                                                                                                                                                                                                                     
+        locations."/".return = "418";
+      };
+
+      "_" = {                                                                                                                                                                                                                                                                          
+        forceSSL = true;                                                                                                                                                                                                                                                               
+        useACMEHost = "wiyba.org";                                                                                                                                                                                                                                                     
+        default = true;
+        locations."/".return = "418";
+      };
     };
   };
 
@@ -45,6 +64,7 @@
     defaults.email = "admin@wiyba.org";
     certs."wiyba.org" = {
       domain = "*.wiyba.org";
+      extraDomainNames = [ "wiyba.org" ];
       dnsProvider = "cloudflare";
       environmentFile = "/run/secrets/cloudflare";
       reloadServices = [ "hysteria-server" ];

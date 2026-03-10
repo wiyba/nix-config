@@ -69,26 +69,12 @@ proxy-groups:
       - stockholm-hyst
 
 rules:
-# direct overrides
-  - IP-CIDR,128.116.0.0/17,LONDON
-  - IP-CIDR,23.173.192.0/24,LONDON
-  - IP-CIDR,103.140.28.0/23,LONDON
-  - IP-CIDR,141.193.3.0/24,LONDON
-  - IP-CIDR,205.201.62.0/24,LONDON
-  - GEOSITE,roblox,LONDON
-# direct overrides (stockholm)
-  - GEOSITE,youtube,STOCKHOLM
-# direct
   - GEOSITE,nixos,DIRECT
-  - GEOSITE,reddit,DIRECT
   - GEOSITE,steam,DIRECT
-  - GEOSITE,category-ru,DIRECT
-  - GEOSITE,category-ads-all,REJECT
-  - GEOIP,RU,DIRECT
+  - GEOSITE,category-gov-ru,DIRECT 
   - GEOIP,PRIVATE,DIRECT
   - DOMAIN-SUFFIX,wiyba.org,DIRECT
-# final
-  - MATCH,LONDON
+  - MATCH,STOCKHOLM
         '';
         path = "/etc/mihomo/config.yaml";
         mode = "0600";
@@ -132,19 +118,21 @@ tun:
   strict-route: true
 
 proxies:
-  - name: home-hyst
-    type: hysteria2
+  - name: home-trojan
+    type: trojan
     server: home.wiyba.org
-    port: 443
+    port: 8443
+    password: ${config.sops.placeholder.trojan-auth}
     udp: true
-    password: ${config.sops.placeholder.hysteria-auth}
+    alpn:
+      - h2
     skip-cert-verify: true
 
 proxy-groups:
   - name: PROXY
     type: select
     proxies:
-      - home-hyst
+      - home-trojan
 
 rules:
   - MATCH,PROXY

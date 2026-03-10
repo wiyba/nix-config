@@ -1,8 +1,9 @@
 { pkgs, ... }:
 {
-  imports = [ 
-    ./hardware-configuration.nix 
+  imports = [
+    ./hardware-configuration.nix
     ../../services/hysteria
+    ../../services/satisfactory
   ];
 
   boot = {

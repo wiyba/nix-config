@@ -17,6 +17,7 @@ easyeffectsrc = pkgs.writeText "easyeffectsrc" ''
   showTrayIcon=false
   width=1251 
 '';
+#shitass eq fr
 equalizerrc = pkgs.writeText "equalizerrc" ''
   [soe][Equalizer#0]
   inputGain=-5
