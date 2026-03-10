@@ -17,4 +17,4 @@ other programs are listed bellow:
 | file manager   | [dolphin](https://apps.kde.org/en-gb/dolphin/) |
 
 ## license
-licensed under the MIT License, see the [license file](https://github.com/wiyba/nix-config/blob/main/LICENSE) or https://opensource.org/licenses/MIT for details.
+licensed under the Unlicense License, see the [license file](https://github.com/wiyba/nix-config/blob/main/LICENSE) or https://unlicense.org for details.
