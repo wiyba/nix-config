@@ -89,6 +89,11 @@
           system = "x86_64-linux";
           base = ./server;
         };
+        moscow = mkSystem {
+          host = "moscow";
+          system = "x86_64-linux";
+          base = ./server;
+        };
       };
     };
 }

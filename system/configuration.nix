@@ -29,7 +29,6 @@
   programs = {
     zsh.enable = true;
     dconf.enable = true;
-    uwsm.enable = true;
     steam.enable = true;
     gamescope.enable = true;
     gamemode.enable = true;
@@ -39,10 +38,12 @@
     };
     nix-ld.enable = true;
     nix-index-database.comma.enable = true;
+    uwsm.enable = true;
     hyprland = {
       enable = true;
       withUWSM = true;
     };
+    niri.enable = true;
   };
 
   services = {
@@ -74,6 +75,7 @@
 
   users.users.wiyba = {
     isNormalUser = true;
+    shell = pkgs.zsh;
     extraGroups = [
       "wheel"
       "networkmanager"
