@@ -16,18 +16,22 @@ let
     ]
     ++ nerdFonts;
 
-  packages = with pkgs; [
-    grim # screenshots
-    grimblast # screenshot program from hyprland
-    hypridle # idle daemon for hyprland
-    hyprlock # lockscreen for hyprland
-    hyprpaper # wallpaper daemon for hyprland
-    pavucontrol # pulseaudio gui
-    playerctl # player controller
-    swaynotificationcenter # notifications daemon
-    sway-audio-idle-inhibit # idle inhibitor
-    wl-clipboard # clipboard support
-  ] ++ fontPkgs;
+  packages =
+    with pkgs;
+    [
+      grim # screenshots
+      grimblast # screenshot program from hyprland
+      hypridle # idle daemon for hyprland
+      hyprlock # lockscreen for hyprland
+      hyprpaper # wallpaper daemon for hyprland
+      pavucontrol # pulseaudio gui
+      playerctl # player controller
+      swaynotificationcenter # notifications daemon
+      sway-audio-idle-inhibit # idle inhibitor
+      wl-clipboard # clipboard support
+      libreoffice-fresh # document viewer&editor
+    ]
+    ++ fontPkgs;
 in
 {
   imports = [
@@ -54,7 +58,6 @@ in
 
   fonts.fontconfig.enable = true;
 
-
   xdg = {
     configFile = {
       "electron-flags.conf".text = ''
@@ -70,10 +73,16 @@ in
       enable = true;
       config = {
         common = {
-          default = [ "hyprland" "gtk" ];
+          default = [
+            "hyprland"
+            "gtk"
+          ];
         };
         hyprland = {
-          default = [ "hyprland" "gtk" ];
+          default = [
+            "hyprland"
+            "gtk"
+          ];
           "org.freedesktop.impl.portal.ScreenCast" = "hyprland";
           "org.freedesktop.impl.portal.Screenshot" = "hyprland";
         };
