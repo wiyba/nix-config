@@ -68,6 +68,27 @@
           ];
           specialArgs = { inherit inputs host; };
         };
+
+      mkRpi =
+        {
+          host,
+          system,
+          base,
+        }:
+        inputs.nixos-raspberrypi.lib.nixosSystem {
+          modules = [
+            (base + "/configuration.nix")
+            (base + "/machines/${host}")
+            inputs.home-manager.nixosModules.home-manager
+            inputs.nix-index-database.nixosModules.nix-index
+            inputs.sops-nix.nixosModules.sops
+            { nixpkgs.overlays = overlays; }
+          ];
+          specialArgs = {
+            inherit inputs host;
+            inherit (inputs) nixos-raspberrypi;
+          };
+        };
     in
     {
       nixosConfigurations = {
@@ -96,7 +117,7 @@
           system = "x86_64-linux";
           base = ./server;
         };
-        rpi5 = mkSystem {
+        rpi5 = mkRpi {
           host = "rpi5";
           system = "aarch64-linux";
           base = ./server;

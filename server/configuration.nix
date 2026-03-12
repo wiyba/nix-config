@@ -6,7 +6,6 @@
 {
   imports = [
     ./secrets
-    ./modules/networking
     ./programs/git
     ./programs/ssh
     ./programs/zsh
@@ -45,7 +44,7 @@
     ];
 
     variables = {
-      SOPS_AGE_KEY_FILE = "/etc/nixos/keys/sops-age.key";
+      SOPS_AGE_KEY_FILE = "/etc/nixos/server/secrets/sops-age.key";
       EDITOR = "vim";
       VISUAL = "vim";
       GIT_ASKPASS = "";
@@ -57,6 +56,9 @@
   users.users.root.shell = pkgs.zsh;
 
   nix = {
+    channel.enable = false;
+    nixPath = [ "nixpkgs=flake:nixpkgs" ];
+
     gc = {
       automatic = true;
       dates = "daily";
