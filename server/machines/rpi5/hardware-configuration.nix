@@ -6,7 +6,7 @@
     fsType = "ext4";
   };
 
-  fileSystems."/boot" = {
+  fileSystems."/boot/firmware" = {
     device = "/dev/nvme0n1p1";
     fsType = "vfat";
     options = [

@@ -1,14 +1,17 @@
-{ config, ... }:
+{ config, host, lib, ... }:
+let
+  hasHysteria = host != "rpi5";
+in
 {
   sops = {
     defaultSopsFile = ./secrets.yaml;
-    age.keyFile = "/etc/nixos/keys/sops-age.key";
+    age.keyFile = "/etc/nixos/server/secrets/sops-age.key";
 
-    secrets.hysteria-users = { };
-    secrets.hysteria-secret = { };
     secrets.github_token = { };
+    secrets.hysteria-users = lib.mkIf hasHysteria { };
+    secrets.hysteria-secret = lib.mkIf hasHysteria { };
 
-    templates.hysteria-config = {
+    templates.hysteria-config = lib.mkIf hasHysteria {
       content = ''
         tls:
           cert: /var/lib/acme/${config.networking.fqdn}/fullchain.pem
