@@ -46,6 +46,7 @@ let
               controlPath = "~/.ssh/master-%r@%n:%p";
               controlPersist = "no";
               identityFile = [ "~/.ssh/ssh.key" ];
+              port = 2222;
             };
             "london" = {
               hostname = "london.wiyba.org";

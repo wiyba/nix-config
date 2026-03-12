@@ -33,6 +33,8 @@
 
     nixos-hardware.url = "github:NixOS/nixos-hardware";
 
+    nixos-raspberrypi.url = "github:nvmd/nixos-raspberrypi/main";
+
     hyst-panel = {
       url = "github:wiyba/hyst-panel";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -92,6 +94,11 @@
         moscow = mkSystem {
           host = "moscow";
           system = "x86_64-linux";
+          base = ./server;
+        };
+        rpi5 = mkSystem {
+          host = "rpi5";
+          system = "aarch64-linux";
           base = ./server;
         };
       };
