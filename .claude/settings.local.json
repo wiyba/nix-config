@@ -3,7 +3,10 @@
     "allow": [
       "WebFetch(domain:chromium.googlesource.com)",
       "Bash(top:*)",
-      "Bash(*)"
+      "Bash(*)",
+      "WebSearch",
+      "WebFetch(domain:wiki.nixos.org)",
+      "WebFetch(domain:github.com)"
     ]
   }
 }
