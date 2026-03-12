@@ -43,17 +43,17 @@
       nitch
     ];
 
-    programs.nh = {
-      enable = true;
-      flake = "/etc/nixos";
-    };
-
     variables = {
       SOPS_AGE_KEY_FILE = "/etc/nixos/server/secrets/sops-age.key";
       EDITOR = "vim";
       VISUAL = "vim";
       GIT_ASKPASS = "";
     };
+  };
+
+  programs.nh = {
+    enable = true;
+    flake = "/etc/nixos";
   };
 
   console.keyMap = "us";
