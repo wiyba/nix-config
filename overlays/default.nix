@@ -9,4 +9,5 @@ in
 final: prev: {
   musicpresence = prev.callPackage ./musicpresence.nix { };
   navidrome = pkgs-navidrome.navidrome;
+  proxmark3 = prev.callPackage ./proxmark3.nix { inherit (prev) proxmark3; };
 }
