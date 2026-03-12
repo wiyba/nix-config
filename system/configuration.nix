@@ -66,6 +66,9 @@
       wl-clipboard
       usb-modeswitch
       libsecret
+      proxmark3
+      nettools
+      dnsutils
     ];
     variables = {
       NIXOS_OZONE_WL = "1";
