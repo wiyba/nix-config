@@ -85,5 +85,6 @@ in
   ../programs/musicpresence
   ../programs/chromium
   ../programs/zed
+  ../programs/burpsuite
   more
 ]
