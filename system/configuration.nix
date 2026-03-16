@@ -36,8 +36,14 @@
   programs = {
     zsh.enable = true;
     dconf.enable = true;
-    steam.enable = true;
-    gamescope.enable = true;
+    steam = {
+      enable = true;
+      gamescopeSession.enable = true;
+    };
+    gamescope = {
+      enable = true;
+      capSysNice = true;
+    };
     gamemode.enable = true;
     nh = {
       enable = true;
@@ -95,6 +101,7 @@
       "dialout"
       "media"
       "hysteria"
+      "seat"
     ];
   };
 

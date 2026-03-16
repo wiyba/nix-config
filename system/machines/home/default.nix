@@ -265,5 +265,11 @@
     owner = "navidrome";
   };
 
+  programs.steam.gamescopeSession.args = [
+    "-W" "2560"
+    "-H" "1440"
+    "-r" "144"
+  ];
+
   system.stateVersion = "24.11";
 }

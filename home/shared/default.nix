@@ -48,6 +48,7 @@ let
       flac # tagging support
       sqlite # cli sqlite db viewer
       scanmem # memory scanner
+      xorg.xrdb # xrdb for setting Xft.dpi
       dnsutils # dnsutils
       tcpdump # tcp dump
       python3 # python3
@@ -76,6 +77,8 @@ in
   xdg = {
     inherit configHome;
     enable = true;
+
+    configFile."nixpkgs/config.nix".text = "{ allowUnfree = true; }";
 
     userDirs = {
       enable = true;
