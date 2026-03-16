@@ -134,12 +134,15 @@
           proxies:
             - name: home-vless
               type: vless
-              server: home.wiyba.org
+              server: 95.165.69.96
               port: 9443
               uuid: ${config.sops.placeholder.vless-uuid}
               flow: xtls-rprx-vision
               tls: true
               servername: vk.com
+              client-fingerprint: firefox
+              alpn:
+                - h2
               reality-opts:
                 public-key: 8PfX2mydiQ4i3OcdtMMuV5ecwkNsxlGZXNo2bl7OyRc
                 short-id: AAAA5555
