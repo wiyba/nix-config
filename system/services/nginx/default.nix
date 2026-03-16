@@ -67,7 +67,7 @@
       extraDomainNames = [ "wiyba.org" ];
       dnsProvider = "cloudflare";
       environmentFile = "/run/secrets/cloudflare";
-      reloadServices = [ "hysteria-server" "sing-box" ];
+      reloadServices = [ "hysteria-server" ];
     };
   };
 

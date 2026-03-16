@@ -115,25 +115,41 @@
     libinput
   ];
 
-  # singbox trojan
+  # singbox vless+reality
   sops.templates.singbox-config = {
     content = builtins.toJSON {
+      log = {
+        disabled = false;
+        level = "warn";
+        timestamp = true;
+      };
       inbounds = [
         {
-          type = "trojan";
+          type = "vless";
           listen = "0.0.0.0";
-          listen_port = 8443;
+          listen_port = 9443;
           users = [
             {
-              name = "sb-test";
-              password = "${config.sops.placeholder.trojan-auth}";
+              name = "wiyba";
+              uuid = "${config.sops.placeholder.vless-uuid}";
+              flow = "xtls-rprx-vision";
             }
           ];
           tls = {
             enabled = true;
             alpn = [ "h2" ];
-            certificate_path = "/var/lib/acme/wiyba.org/fullchain.pem";
-            key_path = "/var/lib/acme/wiyba.org/key.pem";
+            min_version = "1.3";
+            max_version = "1.3";
+            server_name = "vk.com";
+            reality = {
+              enabled = true;
+              handshake = {
+                server = "vk.com";
+                server_port = 443;
+              };
+              private_key = "${config.sops.placeholder.reality-key}";
+              short_id = [ "AAAA5555" ];
+            };
           };
         }
       ];
@@ -149,9 +165,7 @@
     after = [
       "network.target"
       "sops-nix.service"
-      "acme-wiyba.org.service"
     ];
-    wants = [ "acme-finished-wiyba.org.target" ];
     wantedBy = [ "multi-user.target" ];
     serviceConfig = {
       Type = "simple";
