@@ -114,21 +114,24 @@ tun:
   strict-route: true
 
 proxies:
-  - name: home-trojan
-    type: trojan
+  - name: home-vless
+    type: vless
     server: home.wiyba.org
-    port: 8443
-    password: ${config.sops.placeholder.trojan-auth}
+    port: 9443
+    uuid: ${config.sops.placeholder.vless-uuid}
+    flow: xtls-rprx-vision
+    tls: true
+    servername: vk.com
+    reality-opts:
+      public-key: 8PfX2mydiQ4i3OcdtMMuV5ecwkNsxlGZXNo2bl7OyRc
+      short-id: AAAA5555
     udp: true
-    sni: home.wiyba.org
-    alpn:
-      - h2
 
 proxy-groups:
   - name: PROXY
     type: select
     proxies:
-      - home-trojan
+      - home-vless
 
 rules:
   - MATCH,PROXY

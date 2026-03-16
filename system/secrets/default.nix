@@ -11,7 +11,8 @@
     age.keyFile = "/etc/nixos/system/secrets/sops-age.key";
 
     secrets.hysteria-auth = { };
-    secrets.trojan-auth = { };
+    secrets.vless-uuid = { };
+    secrets.reality-key = { };
     secrets.github_token = { };
 
     secrets.ssh = {
