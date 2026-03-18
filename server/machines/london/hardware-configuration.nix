@@ -8,4 +8,8 @@
     device = "/dev/vda1";
     fsType = "ext4";
   };
+  fileSystems."/boot" = {                                                                                                                                                                           
+    device = "/dev/vda16";                                                                                                                                                                          
+    fsType = "ext4";                                                                                                                                                                                
+  };     
 }
