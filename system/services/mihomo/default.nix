@@ -36,12 +36,14 @@
           external-controller: 127.0.0.1:9090
           dns:
             enable: true
-            enhanced-mode: fake-ip
-            nameserver:
+            enhanced-mode: redir-host
+            default-nameserver:
               - 1.1.1.1
               - 8.8.8.8
-            nameserver-policy:
-              "+.themoviedb.org,+.tmdb.org": proxy
+            nameserver:
+              - https://1.1.1.1/dns-query
+              - https://8.8.8.8/dns-query
+            ipv6: false
 
           tun:
             enable: true
@@ -51,39 +53,78 @@
             inet4-address: 198.18.0.1/16
             inet6-address: null
             strict-route: true
-          #  exclude-interface:
-          #    - enp0s20f0u1
 
           proxies:
-            - name: stockholm-hyst
-              type: hysteria2
-              server: stockholm.wiyba.org
-              port: 443
-              udp: true
-              password: ${config.sops.placeholder.hysteria-auth}
-            - name: london-hyst
-              type: hysteria2
+            - name: london
+              type: vless
               server: london.wiyba.org
               port: 443
-              password: ${config.sops.placeholder.hysteria-auth}
+              uuid: ${config.sops.placeholder.vless-uuid}
+              flow: xtls-rprx-vision
+              network: tcp
+              tls: true
+              udp: true
+              servername: vk.com
+              client-fingerprint: firefox
+              alpn:
+                - h2
+              reality-opts:
+                public-key: u-2Rr_En_Jx0agQKMG7DlwlLPus2hPLBPMXlOM_-lVU
+                short-id: AAAA5555
+            - name: stockholm
+              type: vless
+              server: stockholm.wiyba.org
+              port: 443
+              uuid: ${config.sops.placeholder.vless-uuid}
+              flow: xtls-rprx-vision
+              network: tcp
+              tls: true
+              udp: true
+              servername: vk.com
+              client-fingerprint: firefox
+              alpn:
+                - h2
+              reality-opts:
+                public-key: u-2Rr_En_Jx0agQKMG7DlwlLPus2hPLBPMXlOM_-lVU
+                short-id: AAAA5555
+            - name: moscow
+              type: vless
+              server: moscow.wiyba.org
+              port: 443
+              uuid: ${config.sops.placeholder.vless-uuid}
+              flow: xtls-rprx-vision
+              network: tcp
+              tls: true
+              udp: true
+              servername: vk.com
+              client-fingerprint: firefox
+              alpn:
+                - h2
+              reality-opts:
+                public-key: u-2Rr_En_Jx0agQKMG7DlwlLPus2hPLBPMXlOM_-lVU
+                short-id: AAAA5555
 
           proxy-groups:
             - name: LONDON
               type: select
               proxies:
-                - london-hyst
+                - london
             - name: STOCKHOLM
               type: select
               proxies:
-                - stockholm-hyst
+                - stockholm
+            - name: MOSCOW
+              type: select
+              proxies:
+                - moscow
 
           rules:
             - GEOSITE,nixos,DIRECT
-            - GEOSITE,steam,DIRECT
-            - GEOSITE,category-gov-ru,DIRECT 
+            - GEOSITE,category-gov-ru,DIRECT
             - GEOIP,PRIVATE,DIRECT
             - DOMAIN-SUFFIX,wiyba.org,DIRECT
-            - MATCH,STOCKHOLM
+            - GEOSITE,youtube,MOSCOW
+            - MATCH,LONDON
         '';
         path = "/etc/mihomo/config.yaml";
         mode = "0600";
@@ -135,18 +176,19 @@
             - name: home-vless
               type: vless
               server: 95.165.69.96
-              port: 9443
+              port: 8443
               uuid: ${config.sops.placeholder.vless-uuid}
               flow: xtls-rprx-vision
+              network: tcp
               tls: true
+              udp: true
               servername: vk.com
               client-fingerprint: firefox
               alpn:
                 - h2
               reality-opts:
-                public-key: 8PfX2mydiQ4i3OcdtMMuV5ecwkNsxlGZXNo2bl7OyRc
+                public-key: u-2Rr_En_Jx0agQKMG7DlwlLPus2hPLBPMXlOM_-lVU
                 short-id: AAAA5555
-              udp: true
 
           proxy-groups:
             - name: PROXY

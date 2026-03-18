@@ -27,7 +27,7 @@
   '';
 
   imports = [
-    ./secrets
+    # secrets imported from flake.nix
     ./services/greetd
     ./services/pipewire
     ./services/ssh
@@ -85,7 +85,7 @@
     ];
     variables = {
       NIXOS_OZONE_WL = "1";
-      SOPS_AGE_KEY_FILE = "/etc/nixos/system/secrets/sops-age.key";
+      SOPS_AGE_KEY_FILE = "/etc/nixos/secrets/sops-age.key";
     };
   };
 
@@ -108,6 +108,7 @@
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
+    backupFileExtension = "hm-backup";
     extraSpecialArgs = { inherit inputs host; };
     users.wiyba = import ../home/wm/hyprland;
   };

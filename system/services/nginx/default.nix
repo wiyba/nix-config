@@ -44,6 +44,12 @@
         locations."/".proxyPass = "http://127.0.0.1:8888";
       };
 
+      "sub.wiyba.org" = {
+        forceSSL = true;
+        useACMEHost = "wiyba.org";
+        locations."/".proxyPass = "http://127.0.0.1:9999";
+      };
+
       "wiyba.org" = {                                                                                                                                                                                                                                                                          
         forceSSL = true;                                                                                                                                                                                                                                                               
         useACMEHost = "wiyba.org";                                                                                                                                                                                                                                                     

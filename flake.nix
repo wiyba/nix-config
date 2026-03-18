@@ -3,7 +3,6 @@
 
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-unstable";
-    nixpkgs-navidrome.url = "github:NixOS/nixpkgs/46336d4d6980ae6f136b45c8507b17787eb186a0";
     nur.url = "github:nix-community/NUR";
 
     home-manager = {
@@ -39,6 +38,11 @@
       url = "github:wiyba/hyst-panel";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    xcli = {
+      url = "github:wiyba/xcli";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -46,7 +50,7 @@
     let
       overlays = [
         inputs.nur.overlays.default
-        (import ./overlays { inherit inputs; })
+        (import ./overlays)
       ];
 
       mkSystem =
@@ -60,13 +64,14 @@
           modules = [
             (base + "/configuration.nix")
             (base + "/machines/${host}")
+            ./secrets
             inputs.home-manager.nixosModules.home-manager
             inputs.nix-index-database.nixosModules.nix-index
             inputs.sops-nix.nixosModules.sops
             { nix.registry.nixpkgs.flake = nixpkgs; }
             { nixpkgs.overlays = overlays; }
           ];
-          specialArgs = { inherit inputs host; };
+          specialArgs = { inherit inputs host; isServer = base == ./server; };
         };
 
       mkRpi =
@@ -79,6 +84,7 @@
           modules = [
             (base + "/configuration.nix")
             (base + "/machines/${host}")
+            ./secrets
             inputs.home-manager.nixosModules.home-manager
             inputs.nix-index-database.nixosModules.nix-index
             inputs.sops-nix.nixosModules.sops
@@ -87,6 +93,7 @@
           specialArgs = {
             inherit inputs host;
             inherit (inputs) nixos-raspberrypi;
+            isServer = true;
           };
         };
     in
