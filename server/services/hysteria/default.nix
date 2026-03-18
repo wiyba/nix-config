@@ -6,11 +6,11 @@
   ];
   networking.firewall.allowedUDPPorts = [ 443 ];
 
-  security.acme = {
-    acceptTerms = true;
-    defaults.email = "admin@wiyba.org";
-    certs."${config.networking.fqdn}".reloadServices = [ "hysteria-server" ];
-  };
+#  security.acme = {
+#    acceptTerms = true;
+#    defaults.email = "admin@wiyba.org";
+#    certs."${config.networking.fqdn}".reloadServices = [ "hysteria-server" ];
+#  };
 
   systemd.services = {
     hysteria-server = {
@@ -55,18 +55,18 @@
     };
   };
 
-  services.nginx = {
-    enable = true;
-    recommendedTlsSettings = true;
-    recommendedProxySettings = true;
-    recommendedGzipSettings = true;
-
-    virtualHosts."${config.networking.fqdn}" = {
-      forceSSL = true;
-      enableACME = true;
-      locations."/health".proxyPass = "http://127.0.0.1:8000";
-      locations."/".proxyPass = "http://127.0.0.1:9999";
-    };
-  };
-  users.users.nginx.extraGroups = [ "acme" ];
+#  services.nginx = {
+#    enable = true;
+#    recommendedTlsSettings = true;
+#    recommendedProxySettings = true;
+#    recommendedGzipSettings = true;
+#
+#    virtualHosts."${config.networking.fqdn}" = {
+#      forceSSL = true;
+#      enableACME = true;
+#      locations."/health".proxyPass = "http://127.0.0.1:8000";
+#      locations."/".proxyPass = "http://127.0.0.1:9999";
+#    };
+#  };
+#  users.users.nginx.extraGroups = [ "acme" ];
 }
