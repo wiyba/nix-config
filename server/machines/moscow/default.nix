@@ -3,6 +3,7 @@
   imports = [
     ./hardware-configuration.nix
     ../../services/hysteria
+    ../../services/xray
   ];
 
   boot = {

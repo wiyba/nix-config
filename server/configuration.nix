@@ -5,7 +5,7 @@
 
 {
   imports = [
-    ./secrets
+    # secrets imported from flake.nix
     ./programs/git
     ./programs/ssh
     ./programs/zsh
@@ -44,7 +44,7 @@
     ];
 
     variables = {
-      SOPS_AGE_KEY_FILE = "/etc/nixos/server/secrets/sops-age.key";
+      SOPS_AGE_KEY_FILE = "/etc/nixos/secrets/sops-age.key";
       EDITOR = "vim";
       VISUAL = "vim";
       GIT_ASKPASS = "";

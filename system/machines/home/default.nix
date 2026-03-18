@@ -15,6 +15,7 @@
     ../../services/nginx
     ../../services/mihomo
     ../../services/hyst-panel
+    ../../services/xcli
   ];
 
   boot = {
@@ -115,53 +116,42 @@
     libinput
   ];
 
-  # singbox vless+reality
-  sops.templates.singbox-config = {
+  # xray vless+reality inbound
+  sops.templates.xray-config = {
     content = builtins.toJSON {
-      log = {
-        disabled = false;
-        level = "warn";
-        timestamp = true;
-      };
+      log = { loglevel = "warning"; };
       inbounds = [
         {
-          type = "vless";
           listen = "0.0.0.0";
-          listen_port = 9443;
-          users = [
-            {
-              name = "wiyba";
-              uuid = "${config.sops.placeholder.vless-uuid}";
-              flow = "xtls-rprx-vision";
-            }
-          ];
-          tls = {
-            enabled = true;
-            alpn = [ "h2" ];
-            min_version = "1.3";
-            max_version = "1.3";
-            server_name = "vk.com";
-            reality = {
-              enabled = true;
-              handshake = {
-                server = "vk.com";
-                server_port = 443;
-              };
-              private_key = "${config.sops.placeholder.reality-key}";
-              short_id = [ "AAAA5555" ];
+          port = 8443;
+          protocol = "vless";
+          settings = {
+            clients = [
+              { id = "${config.sops.placeholder.vless-uuid}"; flow = "xtls-rprx-vision"; }
+            ];
+            decryption = "none";
+          };
+          streamSettings = {
+            network = "tcp";
+            security = "reality";
+            realitySettings = {
+              dest = "vk.com:443";
+              serverNames = [ "vk.com" ];
+              privateKey = "${config.sops.placeholder.xcli-private-key}";
+              shortIds = [ "AAAA5555" ];
             };
           };
         }
       ];
       outbounds = [
-        { type = "direct"; }
+        { protocol = "freedom"; }
       ];
     };
-    path = "/etc/sing-box/config.json";
+    path = "/etc/xray/config.json";
     mode = "0600";
   };
-  systemd.services.sing-box = {
-    description = "sing-box";
+  systemd.services.xray = {
+    description = "xray";
     after = [
       "network.target"
       "sops-nix.service"
@@ -169,9 +159,8 @@
     wantedBy = [ "multi-user.target" ];
     serviceConfig = {
       Type = "simple";
-      ExecStart = "${pkgs.sing-box}/bin/sing-box run -c /etc/sing-box/config.json";
+      ExecStart = "${pkgs.xray}/bin/xray run -c /etc/xray/config.json";
       Restart = "always";
-      User = "root";
     };
   };
 

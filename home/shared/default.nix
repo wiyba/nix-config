@@ -48,7 +48,7 @@ let
       flac # tagging support
       sqlite # cli sqlite db viewer
       scanmem # memory scanner
-      xorg.xrdb # xrdb for setting Xft.dpi
+      xrdb # xrdb for setting Xft.dpi
       dnsutils # dnsutils
       tcpdump # tcp dump
       python3 # python3
@@ -175,6 +175,7 @@ in
       DISPLAY = ":0";
       SHELL = "${lib.getExe pkgs.zsh}";
       GIT_ASKPASS = "";
+      ANTHROPIC_DEFAULT_OPUS_MODEL = "claude-opus-4-6[1m]";
     };
   };
 
