@@ -12,7 +12,11 @@
     ./services/sshd
   ];
 
-  networking.firewall.enable = true;
+  networking.firewall.enable = false;
+  programs.nh = {
+    enable = true;
+    flake = "/etc/nixos";
+  };
 
   i18n = {
     defaultLocale = "en_US.UTF-8";
