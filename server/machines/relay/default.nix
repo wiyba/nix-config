@@ -2,7 +2,6 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ../../services/hysteria
     ../../services/xray
   ];
 
@@ -18,29 +17,29 @@
   boot.tmp.cleanOnBoot = true;
 
   networking = {
-    hostName = "moscow";
+    hostName = "relay";
     domain = "wiyba.org";
 
     dhcpcd.enable = false;
     nameservers = [
+      "10.130.0.2"
       "1.1.1.1"
-      "8.8.8.8"
     ];
     defaultGateway = {
-      address = "46.8.29.1";
-      interface = "ens3";
+      address = "10.130.0.1";
+      interface = "eth0";
     };
-    interfaces.ens3 = {
+    interfaces.eth0 = {
       ipv4 = {
         addresses = [
           {
-            address = "46.8.29.162";
+            address = "10.130.0.24";
             prefixLength = 24;
           }
         ];
       };
     };
-    usePredictableInterfaceNames = lib.mkForce true;
+    usePredictableInterfaceNames = lib.mkForce false;
   };
 
   time.timeZone = "Europe/Moscow";
