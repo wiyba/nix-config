@@ -63,6 +63,11 @@ let
               user = "root";
               identityFile = [ "~/.ssh/ssh.key" ];
             };
+            "relay" = {
+              hostname = "relay.wiyba.org";
+              user = "root";
+              identityFile = [ "~/.ssh/ssh.key" ];
+            };
             "home" = {
               hostname = "home.wiyba.org";
               user = "wiyba";
