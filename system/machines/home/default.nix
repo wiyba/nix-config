@@ -14,7 +14,6 @@
     inputs.nixos-hardware.nixosModules.common-gpu-amd
     ../../services/nginx
     ../../services/mihomo
-    ../../services/hyst-panel
     ../../services/xcli
   ];
 
