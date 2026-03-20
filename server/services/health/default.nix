@@ -10,7 +10,7 @@
       Type = "simple";
       Restart = "always";
       RestartSec = 5;
-      DynamicUser = true;
+      User = "root";
     };
     script = ''
       exec ${pkgs.python3}/bin/python3 ${pkgs.writeText "health.py" ''
