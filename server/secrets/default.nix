@@ -1,6 +1,6 @@
 { config, host, lib, ... }:
 let
-  hasHysteria = host != "rpi5";
+  hasHysteria = host != "rpi5" && host != "relay";
 in
 {
   sops = {

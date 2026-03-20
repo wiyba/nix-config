@@ -36,10 +36,6 @@
           external-controller: 127.0.0.1:9090
           dns:
             enable: true
-            enhanced-mode: redir-host
-            default-nameserver:
-              - 1.1.1.1
-              - 8.8.8.8
             nameserver:
               - https://1.1.1.1/dns-query
               - https://8.8.8.8/dns-query
@@ -119,9 +115,11 @@
                 - moscow
 
           rules:
-            - GEOSITE,nixos,DIRECT
-            - GEOSITE,category-gov-ru,DIRECT
+            - GEOSITE,flibusta,LONDON
+            - GEOSITE,rutracker,LONDON
             - GEOIP,PRIVATE,DIRECT
+            - GEOSITE,nixos,DIRECT
+            - GEOSITE,category-ru,DIRECT
             - DOMAIN-SUFFIX,wiyba.org,DIRECT
             - GEOSITE,youtube,MOSCOW
             - MATCH,LONDON
@@ -158,7 +156,6 @@
           external-controller: 127.0.0.1:9090
           dns:
             enable: true
-            enhanced-mode: fake-ip
             nameserver:
               - 1.1.1.1
               - 8.8.8.8
@@ -194,7 +191,7 @@
             - name: PROXY
               type: select
               proxies:
-                - home-vless 
+                - home-vless
           rules:
             - MATCH,PROXY
         '';
