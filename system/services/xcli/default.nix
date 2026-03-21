@@ -18,7 +18,6 @@ in
     };
 
     script = ''
-      export XCLI_PRIVATE_KEY="$(cat ${config.sops.secrets.xcli-private-key.path})"
       exec ${xcli}/bin/xcli run
     '';
 
@@ -26,8 +25,8 @@ in
       XCLI_USERS_FILE = config.sops.secrets.xcli-users.path;
       XCLI_HOSTS_FILE = config.sops.secrets.xcli-hosts.path;
       XCLI_PUBLIC_KEY = "u-2Rr_En_Jx0agQKMG7DlwlLPus2hPLBPMXlOM_-lVU";
-      XCLI_SHORT_ID = "AAAA5555";
-      XCLI_SNI = "vk.com";
+      XCLI_SHORT_ID = "4ba9b78acaa91b44";
+      XCLI_SNI = "yandex.ru";
     };
   };
 }
