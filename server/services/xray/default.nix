@@ -17,11 +17,11 @@ in
 
     environment = {
       XCLI_USERS_FILE = config.sops.secrets.xcli-users.path;
-      XCLI_PRIVATE_KEY_FILE = "unused";
+      XCLI_SHORT_ID = "4ba9b78acaa91b44";
+      XCLI_SNI = "yandex.ru";
     };
 
     script = ''
-      export XCLI_PRIVATE_KEY="$(cat ${config.sops.secrets.xcli-private-key.path})"
       ${xcli}/bin/xcli generate config > /run/xray/config.json
       exec ${pkgs.xray}/bin/xray run -c /run/xray/config.json
     '';
