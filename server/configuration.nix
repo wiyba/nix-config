@@ -1,5 +1,6 @@
 {
   pkgs,
+  lib,
   ...
 }:
 
@@ -12,7 +13,7 @@
     ./services/sshd
   ];
 
-  networking.firewall.enable = false;
+  networking.firewall.enable = lib.mkDefault false;
 
   i18n = {
     defaultLocale = "en_US.UTF-8";
