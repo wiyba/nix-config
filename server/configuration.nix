@@ -41,6 +41,7 @@
       jq
       file
       nitch
+      claude-code
     ];
 
     variables = {
