@@ -2,6 +2,7 @@
   pkgs,
   inputs,
   host,
+  lib,
   ...
 }:
 
@@ -18,6 +19,8 @@
   };
 
   time.timeZone = "Europe/Moscow";
+
+  networking.firewall.enable = lib.mkDefault false;
 
   networking.extraHosts = ''
     0.0.0.0 paradise-s1.battleye.com
