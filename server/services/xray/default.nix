@@ -11,7 +11,7 @@ let
     inherit tag;
     settings.vnext = [{
       inherit address port;
-      users = [{ id = ph.vless-uuid; flow = "xtls-rprx-vision"; }];
+      users = [{ id = ph.vless-uuid; flow = "xtls-rprx-vision"; encryption = "none"; }];
     }];
     streamSettings = {
       network = "tcp";
