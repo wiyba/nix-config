@@ -121,6 +121,17 @@
     ClearBrowsingDataOnExitList = [ "download_history" ];
   };
 
+  security.sudo.extraRules = [
+    {
+      users = [ "wiyba" ];
+      commands = [
+        { command = "/run/current-system/sw/bin/systemctl start mihomo"; options = [ "NOPASSWD" ]; }
+        { command = "/run/current-system/sw/bin/systemctl stop mihomo"; options = [ "NOPASSWD" ]; }
+        { command = "/run/current-system/sw/bin/systemctl restart mihomo"; options = [ "NOPASSWD" ]; }
+      ];
+    }
+  ];
+
   security.pam.services = {
     greetd.enableGnomeKeyring = true;
     hyprlock.enableGnomeKeyring = true;

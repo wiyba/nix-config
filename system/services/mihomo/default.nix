@@ -170,30 +170,98 @@
             strict-route: true
 
           proxies:
-            - name: home-vless
+            - name: relay
               type: vless
-              server: 95.165.69.96
-              port: 8443
+              server: 158.160.216.59
+              port: 443
               uuid: ${config.sops.placeholder.vless-uuid}
               flow: xtls-rprx-vision
               network: tcp
               tls: true
               udp: true
-              servername: vk.com
+              servername: yandex.ru
               client-fingerprint: firefox
               alpn:
                 - h2
               reality-opts:
                 public-key: u-2Rr_En_Jx0agQKMG7DlwlLPus2hPLBPMXlOM_-lVU
-                short-id: AAAA5555
+                short-id: 4ba9b78acaa91b44
+            - name: london
+              type: vless
+              server: london.wiyba.org
+              port: 443
+              uuid: ${config.sops.placeholder.vless-uuid}
+              flow: xtls-rprx-vision
+              network: tcp
+              tls: true
+              udp: true
+              servername: yandex.ru
+              client-fingerprint: firefox
+              alpn:
+                - h2
+              reality-opts:
+                public-key: u-2Rr_En_Jx0agQKMG7DlwlLPus2hPLBPMXlOM_-lVU
+                short-id: 4ba9b78acaa91b44
+            - name: stockholm
+              type: vless
+              server: stockholm.wiyba.org
+              port: 443
+              uuid: ${config.sops.placeholder.vless-uuid}
+              flow: xtls-rprx-vision
+              network: tcp
+              tls: true
+              udp: true
+              servername: yandex.ru
+              client-fingerprint: firefox
+              alpn:
+                - h2
+              reality-opts:
+                public-key: u-2Rr_En_Jx0agQKMG7DlwlLPus2hPLBPMXlOM_-lVU
+                short-id: 4ba9b78acaa91b44
+            - name: moscow
+              type: vless
+              server: moscow.wiyba.org
+              port: 443
+              uuid: ${config.sops.placeholder.vless-uuid}
+              flow: xtls-rprx-vision
+              network: tcp
+              tls: true
+              udp: true
+              servername: yandex.ru
+              client-fingerprint: firefox
+              alpn:
+                - h2
+              reality-opts:
+                public-key: u-2Rr_En_Jx0agQKMG7DlwlLPus2hPLBPMXlOM_-lVU
+                short-id: 4ba9b78acaa91b44
 
           proxy-groups:
             - name: PROXY
               type: select
               proxies:
-                - home-vless
+                - relay
+                - london
+                - stockholm
+                - moscow
+            - name: RELAY
+              type: select
+              proxies:
+                - relay
+            - name: LONDON
+              type: select
+              proxies:
+                - london
+            - name: STOCKHOLM
+              type: select
+              proxies:
+                - stockholm
+            - name: MOSCOW
+              type: select
+              proxies:
+                - moscow
+
           rules:
-            - MATCH,PROXY
+            - MATCH,RELAY
         '';
         path = "/etc/mihomo/config.yaml";
         mode = "0600";
