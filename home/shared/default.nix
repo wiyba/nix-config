@@ -175,7 +175,6 @@ in
       DISPLAY = ":0";
       SHELL = "${lib.getExe pkgs.zsh}";
       GIT_ASKPASS = "";
-      ANTHROPIC_DEFAULT_OPUS_MODEL = "claude-opus-4-6[1m]";
     };
   };
 

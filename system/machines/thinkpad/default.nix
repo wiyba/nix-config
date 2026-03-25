@@ -14,6 +14,7 @@
 
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
+    kernelModules = [ "hid_playstation" ];
 
     initrd = {
       systemd.enable = true;

@@ -41,10 +41,11 @@ in
         };
 
         "custom/proxy" = {
-          interval = 60;
+          interval = 5;
           exec = "proxy-status";
-          on-click = "proxy-switch";
+          on-click = "proxy-toggle";
           return-type = "json";
+          tooltip = false;
           hide-empty-text = true;
         };
 
