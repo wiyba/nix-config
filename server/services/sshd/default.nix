@@ -11,5 +11,4 @@
       PermitRootLogin = "prohibit-password";
     };
   };
-  networking.firewall.allowedTCPPorts = [ 2222 ];
 }

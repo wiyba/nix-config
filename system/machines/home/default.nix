@@ -85,27 +85,12 @@
       internalInterfaces = [ "enp0s20f0u1" ];
     };
 
-    firewall = {
-      enable = false;
-      allowedTCPPorts = [
-        80
-        443
-        2222
-      ];
-      allowedUDPPorts = [ 443 ];
-      trustedInterfaces = [ "enp0s20f0u1" ];
-    };
   };
 
   # printing
   services.printing = {
     enable = true;
     drivers = [ pkgs.hplip ];
-  };
-  services.avahi = {
-    enable = true;
-    nssmdns4 = true;
-    openFirewall = true;
   };
 
   environment.systemPackages = with pkgs; [

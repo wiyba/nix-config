@@ -137,6 +137,12 @@
     hyprlock.enableGnomeKeyring = true;
   };
 
+  services.avahi = {
+    enable = true;
+    nssmdns4 = true;
+    openFirewall = true;
+  };
+
   services.udev.extraRules = ''
     KERNEL=="hidraw*", SUBSYSTEM=="hidraw", MODE="0666"
     SUBSYSTEM=="usb", MODE="0666"
