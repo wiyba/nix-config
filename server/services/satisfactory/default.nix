@@ -6,8 +6,6 @@ let
   installDir = "/var/lib/satisfactory/server";
 in
 {
-  networking.firewall.allowedUDPPorts = [ 7777 ];
-  networking.firewall.allowedTCPPorts = [ 7777 8888 ];
 
   users.users.satisfactory = {
     isSystemUser = true;

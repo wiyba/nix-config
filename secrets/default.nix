@@ -12,7 +12,6 @@
       vless-uuid = { };
       reality-key = { };
       xcli-users = { };
-      xcli-hosts = { };
       xcli-private-key = { };
       hysteria-secret = { };
       ssh = lib.mkIf (!isServer) {
