@@ -1,6 +1,8 @@
 { lib, host, ... }:
 
 {
+  security.rtkit.enable = true;
+
   services.pipewire = {
     enable = true;
     alsa.enable = true;
@@ -34,6 +36,49 @@
         actions = {
           update-props = {
             "device.profile" = "output:analog-stereo+input:analog-surround-40";
+          };
+        };
+      }
+    ];
+  };
+
+  # Speaker DSP for ThinkPad internal speakers:
+  # HPF 100Hz (speaker protection) + two resonance notches from Dolby AO data.
+  # All filters only cut — no preamp or limiter needed.
+  services.pipewire.extraConfig.pipewire."50-speaker-dsp" = lib.mkIf (host == "thinkpad") {
+    "context.modules" = [
+      {
+        name = "libpipewire-module-filter-chain";
+        args = {
+          "node.description" = "Speakers";
+          "media.name" = "Speakers";
+          "filter.graph" = {
+            nodes = [
+              # HPF 100 Hz — 4th order Linkwitz-Riley (2x Butterworth)
+              { type = "builtin"; name = "hpf_1"; label = "bq_highpass"; control = { "Freq" = 100.0; "Q" = 0.707; }; }
+              { type = "builtin"; name = "hpf_2"; label = "bq_highpass"; control = { "Freq" = 100.0; "Q" = 0.707; }; }
+              # Resonance cuts from Dolby Audio Optimizer
+              { type = "builtin"; name = "eq_1"; label = "bq_peaking"; control = { "Freq" = 469.0; "Q" = 2.9; "Gain" = -4.0; }; }
+              { type = "builtin"; name = "eq_2"; label = "bq_peaking"; control = { "Freq" = 656.0; "Q" = 3.5; "Gain" = -2.5; }; }
+            ];
+            links = [
+              { output = "hpf_1:Out"; input = "hpf_2:In"; }
+              { output = "hpf_2:Out"; input = "eq_1:In"; }
+              { output = "eq_1:Out";  input = "eq_2:In"; }
+            ];
+          };
+          "audio.channels" = 2;
+          "audio.position" = [ "FL" "FR" ];
+          "capture.props" = {
+            "node.name" = "effect_input.speaker_dsp";
+            "media.class" = "Audio/Sink";
+            "priority.session" = 1100;
+            "priority.driver" = 1100;
+          };
+          "playback.props" = {
+            "node.name" = "effect_output.speaker_dsp";
+            "node.target" = "alsa_output.pci-0000_00_1f.3-platform-skl_hda_dsp_generic.HiFi__Speaker__sink";
+            "node.passive" = true;
           };
         };
       }

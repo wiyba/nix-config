@@ -24,7 +24,7 @@ let
       hypridle # idle daemon for hyprland
       hyprlock # lockscreen for hyprland
       hyprpaper # wallpaper daemon for hyprland
-      pavucontrol # pulseaudio gui
+      pwvucontrol # pipewire gui
       playerctl # player controller
       swaynotificationcenter # notifications daemon
       sway-audio-idle-inhibit # idle inhibitor

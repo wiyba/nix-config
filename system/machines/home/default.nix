@@ -119,10 +119,10 @@
             network = "tcp";
             security = "reality";
             realitySettings = {
-              dest = "vk.com:443";
-              serverNames = [ "vk.com" ];
+              dest = "yandex.ru:443";
+              serverNames = [ "yandex.ru" ];
               privateKey = "${config.sops.placeholder.xcli-private-key}";
-              shortIds = [ "AAAA5555" ];
+              shortIds = [ "4ba9b78acaa91b44" ];
             };
           };
         }
@@ -149,6 +149,21 @@
   };
 
   home-manager.users.wiyba.xdg.configFile = {
+    "niri/outputs.kdl".text = ''
+      output "DP-1" {
+          mode "2560x1440@144"
+          scale 1.0
+          transform "normal"
+          position x=0 y=0
+      }
+
+      output "DP-2" {
+          mode "2560x1440@75"
+          scale 1.0
+          transform "normal"
+          position x=0 y=-1440
+      }
+    '';
     "hypr/hyprland-host.conf".text = ''
       exec= pkill hyprpaper; hyprpaper
       bind=SUPER, L, exec, hyprctl dispatch dpms toggle

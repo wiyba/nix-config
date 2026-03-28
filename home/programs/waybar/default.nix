@@ -1,12 +1,26 @@
 { host, ... }:
-let                                                                                                                              
-  modules = {                                                                                                               
-    home = [ "custom/proxy" "network" "hyprland/language" "pulseaudio" "tray" ];                                              
-    thinkpad = [ "custom/proxy" "network" "bluetooth" "hyprland/language" "pulseaudio" "battery" "tray" ];                                   
+let
+  modules = {
+    home = [
+      "custom/proxy"
+      "network"
+      "hyprland/language"
+      "pulseaudio"
+      "tray"
+    ];
+    thinkpad = [
+      "custom/proxy"
+      "network"
+      "bluetooth"
+      "hyprland/language"
+      "pulseaudio"
+      "battery"
+      "tray"
+    ];
   };
-  monitors = {                                                                                                               
-    home = "DP-1";                                              
-    thinkpad = "eDP-1";                                   
+  monitors = {
+    home = "DP-1";
+    thinkpad = "eDP-1";
   };
 in
 {
@@ -132,7 +146,7 @@ in
           format-muted = "󰖁  MUTED";
           format-bluetooth = "{icon}  {volume}%";
           format-bluetooth-muted = "󰖁  MUTED";
-          on-click = "pavucontrol";
+          on-click = "pwvucontrol";
           format-icons = {
             default = [
               "󰕿"

@@ -1,6 +1,11 @@
 { pkgs, ... }:
 {
-  programs.zed-editor.enable = true;
+  programs.zed-editor = {
+    enable = true;
+    userSettings = {
+      theme = "Noctalia Dark";
+    };
+  };
   home.packages = with pkgs; [
     neovide
 

@@ -1,0 +1,29 @@
+input {
+    keyboard {
+        xkb {
+            layout "us,ru"
+            options "grp:alt_shift_toggle"
+        }
+        numlock
+        repeat-delay 250
+        repeat-rate 35
+    }
+
+    touchpad {
+        natural-scroll
+        accel-profile "flat"
+        scroll-factor 0.5
+    }
+
+    mouse {
+        accel-profile "flat"
+    }
+
+    trackpoint {}
+}
+
+gestures {
+    hot-corners {
+        off
+    }
+}

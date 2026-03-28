@@ -60,6 +60,7 @@ let
       zip # compress files
       qbittorrent # best and only torrent client
       osu-lazer # circles gaem
+      dex # .config/autostart helper for WMs
     ]
     ++ fontPkgs;
 

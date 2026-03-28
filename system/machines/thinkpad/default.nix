@@ -49,7 +49,24 @@
   networking = {
     hostName = "thinkpad";
     useDHCP = false;
-    networkmanager.enable = true;
+    networkmanager = {
+      enable = true;
+      ensureProfiles.profiles.cdc-wdm0 = {
+        connection = {
+          id = "cdc-wdm0";
+          type = "gsm";
+          autoconnect = true;
+        };
+        gsm = {
+          auto-config = true;
+        };
+        ipv4.method = "auto";
+        ipv6 = {
+          method = "auto";
+          never-default = true;
+        };
+      };
+    };
     modemmanager.enable = true;
     usePredictableInterfaceNames = lib.mkForce true;
   };
@@ -107,12 +124,30 @@
     tpm2-tss
   ];
 
+
   services.logind = {
     settings.Login = {
-      HandleLidSwitch = "suspend";
+      HandleLidSwitch = "suspend-then-hibernate";
       HandleLidSwitchExternalPower = "suspend";
       HandleLidSwitchDocked = "ignore";
+      HandlePowerKey = "hibernate";
     };
+  };
+
+  systemd.sleep.settings.Sleep.HibernateDelaySec = "30m";
+
+  services.upower = {
+    enable = true;
+    percentageLow = 15;
+    percentageCritical = 5;
+    percentageAction = 3;
+    criticalPowerAction = "Hibernate";
+  };
+
+  # workaround: upower sandbox blocks hibernate
+  systemd.services.upower.serviceConfig = {
+    ProtectSystem = lib.mkForce "no";
+    PrivateTmp = lib.mkForce false;
   };
 
   systemd.tmpfiles.rules = [
@@ -161,6 +196,18 @@
   };
 
   home-manager.users.wiyba.xdg.configFile = {
+    "niri/outputs.kdl".text = ''
+      output "eDP-1" {
+          mode "2880x1800@120"
+          scale 1.5
+          transform "normal"
+          position x=0 y=0
+      }
+
+      switch-events {
+          lid-close { spawn "noctalia-shell" "ipc" "call" "lockScreen" "lock"; }
+      }
+    '';
     "hypr/hyprland-host.conf".text = ''
       bind=SUPER, L, exec, hyprlock
 
