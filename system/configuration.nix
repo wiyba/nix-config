@@ -85,6 +85,7 @@
       proxmark3
       nettools
       dnsutils
+      xwayland-satellite
     ];
     variables = {
       NIXOS_OZONE_WL = "1";
@@ -113,7 +114,7 @@
     useUserPackages = true;
     backupFileExtension = "hm-backup";
     extraSpecialArgs = { inherit inputs host; };
-    users.wiyba = import ../home/wm/hyprland;
+    users.wiyba = import ../home/wm/niri;
   };
 
   environment.etc."chromium/policies/managed/custom.json".text = builtins.toJSON {
@@ -125,9 +126,18 @@
     {
       users = [ "wiyba" ];
       commands = [
-        { command = "/run/current-system/sw/bin/systemctl start mihomo"; options = [ "NOPASSWD" ]; }
-        { command = "/run/current-system/sw/bin/systemctl stop mihomo"; options = [ "NOPASSWD" ]; }
-        { command = "/run/current-system/sw/bin/systemctl restart mihomo"; options = [ "NOPASSWD" ]; }
+        {
+          command = "/run/current-system/sw/bin/systemctl start mihomo";
+          options = [ "NOPASSWD" ];
+        }
+        {
+          command = "/run/current-system/sw/bin/systemctl stop mihomo";
+          options = [ "NOPASSWD" ];
+        }
+        {
+          command = "/run/current-system/sw/bin/systemctl restart mihomo";
+          options = [ "NOPASSWD" ];
+        }
       ];
     }
   ];
@@ -173,10 +183,12 @@
       substituters = [
         "https://cache.nixos.org"
         "https://nix-community.cachix.org"
+        "https://noctalia.cachix.org"
       ];
       trusted-public-keys = [
         "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+        "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
       ];
     };
   };

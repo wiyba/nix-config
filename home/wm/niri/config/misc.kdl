@@ -1,0 +1,40 @@
+hotkey-overlay {
+    skip-at-startup
+}
+
+prefer-no-csd
+
+screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
+
+animations {}
+
+debug {
+    honor-xdg-activation-with-invalid-serial
+}
+
+cursor {
+    hide-when-typing
+    hide-after-inactive-ms 1000
+}
+
+recent-windows {
+    debounce-ms 750
+    open-delay-ms 150
+
+    highlight {
+        padding 30
+        corner-radius 0
+    }
+
+    previews {
+        max-height 480
+        max-scale 0.5
+    }
+
+    binds {
+        Alt+Tab         { next-window     scope="all"; }
+        Alt+Shift+Tab   { previous-window scope="all"; }
+        Alt+grave       { next-window     scope="workspace"; }
+        Alt+Shift+grave { previous-window scope="workspace"; }
+    }
+}

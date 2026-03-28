@@ -1,4 +1,9 @@
-{ pkgs, lib, ... }:
+{
+  pkgs,
+  lib,
+  inputs,
+  ...
+}:
 let
   nerdFonts = with pkgs.nerd-fonts; [
     symbols-only
@@ -19,14 +24,8 @@ let
   packages =
     with pkgs;
     [
-      grim # screenshots
-      grimblast # screenshot program from hyprland
-      hypridle # idle daemon for hyprland
-      hyprlock # lockscreen for hyprland
-      hyprpaper # wallpaper daemon for hyprland
-      pavucontrol # pulseaudio gui
+      pwvucontrol # pipewire gui
       playerctl # player controller
-      swaynotificationcenter # notifications daemon
       sway-audio-idle-inhibit # idle inhibitor
       wl-clipboard # clipboard support
     ]
@@ -36,7 +35,7 @@ in
   imports = [
     ../../shared
     ../../programs/kitty
-    ../../programs/waybar
+    ../../programs/noctalia
   ];
 
   home = {
@@ -47,27 +46,38 @@ in
       NIXOS_OZONE_WL = 1;
       SHELL = "${lib.getExe pkgs.zsh}";
       MOZ_ENABLE_WAYLAND = 1;
-      XDG_CURRENT_DESKTOP = "Hyprland";
-      XDG_SESSION_DESKTOP = "Hyprland";
-      XDG_SESSION_TYPE = "wayland";
-      GDK_BACKEND = "wayland,x11";
-      QT_QPA_PLATFORM = "wayland;xcb";
+      ELECTRON_OZONE_PLATFORM_HINT = "auto";
     };
   };
 
   fonts.fontconfig.enable = true;
 
-  systemd.user.startServices = lib.mkForce "suggest";
+  programs.noctalia-shell.enable = true;
 
   xdg = {
+    desktopEntries.steam = {
+      name = "Steam";
+      exec = "steam -cef-disable-gpu %U";
+      icon = "steam";
+      comment = "Application for managing and playing games on Steam";
+      categories = [
+        "Game"
+        "Network"
+      ];
+      mimeType = [
+        "x-scheme-handler/steam"
+        "x-scheme-handler/steamlink"
+      ];
+    };
+
     configFile = {
       "electron-flags.conf".text = ''
         --enable-features=UseOzonePlatform
         --ozone-platform=wayland
       '';
 
-      "hypr/hyprlock.conf".text = (builtins.readFile ./hyprlock.conf);
-      "hypr/hypridle.conf".text = (builtins.readFile ./hypridle.conf);
+      "niri/config.kdl".source = ./config.kdl;
+      "niri/config".source = ./config;
     };
 
     portal = {
@@ -75,35 +85,22 @@ in
       config = {
         common = {
           default = [
-            "hyprland"
             "gtk"
+            "gnome"
           ];
         };
-        hyprland = {
+        niri = {
           default = [
-            "hyprland"
             "gtk"
+            "gnome"
           ];
-          "org.freedesktop.impl.portal.ScreenCast" = "hyprland";
-          "org.freedesktop.impl.portal.Screenshot" = "hyprland";
         };
       };
       extraPortals = with pkgs; [
-        xdg-desktop-portal-hyprland
         xdg-desktop-portal-gtk
+        xdg-desktop-portal-gnome
       ];
       xdgOpenUsePortal = true;
     };
-  };
-
-  wayland.windowManager.hyprland = {
-    enable = true;
-    extraConfig = (builtins.readFile ./hyprland.conf);
-    plugins = [ ];
-    systemd = {
-      enable = true;
-      variables = [ "--all" ];
-    };
-    xwayland.enable = true;
   };
 }

@@ -1,30 +1,14 @@
-{ inputs, config, ... }:
-let
-  xcli = inputs.xcli.packages.x86_64-linux.default;
-in
+{ inputs, ... }:
 {
-  environment.systemPackages = [ xcli ];
-
   systemd.services.xcli = {
-    description = "xcli subscription server";
+    description = "xcli";
     wantedBy = [ "multi-user.target" ];
     after = [ "network-online.target" "sops-nix.service" ];
     wants = [ "network-online.target" ];
-
     serviceConfig = {
-      Type = "simple";
+      ExecStart = "${inputs.xcli.packages.x86_64-linux.default}/bin/xcli";
       Restart = "on-failure";
       RestartSec = 5;
-    };
-
-    script = ''
-      exec ${xcli}/bin/xcli run
-    '';
-
-    environment = {
-      XCLI_PUBLIC_KEY = "u-2Rr_En_Jx0agQKMG7DlwlLPus2hPLBPMXlOM_-lVU";
-      XCLI_SHORT_ID = "4ba9b78acaa91b44";
-      XCLI_SNI = "yandex.ru";
     };
   };
 }

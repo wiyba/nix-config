@@ -1,0 +1,25 @@
+// This config is in the KDL format: https://kdl.dev
+// "/-" comments out the following node.
+// Check the wiki for a full description of the configuration:
+// https://yalter.github.io/niri/Configuration:-Introduction
+
+include "noctalia.kdl"
+include "outputs.kdl"
+include "config/windows.kdl"
+include "config/input.kdl"
+include "config/layout.kdl"
+include "config/binds.kdl"
+include "config/misc.kdl"
+// include "config/workspaces.kdl"
+include "config/layers.kdl"
+
+spawn-sh-at-startup "noctalia-shell"
+spawn-sh-at-startup "musicpresence"
+spawn-sh-at-startup "sway-audio-idle-inhibit"
+spawn-at-startup "dex" "--autostart"
+spawn-at-startup "steam" "-silent" "-cef-disable-gpu"
+
+// sticky windows support daemon
+// spawn-sh-at-startup "nsticky"
+// niri fullscreen manager
+// spawn-sh-at-startup "nfsm"
