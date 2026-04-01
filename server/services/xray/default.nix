@@ -47,6 +47,10 @@ in
             "clients": ${config.sops.placeholder.xcli-users},
             "decryption": "none"
           },
+          "sniffing": {
+            "enabled": true,
+            "destOverride": ["http", "tls", "quic"]
+          },
           "streamSettings": {
             "network": "tcp",
             "security": "reality",
