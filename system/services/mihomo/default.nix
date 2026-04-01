@@ -126,7 +126,6 @@
 
       rules:
         - GEOIP,PRIVATE,DIRECT
-        - DOMAIN-SUFFIX,ntc.party,LONDON
         - MATCH,RELAY
     '';
     path = "/etc/mihomo/config.yaml";
