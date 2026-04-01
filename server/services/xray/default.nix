@@ -89,6 +89,7 @@ in
                           {
                             type = "field";
                             domain = [
+                              "geosite:tiktok"
                               "geosite:flibusta"
                               "geosite:rutracker"
                               "geosite:category-ai-!cn"
