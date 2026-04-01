@@ -83,35 +83,46 @@ in
                         rules = [
                           {
                             type = "field";
-                            domain = [
-                              "geosite:flibusta"
-                              "geosite:rutracker"
-                            ];
-                            outboundTag = "london";
-                          }
-                          {
-                            type = "field";
-                            ip = [ "geoip:private" ];
-                            outboundTag = "direct";
-                          }
-                          {
-                            type = "field";
-                            domain = [
-                              "geosite:nixos"
-                              "geosite:category-ru"
-                              "domain:wiyba.org"
-                            ];
-                            outboundTag = "direct";
-                          }
-                          {
-                            type = "field";
                             domain = [ "geosite:youtube" ];
                             outboundTag = "moscow";
                           }
                           {
                             type = "field";
-                            network = "tcp,udp";
+                            domain = [
+                              "geosite:flibusta"
+                              "geosite:rutracker"
+                              "geosite:category-ai-!cn"
+                              "geosite:figma"
+                              "geosite:canva"
+                              "geosite:adobe"
+                              "geosite:notion"
+                              "geosite:atlassian"
+                              "geosite:slack"
+                              "geosite:spotify"
+                              "geosite:netflix"
+                              "geosite:deezer"
+                              "geosite:jetbrains"
+                              "geosite:jetbrains-ai"
+                              "geosite:vercel"
+                              "geosite:heroku"
+                              "geosite:digitalocean"
+                              "geosite:dropbox"
+                              "geosite:paypal"
+                              "geosite:stripe"
+                              "geosite:wise"
+                              "geosite:zendesk"
+                              "geosite:autodesk"
+                              "geosite:salesforce"
+                              "geosite:godaddy"
+                              "geosite:wix"
+                              "geosite:patreon"
+                            ];
                             outboundTag = "london";
+                          }
+                          {
+                            type = "field";
+                            network = "tcp,udp";
+                            outboundTag = "direct";
                           }
                         ];
                       }

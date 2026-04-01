@@ -151,7 +151,7 @@
   home-manager.users.wiyba.xdg.configFile = {
     "niri/outputs.kdl".text = ''
       output "DP-1" {
-          mode "2560x1440@144"
+          mode "2560x1440@143.999"
           scale 1.0
           transform "normal"
           position x=0 y=0
