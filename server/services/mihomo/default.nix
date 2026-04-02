@@ -117,6 +117,7 @@
         - GEOSITE,wix,LONDON
         - GEOSITE,patreon,LONDON
         - GEOIP,PRIVATE,DIRECT
+        - IP-CIDR6,::/0,LONDON,no-resolve
         - MATCH,DIRECT
     '';
     path = "/etc/mihomo/config.yaml";
