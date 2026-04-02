@@ -20,9 +20,10 @@
       external-controller: 127.0.0.1:9090
       dns:
         enable: true
+        enhanced-mode: fake-ip
         nameserver:
-          - 1.1.1.1
-          - 8.8.8.8
+          - https://1.1.1.1/dns-query
+          - https://8.8.8.8/dns-query
 
       tun:
         enable: true

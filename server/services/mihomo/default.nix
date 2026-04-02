@@ -116,6 +116,7 @@
         - GEOSITE,godaddy,LONDON
         - GEOSITE,wix,LONDON
         - GEOSITE,patreon,LONDON
+        - DOMAIN-SUFFIX,ntc.party,LONDON
         - GEOIP,PRIVATE,DIRECT
         - IP-CIDR6,::/0,LONDON,no-resolve
         - MATCH,DIRECT
