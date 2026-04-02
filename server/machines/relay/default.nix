@@ -3,6 +3,7 @@
   imports = [
     ./hardware-configuration.nix
     ../../services/health
+    ../../services/mihomo
     ../../services/xray
   ];
 

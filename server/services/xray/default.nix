@@ -1,40 +1,16 @@
 {
   config,
-  pkgs,
-  lib,
   host,
   ...
 }:
-let
-  vlessOut = tag: server: {
-    protocol = "vless";
-    inherit tag;
-    settings.vnext = [
-      {
-        address = server;
-        port = 443;
-        users = [
-          {
-            id = config.sops.placeholder.vless-uuid;
-            flow = "xtls-rprx-vision";
-            encryption = "none";
-          }
-        ];
-      }
-    ];
-    streamSettings = {
-      network = "tcp";
-      security = "reality";
-      realitySettings = {
-        serverName = "yandex.ru";
-        fingerprint = "chrome";
-        publicKey = "u-2Rr_En_Jx0agQKMG7DlwlLPus2hPLBPMXlOM_-lVU";
-        shortId = "4ba9b78acaa91b44";
-      };
-    };
-  };
-in
 {
+  services.xray = {
+    enable = true;
+    settingsFile = config.sops.templates.xray-config.path;
+  };
+
+  systemd.services.xray.after = [ "sops-nix.service" ];
+
   sops.templates.xray-config = {
     content = ''
       {
@@ -62,93 +38,13 @@ in
             }
           }
         }],
-        "outbounds": ${
-          builtins.toJSON (
-            if host == "relay" then
-              [
-                {
-                  protocol = "freedom";
-                  tag = "direct";
-                }
-                (vlessOut "london" "london.wiyba.org")
-                (vlessOut "moscow" "moscow.wiyba.org")
-              ]
-            else
-              [
-                { protocol = "freedom"; }
-              ]
-          )
-        }${
-          lib.optionalString (host == "relay") ''
-            ,
-                    "routing": ${
-                      builtins.toJSON {
-                        domainStrategy = "AsIs";
-                        rules = [
-                          {
-                            type = "field";
-                            domain = [ "geosite:youtube" ];
-                            outboundTag = "moscow";
-                          }
-                          {
-                            type = "field";
-                            domain = [
-                              "geosite:tiktok"
-                              "geosite:flibusta"
-                              "geosite:rutracker"
-                              "geosite:category-ai-!cn"
-                              "geosite:figma"
-                              "geosite:canva"
-                              "geosite:adobe"
-                              "geosite:notion"
-                              "geosite:atlassian"
-                              "geosite:slack"
-                              "geosite:spotify"
-                              "geosite:netflix"
-                              "geosite:deezer"
-                              "geosite:jetbrains"
-                              "geosite:jetbrains-ai"
-                              "geosite:vercel"
-                              "geosite:heroku"
-                              "geosite:digitalocean"
-                              "geosite:dropbox"
-                              "geosite:paypal"
-                              "geosite:stripe"
-                              "geosite:wise"
-                              "geosite:zendesk"
-                              "geosite:autodesk"
-                              "geosite:salesforce"
-                              "geosite:godaddy"
-                              "geosite:wix"
-                              "geosite:patreon"
-                            ];
-                            outboundTag = "london";
-                          }
-                          {
-                            type = "field";
-                            network = "tcp,udp";
-                            outboundTag = "direct";
-                          }
-                        ];
-                      }
-                    }''
-        }
+        "outbounds": [${
+          if host == "relay"
+          then ''{"protocol": "socks", "settings": {"servers": [{"address": "127.0.0.1", "port": 7891}]}}''
+          else ''{"protocol": "freedom"}''
+        }]
       }
     '';
     path = "/etc/xray/config.json";
-  };
-
-  systemd.services.xray = {
-    description = "xray";
-    after = [
-      "network.target"
-      "sops-nix.service"
-    ];
-    wantedBy = [ "multi-user.target" ];
-    serviceConfig = {
-      ExecStart = "${pkgs.xray}/bin/xray run -c /etc/xray/config.json";
-      Restart = "always";
-      RestartSec = 5;
-    };
   };
 }
