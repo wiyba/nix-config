@@ -47,7 +47,7 @@
           type: vless
           server: london.wiyba.org
           port: 443
-          uuid: "${config.sops.placeholder.vless-uuid}"
+          uuid: ${config.sops.placeholder.vless-uuid}
           flow: xtls-rprx-vision
           network: tcp
           tls: true
@@ -63,7 +63,7 @@
           type: vless
           server: moscow.wiyba.org
           port: 443
-          uuid: "${config.sops.placeholder.vless-uuid}"
+          uuid: ${config.sops.placeholder.vless-uuid}
           flow: xtls-rprx-vision
           network: tcp
           tls: true
