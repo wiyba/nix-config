@@ -61,6 +61,9 @@ let
       qbittorrent # best and only torrent client
       osu-lazer # circles gaem
       dex # .config/autostart helper for WMs
+      obs-cmd
+      mpv
+      streamrip
     ]
     ++ fontPkgs;
 
