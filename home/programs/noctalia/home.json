@@ -29,7 +29,8 @@
     },
     "audio": {
         "mprisBlacklist": [
-            "firefox-beta"
+            "firefox-beta",
+            "Telegram"
         ],
         "preferredPlayer": "supersonic-wayland",
         "spectrumFrameRate": 60,
@@ -83,7 +84,7 @@
                 {
                     "characterCount": 2,
                     "colorizeIcons": false,
-                    "emptyColor": "secondary",
+                    "emptyColor": "primary",
                     "enableScrollWheel": true,
                     "focusedColor": "primary",
                     "followFocusedScreen": false,
@@ -92,8 +93,8 @@
                     "hideUnoccupied": false,
                     "iconScale": 0.8,
                     "id": "Workspace",
-                    "labelMode": "index",
-                    "occupiedColor": "secondary",
+                    "labelMode": "none",
+                    "occupiedColor": "primary",
                     "pillSize": 0.6,
                     "showApplications": false,
                     "showApplicationsHover": false,
@@ -116,7 +117,7 @@
                     "clockColor": "none",
                     "customFont": "CaskaydiaCove NF SemiLight",
                     "formatHorizontal": "HH:mm ddd, MMM dd",
-                    "formatVertical": "HH mm --- dd MM",
+                    "formatVertical": "HH mm - dd MM",
                     "id": "Clock",
                     "tooltipFormat": "HH:mm ddd, MMM dd",
                     "useCustomFont": false
@@ -142,16 +143,6 @@
                     "textColor": "none",
                     "useMonospaceFont": true,
                     "usePadding": false
-                },
-                {
-                    "colorizeIcons": false,
-                    "hideMode": "hidden",
-                    "id": "ActiveWindow",
-                    "maxWidth": 145,
-                    "scrollingMode": "hover",
-                    "showIcon": true,
-                    "textColor": "none",
-                    "useFixedWidth": false
                 },
                 {
                     "compactMode": false,
@@ -251,10 +242,10 @@
         "manualSunrise": "06:30",
         "manualSunset": "18:30",
         "monitorForColors": "",
-        "predefinedScheme": "Gruvbox",
+        "predefinedScheme": "GruvboxAlt",
         "schedulingMode": "off",
         "syncGsettings": true,
-        "useWallpaperColors": true
+        "useWallpaperColors": false
     },
     "controlCenter": {
         "cards": [
@@ -364,11 +355,11 @@
     },
     "general": {
         "allowPanelsOnScreenWithoutBar": true,
-        "allowPasswordWithFprintd": true,
+        "allowPasswordWithFprintd": false,
         "animationDisabled": false,
         "animationSpeed": 1,
-        "autoStartAuth": true,
-        "avatarImage": "/etc/nixos/imgs/face",
+        "autoStartAuth": false,
+        "avatarImage": "/etc/nixos/imgs/face.png",
         "boxRadiusRatio": 1,
         "clockFormat": "hh\\nmm",
         "clockStyle": "custom",
@@ -410,6 +401,7 @@
         "lockScreenBlur": 0,
         "lockScreenCountdownDuration": 10000,
         "lockScreenMonitors": [
+            "DP-1"
         ],
         "lockScreenTint": 0,
         "passwordChars": true,

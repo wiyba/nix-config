@@ -4,8 +4,6 @@ hotkey-overlay {
 
 prefer-no-csd
 
-screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
-
 animations {}
 
 debug {
@@ -32,9 +30,9 @@ recent-windows {
     }
 
     binds {
-        Alt+Tab         { next-window     scope="all"; }
-        Alt+Shift+Tab   { previous-window scope="all"; }
-        Alt+grave       { next-window     scope="workspace"; }
-        Alt+Shift+grave { previous-window scope="workspace"; }
+        Alt+Tab         { next-window     scope="workspace"; }
+        Alt+Shift+Tab   { previous-window scope="workspace"; }
+        Alt+grave       { next-window     scope="all"; }
+        Alt+Shift+grave { previous-window scope="all"; }
     }
 }

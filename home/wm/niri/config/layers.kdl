@@ -1,60 +1,50 @@
 // --------- layer rules ---------
 
-// layer-rule {
-//     match namespace="^notifications$"
-//     block-out-from "screencast"
-// }
+layer-rule {
+    match namespace="^notifications$"
+    block-out-from "screencast"
+}
 
-// layer-rule {
-//     match namespace="swaync-control-center"
-//     shadow {
-//         on
-//         softness 40
-//         spread 5
-//         offset x=0 y=5
-//         draw-behind-window true
-//     }
+layer-rule {
+    match namespace="swaync-control-center"
+    shadow {
+        on
+        softness 40
+        spread 5
+        offset x=0 y=5
+        draw-behind-window true
+    }
+}
 
-//     background-effect {
-//         blur true
-//     }
-// }
+layer-rule {
+    match namespace="waybar"
+    opacity 0.75
+    //block-out-from "screencast"
 
-// layer-rule {
-//     match namespace="waybar"
-//     opacity 0.75
-//     //block-out-from "screencast"
+    shadow {
+        on
+        softness 40
+        spread 5
+        offset x=0 y=5
+        draw-behind-window true
+    }
 
-//     shadow {
-//         on
-//         softness 40
-//         spread 5
-//         offset x=0 y=5
-//         draw-behind-window true
-//     }
+    geometry-corner-radius 1
+    //baba-is-float true
+}
 
-//     geometry-corner-radius 1
-//     //baba-is-float true
-// }
+layer-rule {
+    match namespace="vicinae"
+    geometry-corner-radius 10
+}
 
-// layer-rule {
-//     match namespace="vicinae"
-//     geometry-corner-radius 10
-//     background-effect {
-//         blur true
-//     }
-// }
+layer-rule {
+    match namespace="^launcher$"
+    opacity 0.7
+    geometry-corner-radius 10
+}
 
-// layer-rule {
-//     match namespace="^launcher$"
-//     opacity 0.7
-//     geometry-corner-radius 10
-//     background-effect {
-//         blur true
-//     }
-// }
-
-// layer-rule {
-//     match namespace="^wallpaper$"
-//     place-within-backdrop true
-// }
+layer-rule {
+    match namespace="^wallpaper$"
+    place-within-backdrop true
+}

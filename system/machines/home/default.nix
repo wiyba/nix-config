@@ -104,14 +104,39 @@
   sops.templates.xray-config = {
     content = builtins.toJSON {
       log = { loglevel = "warning"; };
+      stats = { };
+      api = {
+        tag = "api";
+        services = [ "StatsService" ];
+      };
+      policy = {
+        levels = {
+          "0" = {
+            statsUserUplink = true;
+            statsUserDownlink = true;
+          };
+        };
+      };
+      routing = {
+        rules = [
+          { inboundTag = [ "api" ]; outboundTag = "api"; }
+        ];
+      };
       inbounds = [
+        {
+          listen = "127.0.0.1";
+          port = 10085;
+          protocol = "dokodemo-door";
+          settings = { address = "127.0.0.1"; };
+          tag = "api";
+        }
         {
           listen = "0.0.0.0";
           port = 8443;
           protocol = "vless";
           settings = {
             clients = [
-              { id = "${config.sops.placeholder.vless-uuid}"; flow = "xtls-rprx-vision"; }
+              { email = "wiyba"; id = "${config.sops.placeholder.vless-uuid}"; flow = "xtls-rprx-vision"; }
             ];
             decryption = "none";
           };
