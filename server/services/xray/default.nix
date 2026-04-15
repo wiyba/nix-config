@@ -9,12 +9,19 @@
     settingsFile = config.sops.templates.xray-config.path;
   };
 
-  systemd.services.xray.after = [ "sops-nix.service" ];
+  systemd.services.xray = {
+    after = [ "sops-nix.service" ];
+    serviceConfig.LogsDirectory = "xray";
+  };
 
   sops.templates.xray-config = {
     content = ''
       {
-        "log": { "loglevel": "warning" },
+        "log": {
+          "loglevel": "warning",
+          "access": "/var/log/xray/access.log",
+          "error": "/var/log/xray/error.log"
+        },
         "stats": {},
         "api": {
           "tag": "api",
