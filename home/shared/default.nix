@@ -54,16 +54,15 @@ let
       python3 # python3
       supersonic-wayland # music player for subsonic api
       telegram-desktop # messanger
-      unzip # decompress files
+      unar # decompress files
       vlc # media player
       vscode # code editor
       zip # compress files
       qbittorrent # best and only torrent client
       osu-lazer # circles gaem
       dex # .config/autostart helper for WMs
-      obs-cmd
-      mpv
-      streamrip
+      obs-cmd # cli for obs binds in wm
+      streamrip # music downloader for qobuz
     ]
     ++ fontPkgs;
 

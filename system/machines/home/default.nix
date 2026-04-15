@@ -100,79 +100,6 @@
     libinput
   ];
 
-  # xray vless+reality inbound
-  sops.templates.xray-config = {
-    content = builtins.toJSON {
-      log = { loglevel = "warning"; };
-      stats = { };
-      api = {
-        tag = "api";
-        services = [ "StatsService" ];
-      };
-      policy = {
-        levels = {
-          "0" = {
-            statsUserUplink = true;
-            statsUserDownlink = true;
-          };
-        };
-      };
-      routing = {
-        rules = [
-          { inboundTag = [ "api" ]; outboundTag = "api"; }
-        ];
-      };
-      inbounds = [
-        {
-          listen = "127.0.0.1";
-          port = 10085;
-          protocol = "dokodemo-door";
-          settings = { address = "127.0.0.1"; };
-          tag = "api";
-        }
-        {
-          listen = "0.0.0.0";
-          port = 8443;
-          protocol = "vless";
-          settings = {
-            clients = [
-              { email = "wiyba"; id = "${config.sops.placeholder.vless-uuid}"; flow = "xtls-rprx-vision"; }
-            ];
-            decryption = "none";
-          };
-          streamSettings = {
-            network = "tcp";
-            security = "reality";
-            realitySettings = {
-              dest = "yandex.ru:443";
-              serverNames = [ "yandex.ru" ];
-              privateKey = "${config.sops.placeholder.xcli-private-key}";
-              shortIds = [ "4ba9b78acaa91b44" ];
-            };
-          };
-        }
-      ];
-      outbounds = [
-        { protocol = "freedom"; }
-      ];
-    };
-    path = "/etc/xray/config.json";
-    mode = "0600";
-  };
-  systemd.services.xray = {
-    description = "xray";
-    after = [
-      "network.target"
-      "sops-nix.service"
-    ];
-    wantedBy = [ "multi-user.target" ];
-    serviceConfig = {
-      Type = "simple";
-      ExecStart = "${pkgs.xray}/bin/xray run -c /etc/xray/config.json";
-      Restart = "always";
-    };
-  };
-
   home-manager.users.wiyba.xdg.configFile = {
     "niri/outputs.kdl".text = ''
       output "DP-1" {
@@ -221,13 +148,12 @@
     '';
   };
 
-  #gaems
-  services.terraria = {
-    enable = true;
-    openFirewall = true;
-    messageOfTheDay = "добро пожлаовать в комююююютер веби!";
-    worldPath = "/var/lib/terraria/sin-vzriva-pirojka.wld";
-  };
+  #services.terraria = {
+  #  enable = true;
+  #  openFirewall = true;
+  #  messageOfTheDay = "добро пожлаовать в комююююютер веби!";
+  #  worldPath = "/var/lib/terraria/sin-vzriva-pirojka.wld";
+  #};
 
   #media
   users.groups.media = { };

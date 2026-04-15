@@ -34,11 +34,6 @@
 
     nixos-raspberrypi.url = "github:nvmd/nixos-raspberrypi/main";
 
-    hyst-panel = {
-      url = "github:wiyba/hyst-panel";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     xcli = {
       url = "github:wiyba/xcli";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -113,11 +108,6 @@
           host = "thinkpad";
           system = "x86_64-linux";
           base = ./system;
-        };
-        stockholm = mkSystem {
-          host = "stockholm";
-          system = "x86_64-linux";
-          base = ./server;
         };
         london = mkSystem {
           host = "london";

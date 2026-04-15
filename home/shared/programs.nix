@@ -56,11 +56,6 @@ let
               user = "root";
               identityFile = [ "~/.ssh/ssh.key" ];
             };
-            "stockholm" = {
-              hostname = "stockholm.wiyba.org";
-              user = "root";
-              identityFile = [ "~/.ssh/ssh.key" ];
-            };
             "moscow" = {
               hostname = "moscow.wiyba.org";
               user = "root";

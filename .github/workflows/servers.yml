@@ -3,14 +3,14 @@ name: build servers
 on:
   push:
     paths:
-      - 'flake.nix'
-      - 'flake.lock'
-      - 'server/**'
+      - "flake.nix"
+      - "flake.lock"
+      - "server/**"
   pull_request:
     paths:
-      - 'flake.nix'
-      - 'flake.lock'
-      - 'server/**'
+      - "flake.nix"
+      - "flake.lock"
+      - "server/**"
 
 jobs:
   build:
@@ -20,7 +20,7 @@ jobs:
       fail-fast: true
       matrix:
         host:
-          - stockholm
+          - relay
           - london
 
     steps:
