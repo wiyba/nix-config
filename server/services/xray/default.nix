@@ -54,7 +54,7 @@
             "port": 443,
             "protocol": "vless",
             "settings": {
-              "clients": ${config.sops.placeholder.xcli-users},
+              "clients": ${config.sops.placeholder.vless-users},
               "decryption": "none"
             },
             "sniffing": {
@@ -67,7 +67,7 @@
               "realitySettings": {
                 "dest": "yandex.ru:443",
                 "serverNames": ["yandex.ru"],
-                "privateKey": "${config.sops.placeholder.xcli-private-key}",
+                "privateKey": "${config.sops.placeholder.vless-key}",
                 "shortIds": ["4ba9b78acaa91b44"]
               }
             }

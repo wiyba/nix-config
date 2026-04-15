@@ -42,9 +42,7 @@
     ];
   };
 
-  # Speaker DSP for ThinkPad internal speakers:
-  # HPF 100Hz (speaker protection) + two resonance notches from Dolby AO data.
-  # All filters only cut — no preamp or limiter needed.
+  #thinkpad speakers optimizer by claude cus im too lazy to get impulse from win
   services.pipewire.extraConfig.pipewire."50-speaker-dsp" = lib.mkIf (host == "thinkpad") {
     "context.modules" = [
       {
@@ -54,10 +52,8 @@
           "media.name" = "Speakers";
           "filter.graph" = {
             nodes = [
-              # HPF 100 Hz — 4th order Linkwitz-Riley (2x Butterworth)
               { type = "builtin"; name = "hpf_1"; label = "bq_highpass"; control = { "Freq" = 100.0; "Q" = 0.707; }; }
               { type = "builtin"; name = "hpf_2"; label = "bq_highpass"; control = { "Freq" = 100.0; "Q" = 0.707; }; }
-              # Resonance cuts from Dolby Audio Optimizer
               { type = "builtin"; name = "eq_1"; label = "bq_peaking"; control = { "Freq" = 469.0; "Q" = 2.9; "Gain" = -4.0; }; }
               { type = "builtin"; name = "eq_2"; label = "bq_peaking"; control = { "Freq" = 656.0; "Q" = 3.5; "Gain" = -2.5; }; }
             ];
@@ -85,6 +81,7 @@
     ];
   };
 
+  #custom node for my audiocard cus builtin not working right for me
   services.pipewire.extraConfig.pipewire."20-ur22c-xlr-mono" = lib.mkIf (host == "home") {
     "context.modules" = [
       {

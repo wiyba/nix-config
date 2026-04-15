@@ -25,29 +25,21 @@
       bind-address: 127.0.0.1
       mode: rule
       log-level: warning
-
-      sniffer:
-        enable: true
-        sniff:
-          TLS:
-            ports: [443, 8443]
-          HTTP:
-            ports: [80, 8080-8880]
-          QUIC:
-            ports: [443]
+      unified-delay: true
+      tcp-concurrent: true
 
       dns:
         enable: true
         nameserver:
-          - 1.1.1.1
-          - 8.8.8.8
+          - https://1.1.1.1/dns-query
+          - https://8.8.8.8/dns-query
 
       proxies:
         - name: london
           type: vless
           server: london.wiyba.org
           port: 443
-          uuid: ${config.sops.placeholder.vless-uuid}
+          uuid: ${config.sops.placeholder.vless-admin}
           flow: xtls-rprx-vision
           network: tcp
           tls: true
@@ -59,35 +51,36 @@
           reality-opts:
             public-key: u-2Rr_En_Jx0agQKMG7DlwlLPus2hPLBPMXlOM_-lVU
             short-id: 4ba9b78acaa91b44
-        - name: moscow
+
+        - name: stockholm
           type: vless
-          server: moscow.wiyba.org
-          port: 443
-          uuid: ${config.sops.placeholder.vless-uuid}
+          server: stockholm.bxteam.org
+          port: 3000
+          uuid: ${config.sops.placeholder.vless-admin}
           flow: xtls-rprx-vision
           network: tcp
           tls: true
           udp: true
           servername: yandex.ru
-          client-fingerprint: chrome
-          alpn:
-            - h2
+          client-fingerprint: firefox
           reality-opts:
-            public-key: u-2Rr_En_Jx0agQKMG7DlwlLPus2hPLBPMXlOM_-lVU
-            short-id: 4ba9b78acaa91b44
+            public-key: HZo_AJE11wgeb5SsMBzDi50n1Gp65DNjz-T0x_SfiEw
+            short-id: 729c4789bda7d43b
+
 
       proxy-groups:
         - name: LONDON
           type: select
           proxies:
             - london
-        - name: MOSCOW
+
+        - name: STOCKHOLM
           type: select
           proxies:
-            - moscow
+            - stockholm
 
       rules:
-        - GEOSITE,youtube,MOSCOW
+        - GEOSITE,youtube,STOCKHOLM
         - GEOSITE,tiktok,LONDON
         - GEOSITE,flibusta,LONDON
         - GEOSITE,rutracker,LONDON

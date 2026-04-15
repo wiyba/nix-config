@@ -4,7 +4,7 @@
     ./hardware-configuration.nix
     ../../services/health
     ../../services/xray
-    ../../services/satisfactory
+    #../../services/satisfactory
   ];
 
   boot = {
