@@ -11,6 +11,7 @@
 
   systemd.services.xray = {
     after = [ "sops-nix.service" ];
+    restartIfChanged = false;
     serviceConfig.LogsDirectory = "xray";
   };
 
