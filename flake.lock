@@ -164,26 +164,6 @@
         "type": "github"
       }
     },
-    "hyst-panel": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1772885471,
-        "narHash": "sha256-pzdl7vj8Xc9tK3LA52JBFSDWLa8n1qMng6hi6RhX8Dk=",
-        "owner": "wiyba",
-        "repo": "hyst-panel",
-        "rev": "299eadd36a9a7f5714515c070b978418ca21a89b",
-        "type": "github"
-      },
-      "original": {
-        "owner": "wiyba",
-        "repo": "hyst-panel",
-        "type": "github"
-      }
-    },
     "lanzaboote": {
       "inputs": {
         "crane": "crane",
@@ -453,7 +433,6 @@
     "root": {
       "inputs": {
         "home-manager": "home-manager",
-        "hyst-panel": "hyst-panel",
         "lanzaboote": "lanzaboote",
         "lazyvim": "lazyvim",
         "nix-index-database": "nix-index-database",
