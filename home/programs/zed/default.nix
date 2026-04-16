@@ -3,7 +3,7 @@
   programs.zed-editor = {
     enable = true;
     userSettings = {
-      theme = "Noctalia Dark";
+      theme = "Gruvbox Dark";
     };
   };
   home.packages = with pkgs; [

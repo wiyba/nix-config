@@ -1,8 +1,40 @@
 {
   config,
   host,
+  lib,
   ...
 }:
+let
+  usernames = import ../../../secrets/users.nix;
+
+  sni = {
+    relay = "storage.yandexcloud.net";
+    london = "fonts.gstatic.com";
+  }.${host};
+
+  mkClient = u: withFlow:
+    let id = ''"${config.sops.placeholder."xray-uuid-${u}"}"''; in
+    if withFlow
+    then ''{"email":"${u}","id":${id},"flow":"xtls-rprx-vision"}''
+    else ''{"email":"${u}","id":${id}}'';
+
+  clients = withFlow:
+    "[" + lib.concatStringsSep "," (map (u: mkClient u withFlow) usernames) + "]";
+
+  realityBlock = ''
+    "dest": "${sni}:443",
+    "serverNames": ["${sni}"],
+    "privateKey": "${config.sops.placeholder."xray-${host}-key-priv"}",
+    "shortIds": ["${config.sops.placeholder."xray-${host}-sid"}"]
+  '';
+
+  sniffing = ''
+    "sniffing": {
+      "enabled": true,
+      "destOverride": ["http", "tls", "quic"]
+    }
+  '';
+in
 {
   services.xray = {
     enable = true;
@@ -16,6 +48,7 @@
   };
 
   sops.templates.xray-config = {
+    path = "/etc/xray/config.json";
     content = ''
       {
         "log": {
@@ -37,8 +70,11 @@
           }
         },
         "routing": {
+          "domainStrategy": "IPIfNonMatch",
           "rules": [
-            { "inboundTag": ["api"], "outboundTag": "api" }
+            { "inboundTag": ["api"], "outboundTag": "api" },
+            { "ip": ["geoip:private"], "outboundTag": "blocked" },
+            { "protocol": ["bittorrent"], "outboundTag": "blocked" }
           ]
         },
         "inbounds": [
@@ -53,33 +89,49 @@
             "listen": "0.0.0.0",
             "port": 443,
             "protocol": "vless",
+            "tag": "vless-tcp",
             "settings": {
-              "clients": ${config.sops.placeholder.vless-users},
+              "clients": ${clients true},
               "decryption": "none"
             },
-            "sniffing": {
-              "enabled": true,
-              "destOverride": ["http", "tls", "quic"]
-            },
+            ${sniffing},
             "streamSettings": {
               "network": "tcp",
               "security": "reality",
               "realitySettings": {
-                "dest": "yandex.ru:443",
-                "serverNames": ["yandex.ru"],
-                "privateKey": "${config.sops.placeholder.vless-key}",
-                "shortIds": ["4ba9b78acaa91b44"]
+                ${realityBlock}
+              }
+            }
+          },
+          {
+            "listen": "0.0.0.0",
+            "port": 8443,
+            "protocol": "vless",
+            "tag": "vless-xhttp",
+            "settings": {
+              "clients": ${clients false},
+              "decryption": "none"
+            },
+            ${sniffing},
+            "streamSettings": {
+              "network": "xhttp",
+              "security": "reality",
+              "xhttpSettings": {
+                "path": "${config.sops.placeholder."xray-${host}-xhttp-path"}"
+              },
+              "realitySettings": {
+                ${realityBlock}
               }
             }
           }
         ],
-        "outbounds": [${
-          if host == "relay"
-          then ''{"protocol": "socks", "settings": {"servers": [{"address": "127.0.0.1", "port": 7891}]}}''
-          else ''{"protocol": "freedom"}''
-        }]
+        "outbounds": [
+          ${if host == "relay"
+            then ''{"protocol":"socks","tag":"out","settings":{"servers":[{"address":"127.0.0.1","port":7891}]}}''
+            else ''{"protocol":"freedom","tag":"out"}''},
+          { "protocol": "blackhole", "tag": "blocked" }
+        ]
       }
     '';
-    path = "/etc/xray/config.json";
   };
 }
