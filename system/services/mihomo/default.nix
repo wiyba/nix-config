@@ -42,39 +42,39 @@
           type: vless
           server: 158.160.216.59
           port: 443
-          uuid: ${config.sops.placeholder.vless-admin}
+          uuid: ${config.sops.placeholder.xray-uuid-home}
           flow: xtls-rprx-vision
           network: tcp
           tls: true
           udp: true
-          servername: yandex.ru
+          servername: storage.yandexcloud.net
           client-fingerprint: chrome
           alpn:
             - h2
           reality-opts:
-            public-key: u-2Rr_En_Jx0agQKMG7DlwlLPus2hPLBPMXlOM_-lVU
-            short-id: 4ba9b78acaa91b44
+            public-key: ${config.sops.placeholder.xray-relay-key-pub}
+            short-id: ${config.sops.placeholder.xray-relay-sid}
         - name: london
           type: vless
           server: london.wiyba.org
           port: 443
-          uuid: ${config.sops.placeholder.vless-admin}
+          uuid: ${config.sops.placeholder.xray-uuid-home}
           flow: xtls-rprx-vision
           network: tcp
           tls: true
           udp: true
-          servername: yandex.ru
+          servername: fonts.gstatic.com
           client-fingerprint: chrome
           alpn:
             - h2
           reality-opts:
-            public-key: u-2Rr_En_Jx0agQKMG7DlwlLPus2hPLBPMXlOM_-lVU
-            short-id: 4ba9b78acaa91b44
+            public-key: ${config.sops.placeholder.xray-london-key-pub}
+            short-id: ${config.sops.placeholder.xray-london-sid}
         - name: stockholm
           type: vless
           server: stockholm.bxteam.org
           port: 3000
-          uuid: ${config.sops.placeholder.vless-admin}
+          uuid: ${config.sops.placeholder.xray-uuid-wiyba}
           flow: xtls-rprx-vision
           network: tcp
           tls: true
