@@ -8,7 +8,7 @@ let
   usernames = import ../../../secrets/users.nix;
 
   sni = {
-    relay = "storage.yandexcloud.net";
+    relay = "yastatic.net";
     london = "fonts.gstatic.com";
   }.${host};
 
