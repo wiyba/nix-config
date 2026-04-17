@@ -18,15 +18,54 @@
       mode: rule
       log-level: warning
       external-controller: 127.0.0.1:9090
+      geodata-mode: true
+      unified-delay: true
+      tcp-concurrent: true
+
       dns:
         enable: true
+        prefer-h3: true
         enhanced-mode: fake-ip
+        fake-ip-range: 198.18.0.1/16
+        fake-ip-filter:
+          - '*.lan'
+          - '*.local'
+          - '+.arpa'
+          - '+.wiyba.org'
+          - 'localhost.*'
+          - 'time.*'
+          - 'pool.ntp.org'
+          - '*.msftncsi.com'
+          - '*.msftconnecttest.com'
+        respect-rules: true
         default-nameserver:
-          - 1.1.1.1
-          - 8.8.8.8
+          - tls://1.1.1.1
+          - tls://9.9.9.9
+        proxy-server-nameserver:
+          - https://1.1.1.1/dns-query
+          - https://9.9.9.9/dns-query
         nameserver:
           - https://1.1.1.1/dns-query
-          - https://8.8.8.8/dns-query
+          - https://9.9.9.9/dns-query
+        nameserver-policy:
+          '+.wiyba.org':
+            - https://1.1.1.1/dns-query
+
+      sniffer:
+        enable: true
+        force-dns-mapping: true
+        parse-pure-ip: true
+        override-destination: true
+        sniff:
+          TLS:
+            ports: [443, 8443]
+          HTTP:
+            ports: [80, 8080-8880]
+          QUIC:
+            ports: [443]
+        skip-domain:
+          - '+.push.apple.com'
+          - 'dns.google'
 
       tun:
         enable: true
@@ -47,7 +86,7 @@
           network: tcp
           tls: true
           udp: true
-          servername: storage.yandexcloud.net
+          servername: yandex.ru
           client-fingerprint: chrome
           alpn:
             - h2
@@ -100,6 +139,10 @@
             - stockholm
 
       rules:
+        - GEOIP,PRIVATE,DIRECT
+        - GEOSITE,nixos,DIRECT
+        - DOMAIN-SUFFIX,wiyba.org,DIRECT
+        # geoblocked
         - GEOSITE,youtube,STOCKHOLM
         - GEOSITE,tiktok,LONDON
         - GEOSITE,flibusta,LONDON
@@ -129,7 +172,6 @@
         - GEOSITE,godaddy,LONDON
         - GEOSITE,wix,LONDON
         - GEOSITE,patreon,LONDON
-        - GEOIP,PRIVATE,DIRECT
         - IP-CIDR6,::/0,LONDON
         - MATCH,RELAY
     '';

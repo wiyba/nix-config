@@ -8,7 +8,7 @@ let
   usernames = import ../../../secrets/users.nix;
 
   sni = {
-    relay = "yastatic.net";
+    relay = "yandex.ru";
     london = "fonts.gstatic.com";
   }.${host};
 
@@ -69,6 +69,15 @@ in
             }
           }
         },
+        "dns": {
+          "servers": [
+            "https+local://1.1.1.1/dns-query",
+            "https+local://9.9.9.9/dns-query",
+            "1.1.1.1",
+            "9.9.9.9"
+          ],
+          "queryStrategy": "UseIP"
+        },
         "routing": {
           "domainStrategy": "IPIfNonMatch",
           "rules": [
@@ -128,7 +137,7 @@ in
         "outbounds": [
           ${if host == "relay"
             then ''{"protocol":"socks","tag":"out","settings":{"servers":[{"address":"127.0.0.1","port":7891}]}}''
-            else ''{"protocol":"freedom","tag":"out"}''},
+            else ''{"protocol":"freedom","tag":"out","settings":{"domainStrategy":"UseIPv4v6"}}''},
           { "protocol": "blackhole", "tag": "blocked" }
         ]
       }
