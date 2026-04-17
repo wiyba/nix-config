@@ -27,12 +27,32 @@
       log-level: warning
       unified-delay: true
       tcp-concurrent: true
+      geodata-mode: true
 
       dns:
         enable: true
+        prefer-h3: true
+        default-nameserver:
+          - tls://1.1.1.1
+          - tls://9.9.9.9
+        proxy-server-nameserver:
+          - https://1.1.1.1/dns-query
+          - https://9.9.9.9/dns-query
         nameserver:
           - https://1.1.1.1/dns-query
-          - https://8.8.8.8/dns-query
+          - https://9.9.9.9/dns-query
+
+      sniffer:
+        enable: true
+        parse-pure-ip: true
+        override-destination: true
+        sniff:
+          TLS:
+            ports: [443, 8443]
+          HTTP:
+            ports: [80, 8080-8880]
+          QUIC:
+            ports: [443]
 
       proxies:
         - name: london
