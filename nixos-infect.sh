@@ -3,10 +3,11 @@
 # Trimmed to a single generic-VPS path for wiyba's flake-based setup.
 #
 # Usage:
-#   curl -sL https://.../nixos-infect.sh | HOSTNAME=newvps bash
+#   curl -sL https://raw.githubusercontent.com/wiyba/nix-config/main/nixos-infect.sh \
+#     | NIX_HOST=stockholm.wiyba.org bash
 #
 # Environment:
-#   HOSTNAME      new host name (default: $(hostname -s))
+#   NIX_HOST      target host name — accepts FQDN (default: $(hostname -f))
 #   REPO_URL      nix-config repo to clone (default: wiyba/nix-config)
 #   REPO_BRANCH   branch to check out (default: main)
 #   NIX_CHANNEL   nix channel to use for the bootstrap build (default: nixos-25.11)
@@ -18,7 +19,13 @@
 
 set -euo pipefail
 
-NEW_HOST="${HOSTNAME:-$(hostname -s)}"
+_fqdn="${NIX_HOST:-${HOSTNAME:-$(hostname -f 2>/dev/null || hostname)}}"
+NEW_HOST="${_fqdn%%.*}"
+if [[ "$_fqdn" == *.* ]]; then
+  NEW_DOMAIN="${_fqdn#*.}"
+else
+  NEW_DOMAIN="$(hostname -d 2>/dev/null || true)"
+fi
 REPO_URL="${REPO_URL:-https://github.com/wiyba/nix-config.git}"
 REPO_BRANCH="${REPO_BRANCH:-main}"
 NIX_CHANNEL="${NIX_CHANNEL:-nixos-25.11}"
@@ -118,8 +125,27 @@ existingSwap() {
   fi
 }
 
-makeSwap()   { swapFile=$(mktemp /tmp/nixos-infect.XXXXX.swp); dd if=/dev/zero of="$swapFile" bs=1M count=1024 status=none; chmod 600 "$swapFile"; mkswap -q "$swapFile"; swapon "$swapFile"; }
-removeSwap() { swapoff -a || true; rm -f /tmp/nixos-infect.*.swp; }
+# Best-effort swap file. Fails gracefully on filesystems that reject swap
+# (btrfs without +C, zfs, overlay, tmpfs) — not worth aborting the install for.
+makeSwap() {
+  swapFile="$(mktemp /tmp/nixos-infect.XXXXX.swp)"
+  if ! dd if=/dev/zero of="$swapFile" bs=1M count=1024 status=none 2>/dev/null; then
+    warn "dd for swap file failed — skipping swap"
+    rm -f "$swapFile"; swapFile=""; return 0
+  fi
+  chmod 600 "$swapFile"
+  # btrfs: try to disable COW on the swap file (ignore if not btrfs)
+  chattr +C "$swapFile" 2>/dev/null || true
+  if ! mkswap -q "$swapFile" 2>/dev/null || ! swapon "$swapFile" 2>/dev/null; then
+    warn "swapon failed (fs likely doesn't support swap files) — continuing without extra swap"
+    rm -f "$swapFile"; swapFile=""
+  fi
+}
+removeSwap() {
+  [ -n "${swapFile:-}" ] || return 0
+  swapoff "$swapFile" 2>/dev/null || true
+  rm -f /tmp/nixos-infect.*.swp
+}
 
 # ---------- config generation ----------------------------------------------
 
@@ -243,7 +269,7 @@ EOF
   zramSwap.enable = $zramswap;
 
   networking.hostName = "$NEW_HOST";
-  networking.domain   = "$(hostname -d 2>/dev/null || true)";
+  networking.domain   = "$NEW_DOMAIN";
 
   services.openssh.enable = true;
   users.users.root.openssh.authorizedKeys.keys = [
