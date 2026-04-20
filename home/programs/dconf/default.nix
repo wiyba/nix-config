@@ -45,5 +45,9 @@ with lib.hm.gvariant;
       window-position = mkTuple [ (-1) (-1) ];
       window-size = mkTuple [ 300 100 ];
     };
+
+    "org/cinnamon/desktop/default-applications/terminal" = {
+      exec = "kitty";
+    };
   };
 }
