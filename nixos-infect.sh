@@ -30,7 +30,7 @@ REPO_URL="${REPO_URL:-https://github.com/wiyba/nix-config.git}"
 REPO_BRANCH="${REPO_BRANCH:-main}"
 NIX_CHANNEL="${NIX_CHANNEL:-nixos-25.11}"
 GEN_DIR="/etc/nixos-generated"
-REPO_DIR="/root/nix-config"
+REPO_DIR="/etc/nixos-repo-staging"
 
 # ---------- helpers ---------------------------------------------------------
 
@@ -342,10 +342,9 @@ EOF
   cat > "$REPO_DIR/POST_INSTALL.md" <<EOF
 # After first boot
 
+The repo is already at /etc/nixos. Generator output is at /etc/nixos-generated.
+
 \`\`\`bash
-# Move repo into place (old bootstrap config is at /old-root/etc/nixos)
-rmdir /etc/nixos 2>/dev/null || rm -rf /etc/nixos
-mv /root/nix-config /etc/nixos
 cd /etc/nixos
 
 # 1. Add $NEW_HOST to flake.nix nixosConfigurations (copy an existing VPS block)
@@ -353,8 +352,6 @@ cd /etc/nixos
 #    (or import it directly), then delete networking.nix.generated
 # 3. Build:
 nh os switch
-
-# Original generator output still lives at /etc/nixos-generated for reference.
 \`\`\`
 EOF
   log "post-install notes written to $REPO_DIR/POST_INSTALL.md"
@@ -395,10 +392,20 @@ infect() {
     cat /etc/resolv.conf.lnk > /etc/resolv.conf
   }
 
-  # Stage lustrate — KEEP /etc/nixos-generated and /root/nix-config out of the list
+  # Build succeeded — swap bootstrap /etc/nixos for the cloned repo so that
+  # after lustrate the user lands straight into their flake repo.
+  if [ -d "$REPO_DIR" ]; then
+    log "replacing /etc/nixos with repo from $REPO_DIR"
+    rm -rf /etc/nixos
+    mv "$REPO_DIR" /etc/nixos
+  fi
+
+  # Stage lustrate — NIXOS_LUSTRATE lists paths to PRESERVE (everything else
+  # gets moved to /old-root on first boot).
   touch /etc/NIXOS
   {
     echo etc/nixos
+    echo etc/nixos-generated
     echo etc/resolv.conf
     echo root/.nix-defexpr/channels
     (cd / && ls etc/ssh/ssh_host_*_key* 2>/dev/null || true)
@@ -438,7 +445,7 @@ fi
 [ -z "${NO_SWAP:-}" ] && removeSwap
 
 log "done. generated config: $GEN_DIR"
-[ -d "$REPO_DIR" ] && log "repo scaffold: $REPO_DIR (see POST_INSTALL.md)"
+[ -d /etc/nixos/.git ] && log "repo installed at /etc/nixos (see /etc/nixos/POST_INSTALL.md)"
 
 if [ -z "${NO_REBOOT:-}" ] && [ -z "${NO_INFECT:-}" ]; then
   log "rebooting in 3s..."

@@ -4,6 +4,7 @@
     description = "mihomo";
     after = [ "network.target" "sops-nix.service" ];
     wantedBy = [ "multi-user.target" ];
+    restartIfChanged = false;
     serviceConfig = {
       ExecStart = "${pkgs.mihomo}/bin/mihomo -d /var/lib/mihomo -f \${CREDENTIALS_DIRECTORY}/config.yaml";
       LoadCredential = "config.yaml:/etc/mihomo/config.yaml";

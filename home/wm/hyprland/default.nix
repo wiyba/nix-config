@@ -38,6 +38,7 @@ in
     ../../shared
     ../../programs/kitty
     ../../programs/waybar
+    ../../programs/albert
   ];
 
   home = {

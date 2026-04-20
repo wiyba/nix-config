@@ -6,6 +6,8 @@
     defaultEditor = true;
     viAlias = true;
     vimAlias = true;
+    withRuby = false;
+    withPython3 = false;
   };
 
   home.packages = with pkgs; [
@@ -13,7 +15,7 @@
 
     # lsp servers
     lua-language-server # lua
-    nodePackages.typescript-language-server # ts/js
+    typescript-language-server # ts/js
     vscode-langservers-extracted # html, css, js
     tailwindcss-language-server # tailwind
     vue-language-server # vue

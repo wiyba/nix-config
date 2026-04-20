@@ -2,6 +2,7 @@
   pkgs,
   inputs,
   host,
+  wm,
   lib,
   ...
 }:
@@ -55,11 +56,11 @@
     nix-ld.enable = true;
     nix-index-database.comma.enable = true;
     uwsm.enable = true;
-    hyprland = {
+    hyprland = lib.mkIf (wm == "hyprland") {
       enable = true;
       withUWSM = true;
     };
-    niri.enable = true;
+    niri.enable = wm == "niri";
   };
 
   services = {
@@ -113,8 +114,8 @@
     useGlobalPkgs = true;
     useUserPackages = true;
     backupFileExtension = "hm-backup";
-    extraSpecialArgs = { inherit inputs host; };
-    users.wiyba = import ../home/wm/niri;
+    extraSpecialArgs = { inherit inputs host wm; };
+    users.wiyba = import (../home/wm + "/${wm}");
   };
 
   environment.etc."chromium/policies/managed/custom.json".text = builtins.toJSON {

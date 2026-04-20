@@ -84,7 +84,6 @@ in
   ../programs/neovim
   ../programs/fastfetch
   ../programs/vscode
-  ../programs/albert
   ../programs/musicpresence
   ../programs/zed
   ../programs/burpsuite
