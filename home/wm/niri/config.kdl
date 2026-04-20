@@ -13,6 +13,7 @@ include "config/misc.kdl"
 // include "config/workspaces.kdl"
 include "config/layers.kdl"
 
+spawn-sh-at-startup "niri-refresh-switch"
 spawn-sh-at-startup "noctalia-shell"
 spawn-sh-at-startup "musicpresence"
 spawn-sh-at-startup "sway-audio-idle-inhibit"

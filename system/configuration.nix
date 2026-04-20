@@ -31,7 +31,6 @@
   '';
 
   imports = [
-    # secrets imported from flake.nix
     ./services/greetd
     ./services/pipewire
     ./services/ssh
@@ -152,6 +151,10 @@
     enable = true;
     nssmdns4 = true;
     openFirewall = true;
+    publish = {
+      enable = true;
+      userServices = true;
+    };
   };
 
   services.udev.extraRules = ''

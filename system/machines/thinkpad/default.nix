@@ -115,6 +115,11 @@
     };
   };
 
+  services.udev.extraRules = ''
+    ACTION=="change", SUBSYSTEM=="power_supply", ATTR{type}=="Mains", \
+      RUN+="${pkgs.util-linux}/bin/runuser -u wiyba -- ${pkgs.bash}/bin/bash -lc 'WAYLAND_DISPLAY=wayland-1 XDG_RUNTIME_DIR=/run/user/1000 niri-refresh-switch || true'"
+  '';
+
   environment.systemPackages = with pkgs; [
     sbctl
     efibootmgr
@@ -123,7 +128,6 @@
     libinput
     tpm2-tss
   ];
-
 
   services.logind = {
     settings.Login = {
@@ -134,7 +138,7 @@
     };
   };
 
-  systemd.sleep.settings.Sleep.HibernateDelaySec = "30m";
+  systemd.sleep.settings.Sleep.HibernateDelaySec = "3h";
 
   services.upower = {
     enable = true;
@@ -144,11 +148,10 @@
     criticalPowerAction = "Hibernate";
   };
 
-  # workaround: upower sandbox blocks hibernate
-  systemd.services.upower.serviceConfig = {
-    ProtectSystem = lib.mkForce "no";
-    PrivateTmp = lib.mkForce false;
-  };
+  # systemd.services.upower.serviceConfig = {
+  #   ProtectSystem = lib.mkForce "no";
+  #   PrivateTmp = lib.mkForce false;
+  # };
 
   systemd.tmpfiles.rules = [
     "z /sys/class/leds/*/brightness 0666 - - - -"
@@ -190,6 +193,10 @@
       CPU_BOOST_ON_AC = 1;
       CPU_BOOST_ON_BAT = 0;
 
+      PLATFORM_PROFILE_ON_BAT = "low-power";
+
+      PCIE_ASPM_ON_BAT = "powersupersave";
+
       START_CHARGE_THRESH_BAT0 = 75;
       STOP_CHARGE_THRESH_BAT0 = 80;
     };
@@ -198,7 +205,7 @@
   home-manager.users.wiyba.xdg.configFile = {
     "niri/outputs.kdl".text = ''
       output "eDP-1" {
-          mode "2880x1800@120"
+          mode "2880x1800@60"
           scale 1.5
           transform "normal"
           position x=0 y=0
@@ -249,9 +256,12 @@
   };
 
   programs.steam.gamescopeSession.args = [
-    "-W" "2880"
-    "-H" "1800"
-    "-r" "60"
+    "-W"
+    "2880"
+    "-H"
+    "1800"
+    "-r"
+    "60"
   ];
 
   system.stateVersion = "24.11";
