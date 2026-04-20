@@ -1,4 +1,6 @@
 input {
+    warp-mouse-to-focus
+
     keyboard {
         xkb {
             layout "us,ru"

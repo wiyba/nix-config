@@ -1,6 +1,7 @@
 binds {
     Mod+Shift+Slash              { show-hotkey-overlay; }
     Mod+Tab repeat=false         { toggle-overview; }
+    Mod+Grave repeat=false       { focus-monitor-previous; }
     Mod+Q repeat=false           { close-window; }
     Mod+Ctrl+Q                   { spawn-sh "kill -9 $(niri msg -j windows | jq '.[] | select(.is_focused == true)' | jq .pid)"; }
     Mod+Ctrl+Escape allow-inhibiting=false { toggle-keyboard-shortcuts-inhibit; }

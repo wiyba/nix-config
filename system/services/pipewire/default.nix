@@ -12,7 +12,7 @@
     extraConfig.pipewire = {
       "11-resample-quality" = {
         "stream.properties" = {
-          "resample.quality" = 10;
+          "resample.quality" = 6;
         };
       };
     };
@@ -22,24 +22,9 @@
     "context.properties" = {
       "default.clock.rate" = 48000;
       "default.clock.quantum" = 2048;
-      "default.clock.min-quantum" = 1024;
-      "default.clock.max-quantum" = 4096;
+      "default.clock.min-quantum" = 256;
+      "default.clock.max-quantum" = 8192;
     };
-  };
-
-  services.pipewire.wireplumber.extraConfig."10-ur22c" = lib.mkIf (host == "home") {
-    "monitor.alsa.rules" = [
-      {
-        matches = [
-          { "device.name" = "~alsa_card.usb-Yamaha_Corporation_Steinberg_UR22C.*"; }
-        ];
-        actions = {
-          update-props = {
-            "device.profile" = "output:analog-stereo+input:analog-surround-40";
-          };
-        };
-      }
-    ];
   };
 
   #thinkpad speakers optimizer by claude cus im too lazy to get impulse from win
@@ -75,31 +60,6 @@
             "node.name" = "effect_output.speaker_dsp";
             "node.target" = "alsa_output.pci-0000_00_1f.3-platform-skl_hda_dsp_generic.HiFi__Speaker__sink";
             "node.passive" = true;
-          };
-        };
-      }
-    ];
-  };
-
-  #custom node for my audiocard cus builtin not working right for me
-  services.pipewire.extraConfig.pipewire."20-ur22c-xlr-mono" = lib.mkIf (host == "home") {
-    "context.modules" = [
-      {
-        name = "libpipewire-module-loopback";
-        args = {
-          "node.description" = "UR22C XLR Mono";
-          "capture.props" = {
-            "node.name" = "ur22c-xlr-capture";
-            "audio.channels" = 2;
-            "audio.position" = [ "FL" "FR" ];
-            "stream.dont-remix" = true;
-            "node.target" = "alsa_input.usb-Yamaha_Corporation_Steinberg_UR22C-00.analog-surround-40";
-            "node.passive" = true;
-          };
-          "playback.props" = {
-            "node.name" = "ur22c-xlr-mono";
-            "media.class" = "Audio/Source";
-            "audio.position" = [ "MONO" ];
           };
         };
       }

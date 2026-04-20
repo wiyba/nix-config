@@ -11,7 +11,7 @@
 
     # lsp servers
     lua-language-server # lua
-    nodePackages.typescript-language-server # ts/js
+    typescript-language-server # ts/js
     vscode-langservers-extracted # html, css, js
     tailwindcss-language-server # tailwind
     vue-language-server # vue

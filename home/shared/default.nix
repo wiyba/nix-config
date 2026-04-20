@@ -59,7 +59,7 @@ let
       vscode # code editor
       zip # compress files
       qbittorrent # best and only torrent client
-      osu-lazer # circles gaem
+      osu-lazer-bin # circles gaem
       dex # .config/autostart helper for WMs
       obs-cmd # cli for obs binds in wm
       streamrip # music downloader for qobuz
@@ -85,6 +85,7 @@ in
 
     userDirs = {
       enable = true;
+      setSessionVariables = false;
       createDirectories = true;
       download = "${homeDirectory}/Downloads";
       videos = "${homeDirectory}/Videos";

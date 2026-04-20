@@ -58,6 +58,7 @@
           host,
           system,
           base,
+          wm ? null,
         }:
         nixpkgs.lib.nixosSystem {
           inherit system;
@@ -71,7 +72,7 @@
             { nix.registry.nixpkgs.flake = nixpkgs; }
             { nixpkgs.overlays = overlays; }
           ];
-          specialArgs = { inherit inputs host; isServer = base == ./server; };
+          specialArgs = { inherit inputs host wm; isServer = base == ./server; };
         };
 
       mkRpi =
@@ -103,11 +104,13 @@
           host = "home";
           system = "x86_64-linux";
           base = ./system;
+          wm = "niri";
         };
         thinkpad = mkSystem {
           host = "thinkpad";
           system = "x86_64-linux";
           base = ./system;
+          wm = "niri";
         };
         london = mkSystem {
           host = "london";

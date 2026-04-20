@@ -17,6 +17,7 @@
       ];
       wants = [ "acme-finished-${config.networking.fqdn}.target" ];
       wantedBy = [ "multi-user.target" ];
+      restartIfChanged = false;
       serviceConfig = {
         Type = "simple";
         ExecStart = "${pkgs.hysteria}/bin/hysteria server";
