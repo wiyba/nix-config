@@ -15,6 +15,7 @@
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
     kernelModules = [ "hid_playstation" ];
+    consoleLogLevel = 3;
 
     initrd = {
       systemd.enable = true;
@@ -25,9 +26,22 @@
         allowDiscards = true;
         bypassWorkqueues = true;
       };
+      systemd.services.early-backlight = {
+        wantedBy = [ "cryptsetup.target" ];
+        before = [ "systemd-cryptsetup@cryptroot.service" ];
+        unitConfig.DefaultDependencies = false;
+        serviceConfig.Type = "oneshot";
+        script = ''
+          while [ ! -e /sys/class/backlight/intel_backlight/brightness ]; do sleep 0.1; done
+          echo 40 > /sys/class/backlight/intel_backlight/brightness
+        '';
+      };
     };
 
-    kernelParams = [ "video=2880x1800@60" ];
+    kernelParams = [
+      "video=eDP-1:2880x1800@60"
+      "i915.enable_dpcd_backlight=1"
+    ];
 
     loader.efi = {
       canTouchEfiVariables = true;
@@ -36,7 +50,7 @@
 
     loader.systemd-boot = {
       enable = lib.mkForce false;
-      configurationLimit = 3;
+      configurationLimit = 10;
       consoleMode = "max";
     };
 
@@ -79,6 +93,8 @@
       serviceConfig = {
         Restart = "always";
         RestartSec = "2s";
+        TimeoutStopSec = "5s";
+        KillMode = "mixed";
       };
     };
     fprint-fix = {
@@ -173,6 +189,8 @@
   };
 
   services.fprintd.enable = true;
+
+  services.fwupd.enable = true;
 
   services.power-profiles-daemon.enable = false;
 

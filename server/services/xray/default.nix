@@ -5,11 +5,13 @@
   ...
 }:
 let
-  usernames = import ../../../secrets/users.nix;
+  users = import ../../../secrets/users.nix;
+  hostUsers = lib.filter (u: lib.elem host users.${u}) (lib.attrNames users);
 
   sni = {
-    relay = "yandex.ru";
-    london = "fonts.gstatic.com";
+    relay     = "yandex.ru";
+    london    = "fonts.gstatic.com";
+    stockholm = "fonts.googleapis.com";
   }.${host};
 
   mkClient = u: withFlow:
@@ -19,7 +21,7 @@ let
     else ''{"email":"${u}","id":${id}}'';
 
   clients = withFlow:
-    "[" + lib.concatStringsSep "," (map (u: mkClient u withFlow) usernames) + "]";
+    "[" + lib.concatStringsSep "," (map (u: mkClient u withFlow) hostUsers) + "]";
 
   realityBlock = ''
     "dest": "${sni}:443",

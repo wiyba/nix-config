@@ -2,13 +2,19 @@
 {
   systemd.services.mihomo = {
     description = "mihomo";
-    after = [ "network.target" "sops-nix.service" ];
+    after = [
+      "network.target"
+      "sops-nix.service"
+    ];
     wantedBy = [ "multi-user.target" ];
     restartIfChanged = false;
     serviceConfig = {
       ExecStart = "${pkgs.mihomo}/bin/mihomo -d /var/lib/mihomo -f \${CREDENTIALS_DIRECTORY}/config.yaml";
       LoadCredential = "config.yaml:/etc/mihomo/config.yaml";
-      AmbientCapabilities = [ "CAP_NET_ADMIN" "CAP_NET_RAW" ];
+      AmbientCapabilities = [
+        "CAP_NET_ADMIN"
+        "CAP_NET_RAW"
+      ];
       StateDirectory = "mihomo";
     };
   };
@@ -112,18 +118,20 @@
             short-id: ${config.sops.placeholder.xray-london-sid}
         - name: stockholm
           type: vless
-          server: stockholm.bxteam.org
-          port: 3000
-          uuid: ${config.sops.placeholder.xray-uuid-wiyba}
+          server: stockholm.wiyba.org
+          port: 443
+          uuid: ${config.sops.placeholder.xray-uuid-home}
           flow: xtls-rprx-vision
           network: tcp
           tls: true
           udp: true
-          servername: yandex.ru
-          client-fingerprint: firefox
+          servername: fonts.googleapis.com
+          client-fingerprint: chrome
+          alpn:
+            - h2
           reality-opts:
-            public-key: HZo_AJE11wgeb5SsMBzDi50n1Gp65DNjz-T0x_SfiEw
-            short-id: 729c4789bda7d43b
+            public-key: ${config.sops.placeholder.xray-stockholm-key-pub}
+            short-id: ${config.sops.placeholder.xray-stockholm-sid}
 
       proxy-groups:
         - name: RELAY
@@ -141,7 +149,8 @@
 
       rules:
         - GEOIP,PRIVATE,DIRECT
-        - GEOSITE,nixos,DIRECT
+        - DOMAIN-SUFFIX,nixos.org,LONDON
+        - DOMAIN-SUFFIX,cachix.org,LONDON
         - DOMAIN-SUFFIX,wiyba.org,DIRECT
         # geoblocked
         - GEOSITE,youtube,STOCKHOLM

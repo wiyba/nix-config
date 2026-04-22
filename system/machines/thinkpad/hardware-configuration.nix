@@ -13,7 +13,14 @@
     "xe"
     "i915"
   ];
-  boot.initrd.kernelModules = [ ];
+  boot.initrd.kernelModules = [
+    "i915"
+    "mei"
+    "mei_me"
+    "mei_gsc"
+    "mei_gsc_proxy"
+  ];
+  boot.blacklistedKernelModules = [ "igen6_edac" ];
   boot.kernelModules = [
     "kvm-intel"
     "thinkpad_acpi"
