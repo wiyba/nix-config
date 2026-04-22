@@ -1,7 +1,8 @@
 { config, lib, isServer ? false, ... }:
 let
-  usernames = import ./users.nix;
-  xrayHosts = [ "relay" "london" ];
+  users = import ./users.nix;
+  usernames = lib.attrNames users;
+  xrayHosts = [ "relay" "london" "stockholm" ];
 
   uuidSecrets = lib.listToAttrs (map (u: {
     name = "xray-uuid-${u}";
@@ -44,10 +45,10 @@ in
           owner = "root";
           mode = "0444";
           path = "/run/secrets/xcli-users.json";
-          content = builtins.toJSON (lib.listToAttrs (map (u: {
-            name = u;
-            value = config.sops.placeholder."xray-uuid-${u}";
-          }) usernames));
+          content = builtins.toJSON (lib.mapAttrs (u: hosts: {
+            uuid = config.sops.placeholder."xray-uuid-${u}";
+            inherit hosts;
+          }) users);
         };
       })
       (lib.mkIf isServer {

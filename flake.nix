@@ -127,6 +127,11 @@
           system = "x86_64-linux";
           base = ./server;
         };
+        stockholm = mkSystem {
+          host = "stockholm";
+          system = "x86_64-linux";
+          base = ./server;
+        };
         rpi5 = mkRpi {
           host = "rpi5";
           system = "aarch64-linux";
