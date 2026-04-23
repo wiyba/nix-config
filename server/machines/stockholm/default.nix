@@ -4,6 +4,7 @@
     ./hardware-configuration.nix
     ../../services/health
     ../../services/xray
+    ../../services/xray-collect
   ];
 
   boot = {
