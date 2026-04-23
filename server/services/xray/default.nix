@@ -5,8 +5,7 @@
   ...
 }:
 let
-  users = import ../../../secrets/users.nix;
-  hostUsers = lib.filter (u: lib.elem host users.${u}) (lib.attrNames users);
+  hostUsers = (import ../../../secrets/users.nix).users;
 
   sni = {
     relay     = "yandex.ru";
@@ -61,7 +60,7 @@ in
         "stats": {},
         "api": {
           "tag": "api",
-          "services": ["StatsService"]
+          "services": ["StatsService", "HandlerService"]
         },
         "policy": {
           "levels": {

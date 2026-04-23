@@ -1,37 +1,77 @@
-{ config, lib, isServer ? false, ... }:
+{
+  config,
+  lib,
+  isServer ? false,
+  ...
+}:
 let
-  users = import ./users.nix;
-  usernames = lib.attrNames users;
-  xrayHosts = [ "relay" "london" "stockholm" ];
+  usersData = import ./users.nix;
+  usernames = usersData.users;
+  admins = usersData.admins;
+  xrayHosts = [
+    "relay"
+    "london"
+    "stockholm"
+  ];
 
-  uuidSecrets = lib.listToAttrs (map (u: {
-    name = "xray-uuid-${u}";
-    value = { key = "xray/uuids/${u}"; };
-  }) usernames);
+  uuidSecrets = lib.listToAttrs (
+    map (u: {
+      name = "xray-uuid-${u}";
+      value = {
+        key = "xray/uuids/${u}";
+      };
+    }) usernames
+  );
 
-  hostSecrets = lib.listToAttrs (lib.concatMap (h: [
-    { name = "xray-${h}-key-priv";   value = { key = "xray/${h}/key_priv"; }; }
-    { name = "xray-${h}-key-pub";    value = { key = "xray/${h}/key_pub"; }; }
-    { name = "xray-${h}-sid";        value = { key = "xray/${h}/sid"; }; }
-    { name = "xray-${h}-xhttp-path"; value = { key = "xray/${h}/xhttp_path"; }; }
-  ]) xrayHosts);
+  hostSecrets = lib.listToAttrs (
+    lib.concatMap (h: [
+      {
+        name = "xray-${h}-key-priv";
+        value = {
+          key = "xray/${h}/key_priv";
+        };
+      }
+      {
+        name = "xray-${h}-key-pub";
+        value = {
+          key = "xray/${h}/key_pub";
+        };
+      }
+      {
+        name = "xray-${h}-sid";
+        value = {
+          key = "xray/${h}/sid";
+        };
+      }
+      {
+        name = "xray-${h}-xhttp-path";
+        value = {
+          key = "xray/${h}/xhttp_path";
+        };
+      }
+    ]) xrayHosts
+  );
 in
 {
   sops = {
     defaultSopsFile = ./secrets.yaml;
     age.keyFile = "/etc/nixos/secrets/sops-age.key";
 
-    secrets = uuidSecrets // hostSecrets // {
-      github-token = { };
-      acme-env = { };
-      cloudflare = { };
-      navidrome-env = { };
-      ssh = lib.mkIf (!isServer) {
-        owner = "wiyba";
-        mode = "0600";
-        path = "/home/wiyba/.ssh/ssh.key";
+    secrets =
+      uuidSecrets
+      // hostSecrets
+      // {
+        github-token = { };
+        acme-env = { };
+        cloudflare = { };
+        navidrome-env = { };
+        xray-agent = { };
+        ssh = lib.mkIf (!isServer) {
+          owner = "wiyba";
+          mode = "0600";
+          path = "/home/wiyba/.ssh/ssh.key";
+        };
       };
-    };
 
     templates = lib.mkMerge [
       (lib.mkIf (!isServer) {
@@ -45,10 +85,12 @@ in
           owner = "root";
           mode = "0444";
           path = "/run/secrets/xcli-users.json";
-          content = builtins.toJSON (lib.mapAttrs (u: hosts: {
-            uuid = config.sops.placeholder."xray-uuid-${u}";
-            inherit hosts;
-          }) users);
+          content = builtins.toJSON (
+            lib.genAttrs usernames (u: {
+              uuid = config.sops.placeholder."xray-uuid-${u}";
+              admin = lib.elem u admins;
+            })
+          );
         };
       })
       (lib.mkIf isServer {

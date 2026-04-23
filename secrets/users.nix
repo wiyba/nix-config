@@ -1,15 +1,22 @@
 {
-  wiyba   = [ "relay" "london" "stockholm" ];
-  home    = [ "relay" "london" "stockholm" ];
-  mamo    = [ "relay" "london" "stockholm" ];
-  papo    = [ "relay" "london" "stockholm" ];
-  obguy   = [ "relay" "london" "stockholm" ];
-  nonplay = [ "relay" "london" "stockholm" ];
-  irs     = [ "relay" "london" "stockholm" ];
-
-  cvaze   = [ "london" "stockholm" ];
-  kika    = [ "london" "stockholm" ];
-  osman   = [ "london" "stockholm" ];
-
-  relay   = [ "london" "stockholm" ];
+  users = [
+    "wiyba"
+    "home"
+    "mamo"
+    "papo"
+    "nonplay"
+    "obguy"
+    "irs"
+    "cvaze"
+    "kika"
+    "osman"
+    "relay"
+  ];
+  admins = [
+    "wiyba"
+    "home"
+    "mamo"
+    "papo"
+    "nonplay"
+  ];
 }

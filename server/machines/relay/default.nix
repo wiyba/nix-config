@@ -5,6 +5,7 @@
     ../../services/health
     ../../services/mihomo
     ../../services/xray
+    ../../services/xray-collect
   ];
 
   boot = {
