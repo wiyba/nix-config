@@ -2,9 +2,8 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ../../services/health
+    ../../services/acme
     ../../services/xray
-    ../../services/xray-collect
     #../../services/satisfactory
   ];
 

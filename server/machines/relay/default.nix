@@ -2,10 +2,9 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ../../services/health
     ../../services/mihomo
+    ../../services/acme
     ../../services/xray
-    ../../services/xray-collect
   ];
 
   boot = {
