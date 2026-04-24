@@ -48,6 +48,7 @@ in
   services.nginx = {
     enable = true;
     virtualHosts."${config.networking.fqdn}" = {
+      onlySSL = true;
       useACMEHost = "${config.networking.fqdn}";
       listen = [{ addr = "0.0.0.0"; port = 9443; ssl = true; }];
       locations."/".proxyPass = "http://127.0.0.1:9999";

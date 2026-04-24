@@ -245,6 +245,7 @@ in
   services.nginx = {
     enable = true;
     virtualHosts."${config.networking.fqdn}" = {
+      onlySSL = true;
       useACMEHost = "${config.networking.fqdn}";
       listen = [
         {
