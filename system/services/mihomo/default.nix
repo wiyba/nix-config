@@ -109,7 +109,7 @@
           network: tcp
           tls: true
           udp: true
-          servername: fonts.gstatic.com
+          servername: vk.com
           client-fingerprint: chrome
           alpn:
             - h2
@@ -125,7 +125,7 @@
           network: tcp
           tls: true
           udp: true
-          servername: fonts.googleapis.com
+          servername: vk.com
           client-fingerprint: chrome
           alpn:
             - h2
@@ -152,6 +152,9 @@
         - DOMAIN-SUFFIX,nixos.org,LONDON
         - DOMAIN-SUFFIX,cachix.org,LONDON
         - DOMAIN-SUFFIX,wiyba.org,DIRECT
+        # roblox
+        - GEOSITE,roblox,LONDON
+        - IP-ASN,22697,LONDON,no-resolve
         # geoblocked
         - GEOSITE,youtube,STOCKHOLM
         - GEOSITE,tiktok,LONDON

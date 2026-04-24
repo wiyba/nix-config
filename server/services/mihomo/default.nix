@@ -49,7 +49,7 @@
         override-destination: true
         sniff:
           TLS:
-            ports: [443, 8443]
+            ports: [443]
           HTTP:
             ports: [80, 8080-8880]
           QUIC:
@@ -65,7 +65,7 @@
           network: tcp
           tls: true
           udp: true
-          servername: fonts.gstatic.com
+          servername: vk.com
           client-fingerprint: chrome
           alpn:
             - h2
@@ -82,7 +82,7 @@
           network: tcp
           tls: true
           udp: true
-          servername: fonts.googleapis.com
+          servername: vk.com
           client-fingerprint: chrome
           alpn:
             - h2
@@ -104,6 +104,7 @@
 
       rules:
         - GEOSITE,youtube,STOCKHOLM
+        - GEOSITE,lastfm,LONDON
         - GEOSITE,tiktok,LONDON
         - GEOSITE,flibusta,LONDON
         - GEOSITE,rutracker,LONDON
