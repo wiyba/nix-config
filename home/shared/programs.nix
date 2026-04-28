@@ -31,7 +31,7 @@ let
           plugins = [ ];
         };
 
-	mangohud.enable = true;
+        mangohud.enable = true;
 
         ssh = {
           enable = true;
@@ -49,26 +49,29 @@ let
               controlPath = "~/.ssh/master-%r@%n:%p";
               controlPersist = "no";
               identityFile = [ "~/.ssh/ssh.key" ];
-              port = 2222;
             };
             "london" = {
               hostname = "london.wiyba.org";
               user = "root";
+              port = 2222;
               identityFile = [ "~/.ssh/ssh.key" ];
             };
-            "moscow" = {
-              hostname = "moscow.wiyba.org";
+            "stockholm" = {
+              hostname = "stockholm.wiyba.org";
               user = "root";
+              port = 2222;
               identityFile = [ "~/.ssh/ssh.key" ];
             };
             "relay" = {
               hostname = "relay.wiyba.org";
               user = "root";
+              port = 2222;
               identityFile = [ "~/.ssh/ssh.key" ];
             };
             "home" = {
               hostname = "home.wiyba.org";
               user = "wiyba";
+              port = 2222;
               identityFile = [ "~/.ssh/ssh.key" ];
             };
           };

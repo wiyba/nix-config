@@ -22,7 +22,7 @@
 
   sops.templates.mihomo-relay-config = {
     content = ''
-      mixed-port: 7891
+      socks-port: 7891
       bind-address: 127.0.0.1
       mode: rule
       log-level: warning
@@ -34,8 +34,8 @@
         enable: true
         prefer-h3: true
         default-nameserver:
-          - tls://1.1.1.1
-          - tls://9.9.9.9
+          - 77.88.8.8
+          - 77.88.8.1
         proxy-server-nameserver:
           - https://1.1.1.1/dns-query
           - https://9.9.9.9/dns-query
@@ -90,51 +90,41 @@
             public-key: ${config.sops.placeholder.xray-stockholm-key-pub}
             short-id: ${config.sops.placeholder.xray-stockholm-sid}
 
-
-      proxy-groups:
-        - name: LONDON
-          type: select
-          proxies:
-            - london
-
-        - name: STOCKHOLM
-          type: select
-          proxies:
-            - stockholm
-
       rules:
-        - GEOSITE,youtube,STOCKHOLM
-        - GEOSITE,lastfm,LONDON
-        - GEOSITE,tiktok,LONDON
-        - GEOSITE,flibusta,LONDON
-        - GEOSITE,rutracker,LONDON
-        - GEOSITE,category-ai-!cn,LONDON
-        - GEOSITE,figma,LONDON
-        - GEOSITE,canva,LONDON
-        - GEOSITE,adobe,LONDON
-        - GEOSITE,notion,LONDON
-        - GEOSITE,atlassian,LONDON
-        - GEOSITE,slack,LONDON
-        - GEOSITE,spotify,LONDON
-        - GEOSITE,netflix,LONDON
-        - GEOSITE,deezer,LONDON
-        - GEOSITE,jetbrains,LONDON
-        - GEOSITE,jetbrains-ai,LONDON
-        - GEOSITE,vercel,LONDON
-        - GEOSITE,heroku,LONDON
-        - GEOSITE,digitalocean,LONDON
-        - GEOSITE,dropbox,LONDON
-        - GEOSITE,paypal,LONDON
-        - GEOSITE,stripe,LONDON
-        - GEOSITE,wise,LONDON
-        - GEOSITE,zendesk,LONDON
-        - GEOSITE,autodesk,LONDON
-        - GEOSITE,salesforce,LONDON
-        - GEOSITE,godaddy,LONDON
-        - GEOSITE,wix,LONDON
-        - GEOSITE,patreon,LONDON
-        - GEOIP,PRIVATE,DIRECT
-        - IP-CIDR6,::/0,LONDON
+        # optimization
+        #- DOMAIN-SUFFIX,nixos.org,london # x2 quota usage
+        #- DOMAIN-SUFFIX,cachix.org,london
+        - GEOSITE,roblox,stockholm
+        - IP-ASN,22697,stockholm,no-resolve
+        # geoblocked
+        - DOMAIN-SUFFIX,last.fm,london
+        - DOMAIN-SUFFIX,audioscrobbler.com,london
+        - GEOSITE,youtube,stockholm
+        - GEOSITE,lastfm,london
+        - GEOSITE,tiktok,london
+        - GEOSITE,flibusta,london
+        - GEOSITE,rutracker,london
+        - GEOSITE,category-ai-!cn,london
+        - GEOSITE,figma,london
+        - GEOSITE,canva,london
+        - GEOSITE,adobe,london
+        - GEOSITE,notion,london
+        - GEOSITE,atlassian,london
+        - GEOSITE,slack,london
+        - GEOSITE,spotify,london
+        - GEOSITE,netflix,london
+        - GEOSITE,twitch,london
+        - GEOSITE,deezer,london
+        - GEOSITE,jetbrains,london
+        - GEOSITE,jetbrains-ai,london
+        - GEOSITE,vercel,london
+        - GEOSITE,digitalocean,london
+        - GEOSITE,dropbox,london
+        - GEOSITE,paypal,london
+        - GEOSITE,stripe,london
+        - GEOSITE,zendesk,london
+        - GEOSITE,autodesk,london
+        - GEOSITE,patreon,london
         - MATCH,DIRECT
     '';
     path = "/etc/mihomo/config.yaml";

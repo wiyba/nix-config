@@ -46,17 +46,14 @@
           - '*.msftconnecttest.com'
         respect-rules: true
         default-nameserver:
-          - tls://1.1.1.1
-          - tls://9.9.9.9
+          - 77.88.8.8
+          - 77.88.8.1
         proxy-server-nameserver:
           - https://1.1.1.1/dns-query
           - https://9.9.9.9/dns-query
         nameserver:
           - https://1.1.1.1/dns-query
           - https://9.9.9.9/dns-query
-        nameserver-policy:
-          '+.wiyba.org':
-            - https://1.1.1.1/dns-query
 
       sniffer:
         enable: true
@@ -100,93 +97,12 @@
           reality-opts:
             public-key: ${config.sops.placeholder.xray-relay-key-pub}
             short-id: ${config.sops.placeholder.xray-relay-sid}
-        - name: london
-          type: vless
-          server: london.wiyba.org
-          port: 443
-          uuid: ${config.sops.placeholder.xray-uuid-home}
-          flow: xtls-rprx-vision
-          network: tcp
-          tls: true
-          udp: true
-          servername: vk.com
-          client-fingerprint: chrome
-          alpn:
-            - h2
-          reality-opts:
-            public-key: ${config.sops.placeholder.xray-london-key-pub}
-            short-id: ${config.sops.placeholder.xray-london-sid}
-        - name: stockholm
-          type: vless
-          server: stockholm.wiyba.org
-          port: 443
-          uuid: ${config.sops.placeholder.xray-uuid-home}
-          flow: xtls-rprx-vision
-          network: tcp
-          tls: true
-          udp: true
-          servername: vk.com
-          client-fingerprint: chrome
-          alpn:
-            - h2
-          reality-opts:
-            public-key: ${config.sops.placeholder.xray-stockholm-key-pub}
-            short-id: ${config.sops.placeholder.xray-stockholm-sid}
-
-      proxy-groups:
-        - name: RELAY
-          type: select
-          proxies:
-            - relay
-        - name: LONDON
-          type: select
-          proxies:
-            - london
-        - name: STOCKHOLM
-          type: select
-          proxies:
-            - stockholm
 
       rules:
         - GEOIP,PRIVATE,DIRECT
-        - DOMAIN-SUFFIX,nixos.org,LONDON
-        - DOMAIN-SUFFIX,cachix.org,LONDON
         - DOMAIN-SUFFIX,wiyba.org,DIRECT
-        # roblox
-        - GEOSITE,roblox,LONDON
-        - IP-ASN,22697,LONDON,no-resolve
-        # geoblocked
-        - GEOSITE,youtube,STOCKHOLM
-        - GEOSITE,tiktok,LONDON
-        - GEOSITE,flibusta,LONDON
-        - GEOSITE,rutracker,LONDON
-        - GEOSITE,category-ai-!cn,LONDON
-        - GEOSITE,figma,LONDON
-        - GEOSITE,canva,LONDON
-        - GEOSITE,adobe,LONDON
-        - GEOSITE,notion,LONDON
-        - GEOSITE,atlassian,LONDON
-        - GEOSITE,slack,LONDON
-        - GEOSITE,spotify,LONDON
-        - GEOSITE,netflix,LONDON
-        - GEOSITE,deezer,LONDON
-        - GEOSITE,jetbrains,LONDON
-        - GEOSITE,jetbrains-ai,LONDON
-        - GEOSITE,vercel,LONDON
-        - GEOSITE,heroku,LONDON
-        - GEOSITE,digitalocean,LONDON
-        - GEOSITE,dropbox,LONDON
-        - GEOSITE,paypal,LONDON
-        - GEOSITE,stripe,LONDON
-        - GEOSITE,wise,LONDON
-        - GEOSITE,zendesk,LONDON
-        - GEOSITE,autodesk,LONDON
-        - GEOSITE,salesforce,LONDON
-        - GEOSITE,godaddy,LONDON
-        - GEOSITE,wix,LONDON
-        - GEOSITE,patreon,LONDON
-        - IP-CIDR6,::/0,LONDON
-        - MATCH,RELAY
+        - GEOSITE,category-ru,DIRECT
+        - MATCH,relay
     '';
     path = "/etc/mihomo/config.yaml";
     mode = "0600";

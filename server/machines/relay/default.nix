@@ -12,35 +12,23 @@
     loader.grub = {
       enable = true;
       device = "/dev/vda";
+      extraConfig = ''
+        serial --unit=0 --speed=115200
+        terminal_input serial console
+        terminal_output serial console
+      '';
     };
+    kernelParams = [ "console=tty1" "console=ttyS0,115200n8" ];
   };
 
   zramSwap.enable = true;
   boot.tmp.cleanOnBoot = true;
 
+  services.getty.autologinUser = "root";
+
   networking = {
     hostName = "relay";
     domain = "wiyba.org";
-
-    dhcpcd.enable = false;
-    nameservers = [
-      "10.130.0.2"
-      "1.1.1.1"
-    ];
-    defaultGateway = {
-      address = "10.130.0.1";
-      interface = "eth0";
-    };
-    interfaces.eth0 = {
-      ipv4 = {
-        addresses = [
-          {
-            address = "10.130.0.24";
-            prefixLength = 24;
-          }
-        ];
-      };
-    };
     usePredictableInterfaceNames = lib.mkForce false;
   };
 

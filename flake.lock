@@ -545,11 +545,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1777041841,
-        "narHash": "sha256-9NIjdCC7ly02m+KQVVCK2ZknFRKnvJomOiEntRrtoE4=",
+        "lastModified": 1777046939,
+        "narHash": "sha256-ntt+eCIbeKpnUjEOAzJom6gUFIogaqgR2k7Oq2s9SKw=",
         "owner": "wiyba",
         "repo": "xcli",
-        "rev": "5890e2b7e0c1cb7d169f29b5be8c4c881bd15d8b",
+        "rev": "d4ca54b92738695657ddb58b9934ca3beee05c10",
         "type": "github"
       },
       "original": {

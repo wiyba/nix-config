@@ -1,6 +1,6 @@
 { inputs, pkgs, ... }:
 let
-  xcli = inputs.xcli.packages.${pkgs.system}.default;
+  xcli = inputs.xcli.packages.${pkgs.stdenv.hostPlatform.system}.default;
   grp = {
     group = "xcli";
     mode = "0440";
@@ -38,6 +38,7 @@ in
       ExecStart = "${xcli}/bin/xcli run";
       User = "xcli";
       Group = "xcli";
+      UMask = "0002";
       StateDirectory = "xcli";
       StateDirectoryMode = "0770";
       Restart = "on-failure";

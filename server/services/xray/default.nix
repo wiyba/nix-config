@@ -52,57 +52,49 @@ let
     import subprocess, tempfile, os
 
     TOKEN = open("/run/secrets/xray-admin").read().strip()
-    XRAY = "${pkgs.xray}/bin/xray"
-    API = "--server=127.0.0.1:10085"
+    XRAY, API = "${pkgs.xray}/bin/xray", "--server=127.0.0.1:10085"
     CMDS = {"adu","rmu","statsquery","stats","statsonline","statsgetallonlineusers",
             "statsonlineiplist","inbounduser","inboundusercount","lsi","lso","sib",
             "restartlogger","adi","rmi","ado","rmo","adrules","rmrules","lsrules"}
 
     class H(BaseHTTPRequestHandler):
+        def reply(self, code, body=b""):
+            self.send_response(code); self.end_headers(); self.wfile.write(body)
+        def auth(self):
+            return self.headers.get("Authorization") == f"Bearer {TOKEN}"
         def do_GET(self):
             if self.path == "/":
                 rc = subprocess.run(["systemctl","is-active","-q","xray"]).returncode
-                self.send_response(200 if rc == 0 else 503); self.end_headers(); return
+                return self.reply(200 if rc == 0 else 503)
+            if not self.auth(): return self.reply(401)
             if self.path == "/traffic":
-                if self.headers.get("Authorization") != f"Bearer {TOKEN}":
-                    self.send_response(401); self.end_headers(); return
                 try: data = open("/var/log/xray/usage.json","rb").read()
                 except FileNotFoundError: data = b'{"users":{}}'
-                self.send_response(200)
-                self.send_header("Content-Type","application/json")
-                self.end_headers(); self.wfile.write(data); return
+                return self.reply(200, data)
             self._exec()
-
-        def do_POST(self): self._exec()
-
+        def do_POST(self):
+            if not self.auth(): return self.reply(401)
+            self._exec()
         def _exec(self):
-            if self.headers.get("Authorization") != f"Bearer {TOKEN}":
-                self.send_response(401); self.end_headers(); return
             u = urlparse(self.path)
             cmd = u.path.lstrip("/")
-            if cmd not in CMDS:
-                self.send_response(404); self.end_headers(); return
+            if cmd not in CMDS: return self.reply(404)
             argv = [XRAY, "api", cmd, API]
             for k, vs in parse_qs(u.query).items():
                 argv += [f"-{k}={v}" for v in vs]
-            n = int(self.headers.get("Content-Length") or 0)
-            body = self.rfile.read(n) if n else b""
+            body = self.rfile.read(int(self.headers.get("Content-Length") or 0))
             tmp = None
             if body:
                 if body.lstrip().startswith(b"{"):
                     tmp = tempfile.NamedTemporaryFile(delete=False)
-                    tmp.write(body); tmp.close()
-                    argv.append(tmp.name)
+                    tmp.write(body); tmp.close(); argv.append(tmp.name)
                 else:
                     argv += body.decode().split()
             try:
                 r = subprocess.run(argv, capture_output=True, timeout=10)
-                self.send_response(200 if r.returncode == 0 else 500)
-                self.end_headers()
-                self.wfile.write(r.stdout or r.stderr)
+                self.reply(200 if r.returncode == 0 else 500, r.stdout or r.stderr)
             finally:
                 if tmp: os.unlink(tmp.name)
-
         def log_message(self, *a): pass
 
     HTTPServer(("127.0.0.1", 8888), H).serve_forever()
@@ -224,7 +216,7 @@ let
           {
             protocol = "freedom";
             tag = "out";
-            settings.domainStrategy = "UseIPv4v6";
+            settings.domainStrategy = "UseIPv6v4";
           }
       )
       {
