@@ -3,15 +3,18 @@
   systemd.services.mihomo = {
     description = "mihomo";
     after = [
-      "network.target"
+      "network-online.target"
       "sops-nix.service"
     ];
+    wants = [ "network-online.target" ];
     wantedBy = [ "multi-user.target" ];
     restartIfChanged = false;
     serviceConfig = {
       ExecStart = "${pkgs.mihomo}/bin/mihomo -d /var/lib/mihomo -f \${CREDENTIALS_DIRECTORY}/config.yaml";
       LoadCredential = "config.yaml:/etc/mihomo/config.yaml";
       StateDirectory = "mihomo";
+      Restart = "on-failure";
+      RestartSec = "5s";
     };
   };
 

@@ -12,6 +12,7 @@
     loader.grub = {
       enable = true;
       device = "/dev/vda";
+      timeoutStyle = "countdown";
       extraConfig = ''
         serial --unit=0 --speed=115200
         terminal_input serial console
