@@ -56,6 +56,7 @@ let
       python3 # python3
       supersonic-wayland # music player for subsonic api
       telegram-desktop # messanger
+      terminal-oscilloscope # terminal-oscilloscope
       unzip # decompress files
       unar # decompress files but better
       vlc # media player
