@@ -27,6 +27,7 @@ let
       age # age
       any-nix-shell # zsh support for nix shell
       appimage-run # tool to run appimage in nixos
+      bun # bun
       claude-code # cli llm
       discord-canary # another messanger
       eza # ls but better
