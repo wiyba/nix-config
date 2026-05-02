@@ -15,9 +15,61 @@
   boot.tmp.cleanOnBoot = true;
   zramSwap.enable = true;
 
+  systemd.network.links = {
+    "10-wan0" = {
+      matchConfig.MACAddress = "2c:cf:67:82:6e:3f";
+      linkConfig.Name = "wan0";
+    };
+    "10-lan0" = {
+      matchConfig.MACAddress = "00:e0:4c:45:66:80";
+      linkConfig.Name = "lan0";
+    };
+  };
+
   networking = {
     hostName = "rpi5";
-    networkmanager.enable = true;
+    useDHCP = false;
+
+    networkmanager = {
+      enable = true;
+      ensureProfiles.profiles = {
+        wan0 = {
+          connection = {
+            id = "wan0";
+            type = "ethernet";
+            interface-name = "wan0";
+          };
+          ipv4 = {
+            method = "auto";
+            dns = "1.1.1.1;8.8.8.8;";
+            ignore-auto-dns = "true";
+          };
+        };
+
+        lan0 = {
+          connection = {
+            id = "lan0";
+            type = "ethernet";
+            interface-name = "lan0";
+          };
+          ipv4 = {
+            address1 = "192.168.1.1/24";
+            method = "shared";
+          };
+        };
+      };
+    };
+
+    nat = {
+      enable = true;
+      externalInterface = "wan0";
+      internalInterfaces = [ "lan0" ];
+    };
+
+    firewall = {
+      enable = true;
+      trustedInterfaces = [ "lan0" ];
+    };
   };
 
   environment.systemPackages = with pkgs; [
