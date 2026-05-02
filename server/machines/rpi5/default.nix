@@ -1,4 +1,5 @@
 {
+  config,
   pkgs,
   lib,
   inputs,
@@ -41,8 +42,10 @@
           };
           ipv4 = {
             method = "manual";
-            address1 = "185.13.46.77/25,185.13.46.1";
+            address1 = "185.13.46.77/25";
+            gateway = "185.13.46.1";
             dns = "1.1.1.1;8.8.8.8;";
+            ignore-auto-dns = "true";
           };
         };
 
@@ -65,11 +68,117 @@
       externalInterface = "wan0";
       internalInterfaces = [ "lan0" ];
     };
+  };
 
-    firewall = {
-      enable = true;
-      trustedInterfaces = [ "lan0" ];
+  systemd.services.mihomo = {
+    description = "mihomo";
+    after = [
+      "network-online.target"
+      "sops-nix.service"
+    ];
+    wants = [ "network-online.target" ];
+    wantedBy = [ "multi-user.target" ];
+    restartIfChanged = false;
+    serviceConfig = {
+      ExecStart = "${pkgs.mihomo}/bin/mihomo -d /var/lib/mihomo -f \${CREDENTIALS_DIRECTORY}/config.yaml";
+      LoadCredential = "config.yaml:/etc/mihomo/config.yaml";
+      AmbientCapabilities = [
+        "CAP_NET_ADMIN"
+        "CAP_NET_RAW"
+      ];
+      StateDirectory = "mihomo";
+      Restart = "on-failure";
+      RestartSec = "5s";
     };
+  };
+
+  sops.templates.mihomo-config = {
+    content = ''
+      mixed-port: 7890
+      mode: rule
+      log-level: warning
+      external-controller: 127.0.0.1:9090
+      geodata-mode: true
+      unified-delay: true
+      tcp-concurrent: true
+
+      dns:
+        enable: true
+        prefer-h3: true
+        enhanced-mode: fake-ip
+        fake-ip-range: 198.18.0.1/16
+        fake-ip-filter:
+          - '*.lan'
+          - '*.local'
+          - '+.arpa'
+          - '+.wiyba.org'
+          - 'localhost.*'
+          - 'time.*'
+          - 'pool.ntp.org'
+          - '*.msftncsi.com'
+          - '*.msftconnecttest.com'
+        respect-rules: true
+        default-nameserver:
+          - 77.88.8.8
+          - 77.88.8.1
+        proxy-server-nameserver:
+          - https://1.1.1.1/dns-query
+          - https://9.9.9.9/dns-query
+        nameserver:
+          - https://1.1.1.1/dns-query
+          - https://9.9.9.9/dns-query
+
+      sniffer:
+        enable: true
+        force-dns-mapping: true
+        parse-pure-ip: true
+        override-destination: true
+        sniff:
+          TLS:
+            ports: [443, 8443]
+          HTTP:
+            ports: [80, 8080-8880]
+          QUIC:
+            ports: [443]
+        skip-domain:
+          - '+.push.apple.com'
+          - 'dns.google'
+
+      tun:
+        enable: true
+        stack: gvisor
+        auto-route: true
+        auto-detect-interface: true
+        inet4-address: 198.18.0.1/16
+        inet6-address: null
+        strict-route: true
+
+      proxies:
+        - name: relay
+          type: vless
+          server: REDACTED
+          port: 443
+          uuid: ${config.sops.placeholder.xray-uuid-home}
+          flow: xtls-rprx-vision
+          network: tcp
+          tls: true
+          udp: true
+          servername: yandex.ru
+          client-fingerprint: chrome
+          alpn:
+            - h2
+          reality-opts:
+            public-key: ${config.sops.placeholder.xray-relay-key-pub}
+            short-id: ${config.sops.placeholder.xray-relay-sid}
+
+      rules:
+        - GEOIP,PRIVATE,DIRECT
+        - DOMAIN-SUFFIX,wiyba.org,DIRECT
+        - GEOSITE,category-ru,DIRECT
+        - MATCH,relay
+    '';
+    path = "/etc/mihomo/config.yaml";
+    mode = "0600";
   };
 
   environment.systemPackages = with pkgs; [
