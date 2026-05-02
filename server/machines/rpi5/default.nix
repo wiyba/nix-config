@@ -40,9 +40,9 @@
             interface-name = "wan0";
           };
           ipv4 = {
-            method = "auto";
+            method = "manual";
+            address1 = "185.13.46.77/25,185.13.46.1";
             dns = "1.1.1.1;8.8.8.8;";
-            ignore-auto-dns = "true";
           };
         };
 
