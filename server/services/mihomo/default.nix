@@ -97,8 +97,8 @@
         # optimization
         #- DOMAIN-SUFFIX,nixos.org,london # x2 quota usage
         #- DOMAIN-SUFFIX,cachix.org,london
-        - GEOSITE,roblox,stockholm
-        - IP-ASN,22697,stockholm,no-resolve
+        - GEOSITE,roblox,london
+        - IP-ASN,22697,london,no-resolve
         # geoblocked
         - DOMAIN-SUFFIX,last.fm,london
         - DOMAIN-SUFFIX,audioscrobbler.com,london
