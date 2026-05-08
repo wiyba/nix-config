@@ -711,11 +711,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1778229757,
-        "narHash": "sha256-GY1xmPZHMsHDO/PfBdxB6tHvXrSdCt7u2OAsWs3ogcY=",
+        "lastModified": 1778231844,
+        "narHash": "sha256-r4YaXkK5tuhWOfphE+uYYDLtHUa/7JZaJ7d1gkEFiM4=",
         "owner": "wiyba",
         "repo": "xcli",
-        "rev": "7713a7fab205249273d074bf571f38ab00ba4682",
+        "rev": "f7f01cacfd57425a4aac0c1e01874ad933059ef4",
         "type": "github"
       },
       "original": {

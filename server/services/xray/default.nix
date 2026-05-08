@@ -8,11 +8,12 @@
 }:
 let
   pollScript = pkgs.writeText "xray-poll.py" ''
-    import json, os, subprocess
+    import json, os, subprocess, time
 
     STATE = "/var/log/xray/usage.json"
     XRAY = "${pkgs.xray}/bin/xray"
     API = "--server=127.0.0.1:10085"
+    IP_TTL = 172800  # keep iplist entries for 48h after last activity
 
     def run(*args):
         return subprocess.check_output([XRAY, "api", *args, API], text=True, timeout=15)
@@ -31,34 +32,60 @@ let
     users = state.setdefault("users", {})
     inbounds = state.setdefault("inbounds", {})
     outbounds = state.setdefault("outbounds", {})
-    online = {}
 
     for stat in query("user>>>") + query("inbound>>>") + query("outbound>>>"):
         parts = stat["name"].split(">>>")
+        if len(parts) != 4 or parts[2] != "traffic":
+            continue
+        kind, name, _, direction = parts
         val = int(stat.get("value", 0))
-        if len(parts) == 4 and parts[2] == "traffic":
-            kind, name, _, direction = parts
-            if kind == "user":
-                users[name] = users.get(name, 0) + val
-            else:
-                target = inbounds if kind == "inbound" else outbounds
-                entry = target.setdefault(name, {"uplink": 0, "downlink": 0})
-                entry[direction] = entry.get(direction, 0) + val
-        elif len(parts) == 3 and parts[0] == "user" and parts[2] == "online":
-            online[parts[1]] = val
-
-    state["online"] = online
-
-    iplist = {}
-    for user, count in online.items():
-        if count > 0:
-            try:
-                iplist[user] = json.loads(run("statsonlineiplist", f"-email={user}")).get("ips", {})
-            except subprocess.CalledProcessError:
-                pass
-    state["iplist"] = iplist
+        if kind == "user":
+            users[name] = users.get(name, 0) + val
+        else:
+            target = inbounds if kind == "inbound" else outbounds
+            entry = target.setdefault(name, {"uplink": 0, "downlink": 0})
+            entry[direction] = entry.get(direction, 0) + val
 
     query("traffic>>>", reset=True)
+
+    online = {}
+    snapshot = {}
+    try:
+        names = json.loads(run("statsgetallonlineusers")).get("users", []) or []
+    except subprocess.CalledProcessError:
+        names = []
+    for name in names:
+        parts = name.split(">>>")
+        if len(parts) != 3 or parts[0] != "user" or parts[2] != "online":
+            continue
+        email = parts[1]
+        try:
+            r = json.loads(run("statsonline", f"-email={email}"))
+            online[email] = int(r.get("stat", {}).get("value", 0))
+        except subprocess.CalledProcessError:
+            continue
+        try:
+            ips = json.loads(run("statsonlineiplist", f"-email={email}")).get("ips", {})
+            if ips:
+                snapshot[email] = ips
+        except subprocess.CalledProcessError:
+            pass
+
+    iplist = state.get("iplist", {})
+    for email, ips in snapshot.items():
+        bucket = iplist.setdefault(email, {})
+        for ip, ts in ips.items():
+            if int(ts) > int(bucket.get(ip, 0)):
+                bucket[ip] = int(ts)
+
+    cutoff = int(time.time()) - IP_TTL
+    for email in list(iplist):
+        iplist[email] = {ip: ts for ip, ts in iplist[email].items() if int(ts) >= cutoff}
+        if not iplist[email]:
+            del iplist[email]
+
+    state["online"] = online
+    state["iplist"] = iplist
 
     tmp = STATE + ".tmp"
     with open(tmp, "w") as f:
@@ -307,8 +334,8 @@ in
   systemd.timers.xray-poll = {
     wantedBy = [ "timers.target" ];
     timerConfig = {
-      OnBootSec = "30s";
-      OnUnitActiveSec = "1min";
+      OnBootSec = "10s";
+      OnUnitActiveSec = "10s";
       Unit = "xray-poll.service";
     };
   };
