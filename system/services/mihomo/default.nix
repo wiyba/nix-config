@@ -101,6 +101,7 @@
       rules:
         - GEOIP,PRIVATE,DIRECT
         - DOMAIN-SUFFIX,wiyba.org,DIRECT
+        - DOMAIN-SUFFIX,openh264.org,DIRECT
         - GEOSITE,category-ru,DIRECT
         - MATCH,relay
     '';

@@ -8,3 +8,19 @@ window-rule {
     geometry-corner-radius 12
     clip-to-geometry true
 }
+
+window-rule {
+    match app-id="^(?i)vlc"
+    match app-id="^(?i)mpv"
+    geometry-corner-radius 0
+    clip-to-geometry false
+}
+
+window-rule {
+    match title="(?i)picture.in.picture"
+    match title="(?i)картинка в картинке"
+    open-floating true
+    default-column-width { fixed 480; }
+    default-window-height { fixed 270; }
+    default-floating-position x=20 y=20 relative-to="bottom-right"
+}

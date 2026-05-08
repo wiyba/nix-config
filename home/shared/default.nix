@@ -29,7 +29,6 @@ let
       appimage-run # tool to run appimage in nixos
       bun # bun
       claude-code # cli llm
-      discord-canary # another messanger
       eza # ls but better
       file # file
       filezilla # sftp gui client

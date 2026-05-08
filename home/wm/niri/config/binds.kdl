@@ -14,11 +14,7 @@ binds {
     Print       { screenshot-screen; }
     Alt+Print   { screenshot-window; }
 
-    Mod+Ctrl+S { spawn-sh "nscratch -id spotify"; }
-    Mod+Ctrl+F { spawn-sh "nscratch -id nemo"; }
-    Mod+Ctrl+T { spawn-sh "nscratch -id org.pulseaudio.pwvucontrol"; }
-    Mod+Ctrl+Y { spawn-sh "nscratch -id com.yubico.yubioath -s yubioath-flutter"; }
-    Mod+S       { spawn-sh "nsticky toggle-active"; }
+    Mod+S       { spawn "nsticky" "sticky" "toggle-active"; }
 
     Mod+Space        { spawn "noctalia-shell" "ipc" "call" "launcher" "toggle"; }
     Mod+Escape       { spawn "noctalia-shell" "ipc" "call" "lockScreen" "lock"; }
@@ -77,7 +73,6 @@ binds {
     Mod+Ctrl+Page_Up    { move-column-to-workspace-up; }
     Mod+Shift+Page_Down { move-workspace-down; }
     Mod+Shift+Page_Up   { move-workspace-up; }
-    Mod+Slash { focus-workspace "scratch"; }
     Mod+1 { focus-workspace 1; }
     Mod+2 { focus-workspace 2; }
     Mod+3 { focus-workspace 3; }

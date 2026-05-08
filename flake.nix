@@ -39,6 +39,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    wba-website = {
+      url = "github:wiyba/website";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     claude-code-nix = {
       url = "github:sadjow/claude-code-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -46,6 +51,11 @@
 
     noctalia = {
       url = "github:noctalia-dev/noctalia-shell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    nsticky = {
+      url = "github:lonerOrz/nsticky";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -78,7 +88,10 @@
             { nix.registry.nixpkgs.flake = nixpkgs; }
             { nixpkgs.overlays = overlays; }
           ];
-          specialArgs = { inherit inputs host wm; isServer = base == ./server; };
+          specialArgs = {
+            inherit inputs host wm;
+            isServer = base == ./server;
+          };
         };
 
       mkRpi =

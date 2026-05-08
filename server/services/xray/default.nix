@@ -14,31 +14,56 @@ let
     XRAY = "${pkgs.xray}/bin/xray"
     API = "--server=127.0.0.1:10085"
 
-    def query(reset=False):
-        cmd = [XRAY, "api", "statsquery", API, "-pattern=user>>>"]
+    def run(*args):
+        return subprocess.check_output([XRAY, "api", *args, API], text=True, timeout=15)
+
+    def query(pattern, reset=False):
+        cmd = ["statsquery", f"-pattern={pattern}"]
         if reset:
             cmd.append("-reset")
-        raw = subprocess.check_output(cmd, text=True, timeout=15)
-        return json.loads(raw).get("stat", [])
+        return json.loads(run(*cmd)).get("stat", [])
 
     try:
         state = json.load(open(STATE))
     except (FileNotFoundError, ValueError):
-        state = {"users": {}}
+        state = {}
 
     users = state.setdefault("users", {})
-    for stat in query():
+    inbounds = state.setdefault("inbounds", {})
+    outbounds = state.setdefault("outbounds", {})
+    online = {}
+
+    for stat in query("user>>>") + query("inbound>>>") + query("outbound>>>"):
         parts = stat["name"].split(">>>")
-        if len(parts) == 4 and parts[0] == "user" and parts[2] == "traffic":
-            user = parts[1]
-            users[user] = users.get(user, 0) + int(stat.get("value", 0))
+        val = int(stat.get("value", 0))
+        if len(parts) == 4 and parts[2] == "traffic":
+            kind, name, _, direction = parts
+            if kind == "user":
+                users[name] = users.get(name, 0) + val
+            else:
+                target = inbounds if kind == "inbound" else outbounds
+                entry = target.setdefault(name, {"uplink": 0, "downlink": 0})
+                entry[direction] = entry.get(direction, 0) + val
+        elif len(parts) == 3 and parts[0] == "user" and parts[2] == "online":
+            online[parts[1]] = val
+
+    state["online"] = online
+
+    iplist = {}
+    for user, count in online.items():
+        if count > 0:
+            try:
+                iplist[user] = json.loads(run("statsonlineiplist", f"-email={user}")).get("ips", {})
+            except subprocess.CalledProcessError:
+                pass
+    state["iplist"] = iplist
+
+    query("traffic>>>", reset=True)
 
     tmp = STATE + ".tmp"
     with open(tmp, "w") as f:
         json.dump(state, f)
     os.replace(tmp, STATE)
-
-    query(reset=True)
   '';
 
   usageScript = pkgs.writeShellScript "usage.sh" ''
@@ -140,6 +165,13 @@ let
     policy.levels."0" = {
       statsUserUplink = true;
       statsUserDownlink = true;
+      statsUserOnline = true;
+    };
+    policy.system = {
+      statsInboundUplink = true;
+      statsInboundDownlink = true;
+      statsOutboundUplink = true;
+      statsOutboundDownlink = true;
     };
     dns = {
       servers = [

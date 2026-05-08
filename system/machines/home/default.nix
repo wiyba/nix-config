@@ -115,6 +115,13 @@
           transform "normal"
           position x=0 y=-1440
       }
+
+      workspace "social" {
+          open-on-output "DP-2"
+      }
+      workspace "media" {
+          open-on-output "DP-2"
+      }
     '';
     "hypr/hyprland-host.conf".text = ''
       exec= pkill hyprpaper; hyprpaper
@@ -205,9 +212,12 @@
   };
 
   programs.steam.gamescopeSession.args = [
-    "-W" "2560"
-    "-H" "1440"
-    "-r" "144"
+    "-W"
+    "2560"
+    "-H"
+    "1440"
+    "-r"
+    "144"
   ];
 
   system.stateVersion = "24.11";

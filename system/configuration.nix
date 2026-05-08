@@ -41,6 +41,7 @@
     dconf.enable = true;
     steam = {
       enable = true;
+      package = pkgs.steam.override { extraArgs = "-cef-disable-gpu"; };
       gamescopeSession.enable = true;
     };
     gamescope = {

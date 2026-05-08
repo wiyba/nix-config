@@ -28,6 +28,7 @@ let
       playerctl # player controller
       sway-audio-idle-inhibit # idle inhibitor
       wl-clipboard # clipboard support
+      inputs.nsticky.packages.${pkgs.stdenv.hostPlatform.system}.default
     ]
     ++ fontPkgs;
 in
@@ -55,21 +56,6 @@ in
   programs.noctalia-shell.enable = true;
 
   xdg = {
-    desktopEntries.steam = {
-      name = "Steam";
-      exec = "steam -cef-disable-gpu %U";
-      icon = "steam";
-      comment = "Application for managing and playing games on Steam";
-      categories = [
-        "Game"
-        "Network"
-      ];
-      mimeType = [
-        "x-scheme-handler/steam"
-        "x-scheme-handler/steamlink"
-      ];
-    };
-
     configFile = {
       "electron-flags.conf".text = ''
         --enable-features=UseOzonePlatform

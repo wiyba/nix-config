@@ -173,9 +173,10 @@
                     "id": "Tray",
                     "pinned": [
                         "DiscordCanary",
-                        "steam",
                         "Telegram Desktop",
-                        "OBS Studio"
+                        "OBS Studio",
+                        "WebCord - 1 mention",
+                        "steam"
                     ]
                 },
                 {
@@ -247,7 +248,7 @@
         "predefinedScheme": "GruvboxAlt",
         "schedulingMode": "off",
         "syncGsettings": true,
-        "useWallpaperColors": false
+        "useWallpaperColors": true
     },
     "controlCenter": {
         "cards": [
@@ -436,7 +437,7 @@
     "idle": {
         "customCommands": "[]",
         "enabled": true,
-        "fadeDuration": 10,
+        "fadeDuration": 30,
         "lockCommand": "",
         "lockTimeout": 600,
         "resumeLockCommand": "",

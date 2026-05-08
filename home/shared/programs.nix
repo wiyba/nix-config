@@ -90,5 +90,6 @@ in
   ../programs/musicpresence
   ../programs/zed
   ../programs/burpsuite
+  ../programs/discord-canary
   more
 ]
