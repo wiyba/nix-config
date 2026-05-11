@@ -1,10 +1,9 @@
-{
-  config,
-  host,
-  lib,
-  pkgs,
-  xrayUsers,
-  ...
+{ config
+, host
+, lib
+, pkgs
+, xrayUsers
+, ...
 }:
 let
   pollScript = pkgs.writeText "xray-poll.py" ''
@@ -157,8 +156,7 @@ let
       relay = "yandex.ru";
       london = "vk.com";
       stockholm = "vk.com";
-    }
-    .${host};
+    }.${host};
 
   client =
     flow: user:

@@ -1,45 +1,49 @@
-{
-  pkgs,
-  lib,
-  config,
-  inputs,
-  ...
+{ pkgs
+, lib
+, config
+, inputs
+, ...
 }:
 
 {
   imports = [
     ./hardware-configuration.nix
-    inputs.lanzaboote.nixosModules.lanzaboote
     inputs.nixos-hardware.nixosModules.common-cpu-intel
     inputs.nixos-hardware.nixosModules.common-gpu-amd
     ../../services/nginx
     ../../services/mihomo
     ../../services/xcli
+    ../../services/printing
+    ../../services/qbittorrent
   ];
 
   boot = {
-    kernelPackages = pkgs.linuxPackages_latest;
     kernelParams = [ "video=2560x1440@60" ];
-
-    initrd = {
-      systemd.enable = true;
-      verbose = true;
-    };
-
-    loader.efi = {
-      canTouchEfiVariables = true;
-      efiSysMountPoint = "/boot";
-    };
-
-    loader.systemd-boot.enable = lib.mkForce false;
-
-    lanzaboote = {
-      enable = true;
-      pkiBundle = "/var/lib/sbctl";
-    };
-
     extraModprobeConfig = ''
       options hid_apple fnmode=0
+    '';
+  };
+
+  systemd.network.links = {
+    "10-wan0" = {
+      matchConfig.MACAddress = "2c:f0:5d:04:be:05";
+      linkConfig.Name = "wan0";
+    };
+    "10-lan0" = {
+      matchConfig.MACAddress = "00:e0:4c:4d:7e:20";
+      linkConfig.Name = "lan0";
+    };
+  };
+
+  systemd.services.offloads-fix = {
+    wantedBy = [ "multi-user.target" ];
+    after = [ "network-pre.target" ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+    };
+    script = ''
+      ${pkgs.ethtool}/bin/ethtool -K wan0 tso off gso off gro off || true
     '';
   };
 
@@ -51,29 +55,29 @@
     networkmanager = {
       enable = true;
       ensureProfiles.profiles = {
-        enp0s20f0u1 = {
+        wan0 = {
           connection = {
-            id = "enp0s20f0u1";
+            id = "wan0";
             type = "ethernet";
-            interface-name = "enp0s20f0u1";
+            interface-name = "wan0";
+          };
+          ipv4 = {
+            address1 = "192.168.10.2/24";
+            dns = "1.1.1.1;9.9.9.9;77.88.8.8;";
+            ignore-auto-dns = "true";
+            method = "auto";
+          };
+        };
+
+        lan0 = {
+          connection = {
+            id = "lan0";
+            type = "ethernet";
+            interface-name = "lan0";
           };
           ipv4 = {
             address1 = "192.168.1.1/24";
             method = "shared";
-          };
-        };
-
-        enp4s0 = {
-          connection = {
-            id = "enp4s0";
-            type = "ethernet";
-            interface-name = "enp4s0";
-          };
-          ipv4 = {
-            address1 = "192.168.10.2/24";
-            dns = "1.1.1.1;8.8.8.8;";
-            ignore-auto-dns = "true";
-            method = "auto";
           };
         };
       };
@@ -81,24 +85,30 @@
 
     nat = {
       enable = true;
-      externalInterface = "enp4s0";
-      internalInterfaces = [ "enp0s20f0u1" ];
+      externalInterface = "wan0";
+      internalInterfaces = [ "lan0" ];
     };
 
+    firewall = {
+      enable = true;
+      trustedInterfaces = [ "lan0" ];
+      allowedTCPPorts = [
+        80
+        443
+        2222
+        25565
+        27036
+        27037
+      ];
+      allowedUDPPortRanges = [
+        {
+          from = 27031;
+          to = 27036;
+        }
+      ];
+    };
   };
 
-  # printing
-  services.printing = {
-    enable = true;
-    drivers = [ pkgs.hplip ];
-  };
-
-  environment.systemPackages = with pkgs; [
-    sbctl
-    efibootmgr
-    wev
-    libinput
-  ];
 
   home-manager.users.wiyba.xdg.configFile = {
     "niri/outputs.kdl".text = ''
@@ -154,13 +164,6 @@
       splash=false
     '';
   };
-
-  #services.terraria = {
-  #  enable = true;
-  #  openFirewall = true;
-  #  messageOfTheDay = "добро пожлаовать в комююююютер веби!";
-  #  worldPath = "/var/lib/terraria/sin-vzriva-pirojka.wld";
-  #};
 
   #media
   users.groups.media = { };

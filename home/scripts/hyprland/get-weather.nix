@@ -1,9 +1,8 @@
-{
-  writeShellScriptBin,
-  curl,
-  jq,
-  coreutils,
-  ...
+{ writeShellScriptBin
+, curl
+, jq
+, coreutils
+, ...
 }:
 [
   (writeShellScriptBin "get-weather" ''
@@ -46,13 +45,12 @@
     fi
 
     KEY="e434b5435a979de6e155570590bee89b"
-    LAT="REDACTED"
-    LON="REDACTED"
+    CITY="Moscow"
     UNITS="metric"
     SYMBOL="°"
     API="https://api.openweathermap.org/data/2.5"
 
-    weather=$(${curl}/bin/curl -sf --connect-timeout 5 "$API/weather?appid=$KEY&lat=$LAT&lon=$LON&units=$UNITS&lang=ru")
+    weather=$(${curl}/bin/curl -sf --connect-timeout 5 "$API/weather?appid=$KEY&q=$CITY&units=$UNITS&lang=ru")
 
     if [ -n "$weather" ]; then
         weather_temp=$(echo "$weather" | ${jq}/bin/jq -r ".main.temp" | ${jq}/bin/jq -R 'tonumber | . * 10 | round / 10')

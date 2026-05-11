@@ -20,47 +20,6 @@
   networking = {
     hostName = "stockholm";
     domain = "wiyba.org";
-
-    dhcpcd.enable = false;
-    nameservers = [
-      "1.1.1.1"
-      "8.8.8.8"
-    ];
-    defaultGateway = "REDACTED";
-    defaultGateway6 = {
-      address = "REDACTED";
-      interface = "eth0";
-    };
-    interfaces.eth0 = {
-      ipv4 = {
-        addresses = [
-          {
-            address = "REDACTED";
-            prefixLength = 24;
-          }
-        ];
-        routes = [
-          {
-            address = "REDACTED";
-            prefixLength = 32;
-          }
-        ];
-      };
-      ipv6 = {
-        addresses = [
-          {
-            address = "REDACTED";
-            prefixLength = 64;
-          }
-        ];
-        routes = [
-          {
-            address = "REDACTED";
-            prefixLength = 128;
-          }
-        ];
-      };
-    };
     usePredictableInterfaceNames = lib.mkForce false;
   };
 

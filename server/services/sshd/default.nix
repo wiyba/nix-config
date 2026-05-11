@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, config, ... }:
 
 {
   services.openssh = {
@@ -10,6 +10,27 @@
       KbdInteractiveAuthentication = false;
       PermitRootLogin = "prohibit-password";
     };
+  };
+
+  systemd.services.normalize-ssh-comment = {
+    description = "normalize ssh host key comment to root@${config.networking.fqdnOrHostName}";
+    wantedBy = [ "multi-user.target" ];
+    after = [ "sshd.service" ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+    };
+    script = ''
+      set -eu
+      DESIRED="root@${config.networking.fqdnOrHostName}"
+      for KEY in /etc/ssh/ssh_host_ed25519_key /etc/ssh/ssh_host_rsa_key; do
+        [ -f "$KEY.pub" ] || continue
+        CURRENT=$(${pkgs.coreutils}/bin/cut -d ' ' -f 3- < "$KEY.pub")
+        if [ "$CURRENT" != "$DESIRED" ]; then
+          ${pkgs.openssh}/bin/ssh-keygen -c -C "$DESIRED" -f "$KEY" >/dev/null
+        fi
+      done
+    '';
   };
 
   networking.nftables.enable = true;

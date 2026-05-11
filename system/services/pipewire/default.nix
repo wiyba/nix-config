@@ -45,7 +45,7 @@
             links = [
               { output = "hpf_1:Out"; input = "hpf_2:In"; }
               { output = "hpf_2:Out"; input = "eq_1:In"; }
-              { output = "eq_1:Out";  input = "eq_2:In"; }
+              { output = "eq_1:Out"; input = "eq_2:In"; }
             ];
           };
           "audio.channels" = 2;

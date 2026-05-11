@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, config, ... }:
 {
   imports = [
     ./hardware-configuration.nix
@@ -21,41 +21,33 @@
   networking = {
     hostName = "london";
     domain = "wiyba.org";
-
+    useNetworkd = true;
+    useDHCP = false;
     dhcpcd.enable = false;
     nameservers = [
       "1.1.1.1"
       "8.8.8.8"
     ];
-    defaultGateway = "REDACTED";
-    defaultGateway6 = "REDACTED";
-    interfaces.ens3 = {
-      ipv4.addresses = [
-        {
-          address = "REDACTED";
-          prefixLength = 24;
-        }
-      ];
-      ipv4.routes = [
-        {
-          address = "REDACTED";
-          prefixLength = 32;
-        }
-      ];
-      ipv6.addresses = [
-        {
-          address = "REDACTED";
-          prefixLength = 64;
-        }
-      ];
-      ipv6.routes = [
-        {
-          address = "REDACTED";
-          prefixLength = 128;
-        }
-      ];
-    };
     usePredictableInterfaceNames = lib.mkForce true;
+  };
+
+  sops.templates."london-network" = {
+    path = "/etc/systemd/network/05-wan.network";
+    owner = "root";
+    mode = "0644";
+    content = ''
+      [Match]
+      MACAddress=00:46:d9:64:86:d3
+
+      [Network]
+      Address=${config.sops.placeholder.xray-london-ip}/24
+      Address=${config.sops.placeholder.xray-london-ipv6}/64
+      Gateway=${config.sops.placeholder.xray-london-gw}
+      Gateway=${config.sops.placeholder.xray-london-gw6}
+      DNS=1.1.1.1
+      DNS=8.8.8.8
+    '';
+    restartUnits = [ "systemd-networkd.service" ];
   };
 
   time.timeZone = "Europe/London";

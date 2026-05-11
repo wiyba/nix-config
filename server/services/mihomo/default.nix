@@ -29,12 +29,14 @@
       bind-address: 127.0.0.1
       mode: rule
       log-level: warning
+      ipv6: true
       unified-delay: true
       tcp-concurrent: true
       geodata-mode: true
 
       dns:
         enable: true
+        ipv6: true
         prefer-h3: true
         default-nameserver:
           - 77.88.8.8
@@ -68,6 +70,7 @@
           network: tcp
           tls: true
           udp: true
+          ip-version: ipv4
           servername: vk.com
           client-fingerprint: chrome
           alpn:
@@ -85,6 +88,7 @@
           network: tcp
           tls: true
           udp: true
+          ip-version: ipv4
           servername: vk.com
           client-fingerprint: chrome
           alpn:
@@ -94,6 +98,7 @@
             short-id: ${config.sops.placeholder.xray-stockholm-sid}
 
       rules:
+        - IP-CIDR6,::/0,london,no-resolve
         # optimization
         #- DOMAIN-SUFFIX,nixos.org,london # x2 quota usage
         #- DOMAIN-SUFFIX,cachix.org,london

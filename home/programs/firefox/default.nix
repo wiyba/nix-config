@@ -7,7 +7,7 @@ let
     addonId = "{fd4fdeb0-5a65-4978-81c5-3488d4d56426}";
     url = "https://addons.mozilla.org/firefox/downloads/file/3835316/gruvboxtheme-1.0.xpi";
     sha256 = "04mrmyga4ig6bxlhdy42n56k9al0rqc0qfd7qzf7nvc6qlz9cwzb";
-    meta = {};
+    meta = { };
   };
 
   extensions = (with pkgs.nur.repos.rycee.firefox-addons; [

@@ -21,7 +21,27 @@
 
   time.timeZone = "Europe/Moscow";
 
-  networking.firewall.enable = lib.mkDefault false;
+  boot.kernel.sysctl = {
+    "net.ipv4.conf.all.accept_redirects" = 0;
+    "net.ipv4.conf.default.accept_redirects" = 0;
+    "net.ipv6.conf.all.accept_redirects" = 0;
+    "net.ipv6.conf.default.accept_redirects" = 0;
+    "net.ipv4.conf.all.send_redirects" = 0;
+    "net.ipv4.conf.default.send_redirects" = 0;
+    "net.ipv4.conf.all.rp_filter" = 2;
+    "net.ipv4.conf.default.rp_filter" = 2;
+    "net.ipv4.conf.all.log_martians" = 1;
+    "net.ipv4.conf.default.log_martians" = 1;
+    "net.ipv4.tcp_max_syn_backlog" = 4096;
+    "net.core.somaxconn" = 4096;
+  };
+
+  networking.nameservers = [
+    "1.1.1.1"
+    "9.9.9.9"
+    "77.88.8.8"
+  ];
+  networking.networkmanager.dns = "none";
 
   networking.extraHosts = ''
     0.0.0.0 paradise-s1.battleye.com
@@ -31,10 +51,34 @@
   '';
 
   imports = [
+    inputs.lanzaboote.nixosModules.lanzaboote
     ./services/greetd
     ./services/pipewire
     ./services/ssh
   ];
+
+  boot = {
+    kernelPackages = pkgs.linuxPackages_latest;
+    kernelModules = [ "hid_playstation" ];
+    consoleLogLevel = 3;
+    initrd = {
+      systemd.enable = true;
+      verbose = true;
+    };
+    loader = {
+      efi = {
+        canTouchEfiVariables = true;
+        efiSysMountPoint = "/boot";
+      };
+      systemd-boot.enable = lib.mkForce false;
+    };
+    lanzaboote = {
+      enable = true;
+      pkiBundle = "/var/lib/sbctl";
+    };
+  };
+
+  hardware.xone.enable = true;
 
   programs = {
     zsh.enable = true;
@@ -71,6 +115,7 @@
     udisks2.enable = true;
     gvfs.enable = true;
     gnome.gnome-keyring.enable = true;
+    fwupd.enable = true;
   };
 
   environment = {
@@ -87,10 +132,13 @@
       nettools
       dnsutils
       xwayland-satellite
+      sbctl
+      efibootmgr
+      wev
+      libinput
     ];
     variables = {
       NIXOS_OZONE_WL = "1";
-      SOPS_AGE_KEY_FILE = "/etc/nixos/secrets/sops-age.key";
     };
   };
 
@@ -146,16 +194,6 @@
   security.pam.services = {
     greetd.enableGnomeKeyring = true;
     hyprlock.enableGnomeKeyring = true;
-  };
-
-  services.avahi = {
-    enable = true;
-    nssmdns4 = true;
-    openFirewall = true;
-    publish = {
-      enable = true;
-      userServices = true;
-    };
   };
 
   services.udev.extraRules = ''

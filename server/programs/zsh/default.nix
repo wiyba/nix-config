@@ -8,16 +8,16 @@
     syntaxHighlighting.enable = true;
 
     interactiveShellInit = ''
-      command_not_found_handler() { return 127 }
-      nh() {
-        if [[ "$1" == "os" && "$2" == "switch" ]]; then
-	  command nh "$@" -R
-	else
-	  command nh "$@"
-	fi
-      }
-      source ${./headline.zsh-theme}
-      bindkey '^ ' autosuggest-accept
+            command_not_found_handler() { return 127 }
+            nh() {
+              if [[ "$1" == "os" && "$2" == "switch" ]]; then
+      	  command nh "$@" -R
+      	else
+      	  command nh "$@"
+      	fi
+            }
+            source ${./headline.zsh-theme}
+            bindkey '^ ' autosuggest-accept
     '';
 
     shellAliases = {

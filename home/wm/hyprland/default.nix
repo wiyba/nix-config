@@ -1,41 +1,23 @@
 { pkgs, lib, ... }:
 let
-  nerdFonts = with pkgs.nerd-fonts; [
-    symbols-only
-    caskaydia-cove
+  packages = with pkgs; [
+    grim # screenshots
+    grimblast # screenshot program from hyprland
+    hypridle # idle daemon for hyprland
+    hyprlock # lockscreen for hyprland
+    hyprpaper # wallpaper daemon for hyprland
+    pwvucontrol # pipewire gui
+    playerctl # player controller
+    swaynotificationcenter # notifications daemon
+    sway-audio-idle-inhibit # idle inhibitor
+    wl-clipboard # clipboard support
+    libreoffice-fresh # document viewer&editor
   ];
-
-  fontPkgs =
-    with pkgs;
-    [
-      font-awesome
-      material-design-icons
-      noto-fonts
-      noto-fonts-cjk-sans # chinese and japanese languages
-      noto-fonts-color-emoji # emojis
-    ]
-    ++ nerdFonts;
-
-  packages =
-    with pkgs;
-    [
-      grim # screenshots
-      grimblast # screenshot program from hyprland
-      hypridle # idle daemon for hyprland
-      hyprlock # lockscreen for hyprland
-      hyprpaper # wallpaper daemon for hyprland
-      pwvucontrol # pipewire gui
-      playerctl # player controller
-      swaynotificationcenter # notifications daemon
-      sway-audio-idle-inhibit # idle inhibitor
-      wl-clipboard # clipboard support
-      libreoffice-fresh # document viewer&editor
-    ]
-    ++ fontPkgs;
 in
 {
   imports = [
     ../../shared
+    ../../scripts/hyprland
     ../../programs/kitty
     ../../programs/waybar
     ../../programs/albert

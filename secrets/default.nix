@@ -60,6 +60,10 @@ let
             "key_priv"
             "key_pub"
             "sid"
+            "ip"
+            "gw"
+            "ipv6"
+            "gw6"
           ]
       )
       [
@@ -74,8 +78,6 @@ in
 
   sops = {
     defaultSopsFile = ./secrets.yaml;
-    age.keyFile = "/etc/nixos/secrets/sops-age.key";
-
     secrets =
       userSecrets
       // hostSecrets

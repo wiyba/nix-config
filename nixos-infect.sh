@@ -1,10 +1,8 @@
 #!/usr/bin/env bash
 # Fork of https://github.com/elitak/nixos-infect
-# Trimmed to a single generic-VPS path for wiyba's flake-based setup.
 #
 # Usage:
-#   curl -sL https://raw.githubusercontent.com/wiyba/nix-config/main/nixos-infect.sh \
-#     | NIX_HOST=stockholm.wiyba.org bash
+#   curl -sL https://raw.githubusercontent.com/wiyba/nix-config/main/nixos-infect.sh | NIX_HOST=example.wiyba.org bash
 #
 # Environment:
 #   NIX_HOST      target host name — accepts FQDN (default: $(hostname -f))
@@ -412,10 +410,6 @@ infect() {
   } > /etc/NIXOS_LUSTRATE
 
   # --- boot cleanup ---------------------------------------------------------
-  # Old behaviour did an umount/remount dance which occasionally wedged on ESPs
-  # that had sub-mounts or busy files. Instead, back up in place and wipe
-  # contents of the currently-mounted ESP so the NixOS bootloader install has
-  # a clean target.
   if isEFI; then
     log "cleaning ESP at $bootFs (backup at ${bootFs}.bak)"
     rm -rf "${bootFs}.bak"

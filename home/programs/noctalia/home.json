@@ -33,7 +33,7 @@
             "Telegram"
         ],
         "preferredPlayer": "supersonic-wayland",
-        "spectrumFrameRate": 60,
+        "spectrumFrameRate": 144,
         "spectrumMirrored": false,
         "visualizerType": "wave",
         "volumeFeedback": false,
@@ -471,7 +471,7 @@
         "bluetoothRssiPollIntervalMs": 60000,
         "bluetoothRssiPollingEnabled": false,
         "disableDiscoverability": false,
-        "networkPanelView": "ethernet",
+        "networkPanelView": "wifi",
         "wifiDetailsViewMode": "grid"
     },
     "nightLight": {
@@ -481,7 +481,7 @@
         "forced": false,
         "manualSunrise": "06:30",
         "manualSunset": "18:30",
-        "nightTemp": "5000"
+        "nightTemp": "4500"
     },
     "noctaliaPerformance": {
         "disableDesktopWidgets": true,

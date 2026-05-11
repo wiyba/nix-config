@@ -1,40 +1,21 @@
-{
-  pkgs,
-  lib,
-  inputs,
-  ...
+{ pkgs
+, lib
+, inputs
+, ...
 }:
 let
-  nerdFonts = with pkgs.nerd-fonts; [
-    symbols-only
-    caskaydia-cove
+  packages = with pkgs; [
+    pwvucontrol # pipewire gui
+    playerctl # player controller
+    sway-audio-idle-inhibit # idle inhibitor
+    wl-clipboard # clipboard support
+    inputs.nsticky.packages.${pkgs.stdenv.hostPlatform.system}.default
   ];
-
-  fontPkgs =
-    with pkgs;
-    [
-      font-awesome
-      material-design-icons
-      noto-fonts
-      noto-fonts-cjk-sans # chinese and japanese languages
-      noto-fonts-color-emoji # emojis
-    ]
-    ++ nerdFonts;
-
-  packages =
-    with pkgs;
-    [
-      pwvucontrol # pipewire gui
-      playerctl # player controller
-      sway-audio-idle-inhibit # idle inhibitor
-      wl-clipboard # clipboard support
-      inputs.nsticky.packages.${pkgs.stdenv.hostPlatform.system}.default
-    ]
-    ++ fontPkgs;
 in
 {
   imports = [
     ../../shared
+    ../../scripts/niri
     ../../programs/kitty
     ../../programs/noctalia
   ];

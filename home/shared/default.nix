@@ -57,12 +57,9 @@ let
       supersonic-wayland # music player for subsonic api
       telegram-desktop # messanger
       terminal-oscilloscope # terminal-oscilloscope
-      unzip # decompress files
-      unar # decompress files but better
+      unar # decompress files
       vlc # media player
-      vscode # code editor
       zip # compress files
-      qbittorrent # best and only torrent client
       osu-lazer-bin # circles gaem
       dex # .config/autostart helper for WMs
       obs-cmd # cli for obs binds in wm
@@ -77,8 +74,7 @@ in
   programs.home-manager.enable = true;
 
   imports = lib.concatMap import [
-    ../scripts
-    ../themes
+    ../scripts/shared
     ./programs.nix
     ./services.nix
   ];
@@ -247,9 +243,6 @@ in
 
           "inode/directory" = files;
 
-          "application/x-bittorrent" = "org.qbittorrent.qBittorrent.desktop";
-          "x-scheme-handler/magnet" = "org.qbittorrent.qBittorrent.desktop";
-
           "x-scheme-handler/steam" = "steam.desktop";
           "x-scheme-handler/steamlink" = "steam.desktop";
           "x-scheme-handler/tg" = "org.telegram.desktop.desktop";
@@ -290,6 +283,40 @@ in
       SHELL = "${lib.getExe pkgs.zsh}";
       GIT_ASKPASS = "";
     };
+
+    pointerCursor = {
+      name = "breeze_cursors";
+      package = pkgs.kdePackages.breeze;
+      size = 24;
+      gtk.enable = true;
+      x11.enable = true;
+    };
+  };
+
+  dconf.settings."org/gnome/desktop/interface".color-scheme = "prefer-dark";
+
+  gtk = {
+    enable = true;
+    gtk4.theme = null;
+
+    iconTheme = {
+      name = "Papirus-Dark";
+      package = pkgs.papirus-icon-theme;
+    };
+
+    cursorTheme = {
+      name = "breeze_cursors";
+      package = pkgs.kdePackages.breeze;
+      size = 24;
+    };
+
+    gtk3.extraConfig.gtk-application-prefer-dark-theme = true;
+    gtk4.extraConfig.gtk-application-prefer-dark-theme = true;
+  };
+
+  qt = {
+    enable = true;
+    platformTheme.name = "gtk3";
   };
 
   nix.gc = {

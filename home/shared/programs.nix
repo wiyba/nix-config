@@ -74,6 +74,12 @@ let
               port = 2222;
               identityFile = [ "~/.ssh/ssh.key" ];
             };
+            "nest" = {
+              hostname = "nest.wiyba.org";
+              user = "root";
+              port = 2222;
+              identityFile = [ "~/.ssh/ssh.key" ];
+            };
           };
         };
       };
@@ -85,11 +91,9 @@ in
   ../programs/firefox
   ../programs/zsh
   ../programs/neovim
-  ../programs/fastfetch
-  ../programs/vscode
   ../programs/musicpresence
   ../programs/zed
-  ../programs/burpsuite
   ../programs/discord-canary
+  ../programs/uxplay
   more
 ]

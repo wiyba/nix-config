@@ -24,6 +24,7 @@
       mixed-port: 7890
       mode: rule
       log-level: warning
+      ipv6: true
       external-controller: 127.0.0.1:9090
       geodata-mode: true
       unified-delay: true
@@ -31,6 +32,7 @@
 
       dns:
         enable: true
+        ipv6: true
         prefer-h3: true
         enhanced-mode: fake-ip
         fake-ip-range: 198.18.0.1/16
@@ -77,19 +79,20 @@
         auto-route: true
         auto-detect-interface: true
         inet4-address: 198.18.0.1/16
-        inet6-address: null
+        inet6-address: fdfe:dcba:9876::1/126
         strict-route: true
 
       proxies:
         - name: relay
           type: vless
-          server: REDACTED
+          server: ${config.sops.placeholder.xray-relay-ip}
           port: 443
           uuid: ${config.sops.placeholder.xray-uuid-home}
           flow: xtls-rprx-vision
           network: tcp
           tls: true
           udp: true
+          ip-version: ipv4
           servername: yandex.ru
           client-fingerprint: chrome
           alpn:
@@ -100,6 +103,7 @@
 
       rules:
         - GEOIP,PRIVATE,DIRECT
+        - IP-CIDR6,::/0,relay,no-resolve
         - DOMAIN-SUFFIX,wiyba.org,DIRECT
         - DOMAIN-SUFFIX,openh264.org,DIRECT
         - GEOSITE,category-ru,DIRECT

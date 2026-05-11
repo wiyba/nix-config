@@ -13,7 +13,7 @@ in
     home = "/var/lib/satisfactory";
     createHome = true;
   };
-  users.groups.satisfactory = {};
+  users.groups.satisfactory = { };
 
   systemd.services.satisfactory-server = {
     description = "Satisfactory Dedicated Server";

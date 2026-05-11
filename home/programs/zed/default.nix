@@ -4,6 +4,12 @@
     enable = true;
     userSettings = {
       theme = "Gruvbox Dark";
+      languages.Nix = {
+        formatter.external = {
+          command = "nixpkgs-fmt";
+          arguments = [ ];
+        };
+      };
     };
   };
   home.packages = with pkgs; [
@@ -28,7 +34,7 @@
     prettierd # web
     black # python
     isort # python improrts
-    nixfmt # nix
+    nixpkgs-fmt # nix (less aggressive than nixfmt-rfc-style)
     shfmt # shell
 
     gcc

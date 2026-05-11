@@ -70,11 +70,11 @@
       ];
 
       mkSystem =
-        {
-          host,
-          system,
-          base,
-          wm ? null,
+        { host
+        , system
+        , base
+        , wm ? null
+        ,
         }:
         nixpkgs.lib.nixosSystem {
           inherit system;
@@ -95,10 +95,10 @@
         };
 
       mkRpi =
-        {
-          host,
-          system,
-          base,
+        { host
+        , system
+        , base
+        ,
         }:
         inputs.nixos-raspberrypi.lib.nixosSystem {
           modules = [
@@ -136,11 +136,6 @@
           system = "x86_64-linux";
           base = ./server;
         };
-        moscow = mkSystem {
-          host = "moscow";
-          system = "x86_64-linux";
-          base = ./server;
-        };
         relay = mkSystem {
           host = "relay";
           system = "x86_64-linux";
@@ -151,8 +146,8 @@
           system = "x86_64-linux";
           base = ./server;
         };
-        rpi5 = mkRpi {
-          host = "rpi5";
+        nest = mkRpi {
+          host = "nest";
           system = "aarch64-linux";
           base = ./server;
         };

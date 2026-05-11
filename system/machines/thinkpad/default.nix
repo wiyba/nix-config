@@ -8,18 +8,11 @@
 {
   imports = [
     ./hardware-configuration.nix
-    inputs.lanzaboote.nixosModules.lanzaboote
     ../../services/mihomo
   ];
 
   boot = {
-    kernelPackages = pkgs.linuxPackages_latest;
-    kernelModules = [ "hid_playstation" ];
-    consoleLogLevel = 3;
-
     initrd = {
-      systemd.enable = true;
-      verbose = true;
       luks.devices.cryptroot = {
         device = "/dev/nvme0n1p2";
         preLVM = true;
@@ -42,47 +35,98 @@
       "video=eDP-1:2880x1800@60"
       "i915.enable_dpcd_backlight=1"
     ];
+  };
 
-    loader.efi = {
-      canTouchEfiVariables = true;
-      efiSysMountPoint = "/boot";
-    };
-
-    loader.systemd-boot = {
-      enable = lib.mkForce false;
-      configurationLimit = 10;
-      consoleMode = "max";
-    };
-
-    lanzaboote = {
-      enable = true;
-      pkiBundle = "/var/lib/sbctl";
+  systemd.network.links = {
+    "10-wlan0" = {
+      matchConfig.MACAddress = "40:c7:3c:d0:97:15";
+      linkConfig.Name = "wlan0";
     };
   };
 
   networking = {
     hostName = "thinkpad";
     useDHCP = false;
+
     networkmanager = {
       enable = true;
-      ensureProfiles.profiles.cdc-wdm0 = {
-        connection = {
-          id = "cdc-wdm0";
-          type = "gsm";
-          autoconnect = true;
+      dispatcherScripts = [
+        {
+          type = "basic";
+          source = pkgs.writeShellScript "link-policy" ''
+            target="wiyba_net"
+            case "$2" in
+              up)
+                if [ "$CONNECTION_ID" = "$target" ]; then
+                  ${pkgs.systemd}/bin/systemctl stop mihomo.service
+                else
+                  ${pkgs.systemd}/bin/systemctl start mihomo.service
+                fi
+                ;;
+            esac
+          '';
+        }
+      ];
+      ensureProfiles.profiles = {
+        cdc-wdm0 = {
+          connection = {
+            id = "cdc-wdm0";
+            type = "gsm";
+            autoconnect = true;
+          };
+          gsm.auto-config = true;
+          ipv4 = {
+            method = "auto";
+            dns = "1.1.1.1;9.9.9.9;77.88.8.8;";
+            ignore-auto-dns = "true";
+          };
+          ipv6 = {
+            method = "auto";
+            never-default = true;
+          };
         };
-        gsm = {
-          auto-config = true;
-        };
-        ipv4.method = "auto";
-        ipv6 = {
-          method = "auto";
-          never-default = true;
+
+        hotspot = {
+          connection = {
+            id = "hotspot";
+            type = "wifi";
+            interface-name = "wlan0";
+            autoconnect = false;
+          };
+          wifi = {
+            mode = "ap";
+            ssid = "osint10";
+            band = "bg";
+          };
+          wifi-security = {
+            key-mgmt = "wpa-psk";
+            psk = "13371337";
+          };
+          ipv4 = {
+            address1 = "10.0.0.1/24";
+            method = "shared";
+          };
+          ipv6.method = "ignore";
         };
       };
     };
+
     modemmanager.enable = true;
-    usePredictableInterfaceNames = lib.mkForce true;
+
+    firewall = {
+      enable = true;
+      allowedTCPPorts = [ 2222 ];
+      allowedUDPPorts = [
+        67
+        53
+      ];
+    };
+
+    nat = {
+      enable = true;
+      externalInterface = "wwp0s20f0u8";
+      internalInterfaces = [ "wlan0" ];
+    };
   };
 
   hardware.bluetooth.enable = true;
@@ -98,7 +142,7 @@
       };
     };
     fprint-fix = {
-      description = "Reset fingerprint sensor after resume";
+      description = "fprint fix after resume";
       wantedBy = [ "post-resume.target" ];
       after = [ "post-resume.target" ];
       before = [ "fprintd.service" ];
@@ -112,7 +156,7 @@
       };
     };
     modem-fix = {
-      description = "Fix Lenovo Connect modem initialization";
+      description = "modemmanager fix after resume";
       wantedBy = [ "post-resume.target" ];
       after = [ "post-resume.target" ];
       serviceConfig = {
@@ -129,19 +173,33 @@
         '';
       };
     };
+    mihomo-fix = {
+      description = "mihomo fix after resume";
+      wantedBy = [ "post-resume.target" ];
+      after = [ "post-resume.target" ];
+      serviceConfig = {
+        Type = "oneshot";
+        ExecStart = pkgs.writeShellScript "link-policy-resume" ''
+          target="wiyba_net"
+          sleep 5
+          active="$(${pkgs.networkmanager}/bin/nmcli -t -f NAME c show --active | ${pkgs.coreutils}/bin/head -1)"
+          if [ "$active" = "$target" ]; then
+            ${pkgs.systemd}/bin/systemctl stop mihomo.service
+          else
+            ${pkgs.systemd}/bin/systemctl start mihomo.service
+          fi
+        '';
+      };
+    };
   };
 
   services.udev.extraRules = ''
-    ACTION=="change", SUBSYSTEM=="power_supply", ATTR{type}=="Mains", \
-      RUN+="${pkgs.util-linux}/bin/runuser -u wiyba -- ${pkgs.bash}/bin/bash -lc 'WAYLAND_DISPLAY=wayland-1 XDG_RUNTIME_DIR=/run/user/1000 niri-refresh-switch || true'"
+    ACTION=="change", SUBSYSTEM=="power_supply", KERNEL=="AC", \
+      RUN+="${pkgs.systemd}/bin/systemctl --no-block --machine=wiyba@.host --user start niri-refresh-switch.service"
   '';
 
   environment.systemPackages = with pkgs; [
-    sbctl
-    efibootmgr
     brightnessctl
-    wev
-    libinput
     tpm2-tss
   ];
 
@@ -164,11 +222,6 @@
     criticalPowerAction = "Hibernate";
   };
 
-  # systemd.services.upower.serviceConfig = {
-  #   ProtectSystem = lib.mkForce "no";
-  #   PrivateTmp = lib.mkForce false;
-  # };
-
   systemd.tmpfiles.rules = [
     "z /sys/class/leds/*/brightness 0666 - - - -"
     "z /sys/class/leds/*/trigger 0666 - - - -"
@@ -189,8 +242,6 @@
   };
 
   services.fprintd.enable = true;
-
-  services.fwupd.enable = true;
 
   services.power-profiles-daemon.enable = false;
 
@@ -217,6 +268,14 @@
 
       START_CHARGE_THRESH_BAT0 = 75;
       STOP_CHARGE_THRESH_BAT0 = 80;
+    };
+  };
+
+  home-manager.users.wiyba.systemd.user.services.niri-refresh-switch = {
+    Unit.Description = "Refresh niri output mode on power state change";
+    Service = {
+      Type = "oneshot";
+      ExecStart = "%h/.nix-profile/bin/niri-refresh-switch";
     };
   };
 
