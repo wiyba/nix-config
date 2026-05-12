@@ -1,8 +1,7 @@
-{
-  lib,
-  pkgs,
-  host,
-  ...
+{ lib
+, pkgs
+, host
+, ...
 }:
 
 let

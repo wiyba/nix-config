@@ -23,10 +23,6 @@
     usePredictableInterfaceNames = lib.mkForce false;
   };
 
-  services.udev.extraRules = ''
-    ATTR{address}=="34:ad:e2:7f:c4:e8", NAME="eth0"
-  '';
-
   time.timeZone = "Europe/Stockholm";
 
   users.users.root.openssh.authorizedKeys.keys = [

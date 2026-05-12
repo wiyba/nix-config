@@ -28,6 +28,7 @@
 
   networking = {
     hostName = "nest";
+    domain = "wiyba.org";
     useDHCP = false;
 
     networkmanager = {
@@ -43,7 +44,7 @@
             method = "manual";
             address1 = "185.13.46.77/25";
             gateway = "185.13.46.1";
-            dns = "1.1.1.1;8.8.8.8;";
+            dns = "1.1.1.1;9.9.9.9;77.88.8.8;";
             ignore-auto-dns = "true";
           };
         };

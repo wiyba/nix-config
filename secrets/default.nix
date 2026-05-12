@@ -1,8 +1,7 @@
-{
-  config,
-  lib,
-  isServer ? false,
-  ...
+{ config
+, lib
+, isServer ? false
+, ...
 }:
 let
   yamlLines = lib.splitString "\n" (builtins.readFile ./secrets.yaml);
@@ -35,16 +34,20 @@ let
         };
 
   users =
-    (lib.foldl' parseStep {
-      section = null;
-      entries = [ ];
-    } yamlLines).entries;
+    (lib.foldl' parseStep
+      {
+        section = null;
+        entries = [ ];
+      }
+      yamlLines).entries;
 
   userSecrets = lib.listToAttrs (
-    map (user: {
-      name = "xray-uuid-${user.name}";
-      value.key = "xray/${if user.admin then "admins" else "users"}/${user.name}";
-    }) users
+    map
+      (user: {
+        name = "xray-uuid-${user.name}";
+        value.key = "xray/${if user.admin then "admins" else "users"}/${user.name}";
+      })
+      users
   );
 
   hostSecrets = lib.listToAttrs (
@@ -107,11 +110,13 @@ in
           mode = "0444";
           path = "/run/secrets/xray-users.json";
           content = builtins.toJSON (
-            map (user: {
-              user = user.name;
-              uuid = config.sops.placeholder."xray-uuid-${user.name}";
-              inherit (user) admin;
-            }) users
+            map
+              (user: {
+                user = user.name;
+                uuid = config.sops.placeholder."xray-uuid-${user.name}";
+                inherit (user) admin;
+              })
+              users
           );
         };
       })
