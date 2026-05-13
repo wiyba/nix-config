@@ -11,14 +11,18 @@
     ./services/sshd
   ];
 
-  networking.firewall.enable = lib.mkDefault false;
+  networking = {
+    nameservers = [
+      "1.1.1.1"
+      "8.8.8.8"
+      "77.88.8.8"
+    ];
+    domain = "wiyba.org";
+    firewall.enable = lib.mkDefault false;
+    dhcpcd.enable = lib.mkDefault false;
+  };
 
-  networking.nameservers = [
-    "1.1.1.1"
-    "8.8.8.8"
-    "77.88.8.8"
-  ];
-
+  zramSwap.enable = true;
   boot.kernel.sysctl = {
     "net.ipv4.conf.all.accept_redirects" = 0;
     "net.ipv4.conf.default.accept_redirects" = 0;
@@ -78,7 +82,13 @@
 
   console.keyMap = "us";
 
-  users.users.root.shell = pkgs.zsh;
+  users.users.root = {
+    shell = pkgs.zsh;
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBQmY892Awak26eH1iK0aEj7nILjGddlayY7e+fAwRV0 wiyba.org"
+    ];
+  };
+  services.getty.autologinUser = "root";
 
   nix = {
     channel.enable = false;
@@ -113,4 +123,6 @@
     };
   };
   nixpkgs.config.allowUnfree = true;
+
+  system.stateVersion = "24.11";
 }

@@ -64,9 +64,6 @@ let
             "key_pub"
             "sid"
             "ip"
-            "gw"
-            "ipv6"
-            "gw6"
           ]
       )
       [

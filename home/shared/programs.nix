@@ -39,7 +39,7 @@ let
           matchBlocks = {
             "*" = {
               forwardAgent = false;
-              addKeysToAgent = "120m";
+              addKeysToAgent = "240m";
               compression = false;
               serverAliveInterval = 0;
               serverAliveCountMax = 3;

@@ -1,5 +1,4 @@
-{ config
-, pkgs
+{ pkgs
 , lib
 , inputs
 , ...
@@ -12,8 +11,6 @@
 
   nix.registry.nixpkgs.flake = lib.mkForce null;
   boot.loader.raspberry-pi.bootloader = "kernel";
-  boot.tmp.cleanOnBoot = true;
-  zramSwap.enable = true;
 
   systemd.network.links = {
     "10-wan0" = {
@@ -28,7 +25,6 @@
 
   networking = {
     hostName = "nest";
-    domain = "wiyba.org";
     useDHCP = false;
 
     networkmanager = {
@@ -44,7 +40,7 @@
             method = "manual";
             address1 = "185.13.46.77/25";
             gateway = "185.13.46.1";
-            dns = "1.1.1.1;9.9.9.9;77.88.8.8;";
+            dns = "1.1.1.1;8.8.8.8;77.88.8.8;";
             ignore-auto-dns = "true";
           };
         };
@@ -81,10 +77,4 @@
   ];
 
   time.timeZone = "Europe/Moscow";
-
-  users.users.root.openssh.authorizedKeys.keys = [
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBQmY892Awak26eH1iK0aEj7nILjGddlayY7e+fAwRV0 wiyba.org"
-  ];
-
-  system.stateVersion = "24.11";
 }

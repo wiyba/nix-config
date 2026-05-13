@@ -21,6 +21,4 @@
   };
 
   networking.hostName = "nix-usb";
-
-  system.stateVersion = "24.11";
 }

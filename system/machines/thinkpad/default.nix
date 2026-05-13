@@ -300,6 +300,4 @@
     "-r"
     "60"
   ];
-
-  system.stateVersion = "24.11";
 }

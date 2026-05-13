@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, ... }:
 {
   imports = [
     ./hardware-configuration.nix
@@ -22,26 +22,18 @@
     kernelParams = [ "console=tty1" "console=ttyS0,115200n8" "ipv6.disable=1" ];
   };
 
-  zramSwap.enable = true;
-  boot.tmp.cleanOnBoot = true;
-
-  services.getty.autologinUser = "root";
+  systemd.network.links."10-wan0" = {
+    matchConfig.MACAddress = "d0:0d:7a:f2:84:92";
+    linkConfig.Name = "wan0";
+  };
 
   networking = {
     hostName = "relay";
-    domain = "wiyba.org";
-    usePredictableInterfaceNames = lib.mkForce false;
-    enableIPv6 = false;
-    dhcpcd.extraConfig = ''
-      nohook resolv.conf, domain_search
-    '';
+    dhcpcd = {
+      enable = true;
+      extraConfig = "nooption domain_name_servers";
+    };
   };
 
   time.timeZone = "Europe/Moscow";
-
-  users.users.root.openssh.authorizedKeys.keys = [
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBQmY892Awak26eH1iK0aEj7nILjGddlayY7e+fAwRV0 wiyba.org"
-  ];
-
-  system.stateVersion = "24.11";
 }

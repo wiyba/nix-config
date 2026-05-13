@@ -248,7 +248,7 @@
         "predefinedScheme": "GruvboxAlt",
         "schedulingMode": "off",
         "syncGsettings": true,
-        "useWallpaperColors": true
+        "useWallpaperColors": false
     },
     "controlCenter": {
         "cards": [
@@ -439,12 +439,12 @@
         "enabled": true,
         "fadeDuration": 30,
         "lockCommand": "",
-        "lockTimeout": 600,
+        "lockTimeout": 1800,
         "resumeLockCommand": "",
         "resumeScreenOffCommand": "",
         "resumeSuspendCommand": "",
         "screenOffCommand": "",
-        "screenOffTimeout": 600,
+        "screenOffTimeout": 1800,
         "suspendCommand": "",
         "suspendTimeout": 0
     },

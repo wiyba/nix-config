@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, ... }:
 {
   imports = [
     ./hardware-configuration.nix
@@ -14,20 +14,27 @@
     };
   };
 
-  zramSwap.enable = true;
-  boot.tmp.cleanOnBoot = true;
+  systemd.network.links."10-wan0" = {
+    matchConfig.MACAddress = "34:ad:e2:7f:c4:e8";
+    linkConfig.Name = "wan0";
+  };
 
   networking = {
     hostName = "stockholm";
-    domain = "wiyba.org";
-    usePredictableInterfaceNames = lib.mkForce false;
+    defaultGateway = "193.53.40.1";
+    defaultGateway6 = "2a13:7c81::1";
+    interfaces.wan0 = {
+      ipv4.addresses = [
+        { address = "193.53.40.182"; prefixLength = 24; }
+      ];
+      ipv6.addresses = [
+        { address = "2a13:7c81:fff::1bc"; prefixLength = 128; }
+      ];
+      ipv6.routes = [
+        { address = "2a13:7c81::1"; prefixLength = 128; }
+      ];
+    };
   };
 
   time.timeZone = "Europe/Stockholm";
-
-  users.users.root.openssh.authorizedKeys.keys = [
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBQmY892Awak26eH1iK0aEj7nILjGddlayY7e+fAwRV0 wiyba.org"
-  ];
-
-  system.stateVersion = "24.11";
 }
