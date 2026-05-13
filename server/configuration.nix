@@ -8,6 +8,7 @@
     ./programs/git
     ./programs/ssh
     ./programs/zsh
+    ./programs/btop
     ./services/sshd
   ];
 
@@ -57,7 +58,6 @@
       curl
       wget
       gh
-      btop
       dig
       eza
       age
@@ -66,7 +66,6 @@
       jq
       file
       nitch
-      claude-code
     ];
 
     variables = {
@@ -90,6 +89,7 @@
     ];
   };
   services.getty.autologinUser = "root";
+  security.pam.services.login.rules.session.lastlog.enable = false;
 
   nix = {
     channel.enable = false;
