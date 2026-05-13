@@ -41,7 +41,7 @@
       "8.8.8.8"
       "77.88.8.8"
     ];
-    enableIPv6 = false;
+    enableIPv6 = lib.mkDefault false;
     networkmanager.dns = "none";
     extraHosts = ''
       0.0.0.0 paradise-s1.battleye.com

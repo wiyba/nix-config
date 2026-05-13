@@ -11,6 +11,7 @@
 
   nix.registry.nixpkgs.flake = lib.mkForce null;
   boot.loader.raspberry-pi.bootloader = "kernel";
+  boot.kernelParams = [ "ipv6.disable=1" ];
 
   systemd.network.links = {
     "10-wan0" = {

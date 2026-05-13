@@ -22,6 +22,7 @@
 
   networking = {
     hostName = "london";
+    enableIPv6 = true;
     defaultGateway = "45.154.197.1";
     defaultGateway6 = "2a12:ab46:5344::1";
     interfaces.wan0 = {

@@ -18,6 +18,7 @@
       "77.88.8.8"
     ];
     domain = "wiyba.org";
+    enableIPv6 = lib.mkDefault false;
     firewall.enable = lib.mkDefault false;
     dhcpcd.enable = lib.mkDefault false;
   };

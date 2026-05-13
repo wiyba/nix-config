@@ -21,6 +21,7 @@
 
   networking = {
     hostName = "stockholm";
+    enableIPv6 = true;
     defaultGateway = "193.53.40.1";
     defaultGateway6 = "2a13:7c81::1";
     interfaces.wan0 = {
