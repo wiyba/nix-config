@@ -35,19 +35,21 @@
     "net.core.somaxconn" = 4096;
   };
 
-  networking.nameservers = [
-    "1.1.1.1"
-    "9.9.9.9"
-    "77.88.8.8"
-  ];
-  networking.networkmanager.dns = "none";
-
-  networking.extraHosts = ''
-    0.0.0.0 paradise-s1.battleye.com
-    0.0.0.0 test-s1.battleye.com
-    0.0.0.0 paradiseenhanced-s1.battleye.com
-    0.0.0.0 cisco.com www.cisco.com
-  '';
+  networking = {
+    nameservers = [
+      "1.1.1.1"
+      "8.8.8.8"
+      "77.88.8.8"
+    ];
+    enableIPv6 = false;
+    networkmanager.dns = "none";
+    extraHosts = ''
+      0.0.0.0 paradise-s1.battleye.com
+      0.0.0.0 test-s1.battleye.com
+      0.0.0.0 paradiseenhanced-s1.battleye.com
+      0.0.0.0 cisco.com www.cisco.com
+    '';
+  };
 
   imports = [
     inputs.lanzaboote.nixosModules.lanzaboote
@@ -59,6 +61,7 @@
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
     kernelModules = [ "hid_playstation" ];
+    kernelParams = [ "ipv6.disable=1" ];
     consoleLogLevel = 3;
     initrd = {
       systemd.enable = true;
@@ -98,7 +101,7 @@
     };
     nix-ld.enable = true;
     nix-index-database.comma.enable = true;
-    uwsm.enable = true;
+    uwsm.enable = wm == "hyprland";
     hyprland = lib.mkIf (wm == "hyprland") {
       enable = true;
       withUWSM = true;
@@ -164,31 +167,6 @@
     extraSpecialArgs = { inherit inputs host wm; };
     users.wiyba = import (../home/wm + "/${wm}");
   };
-
-  environment.etc."chromium/policies/managed/custom.json".text = builtins.toJSON {
-    SavingBrowserHistoryDisabled = true;
-    ClearBrowsingDataOnExitList = [ "download_history" ];
-  };
-
-  security.sudo.extraRules = [
-    {
-      users = [ "wiyba" ];
-      commands = [
-        {
-          command = "/run/current-system/sw/bin/systemctl start mihomo";
-          options = [ "NOPASSWD" ];
-        }
-        {
-          command = "/run/current-system/sw/bin/systemctl stop mihomo";
-          options = [ "NOPASSWD" ];
-        }
-        {
-          command = "/run/current-system/sw/bin/systemctl restart mihomo";
-          options = [ "NOPASSWD" ];
-        }
-      ];
-    }
-  ];
 
   security.pam.services = {
     greetd.enableGnomeKeyring = true;

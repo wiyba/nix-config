@@ -201,22 +201,16 @@ let
     dns = {
       servers = [
         "https+local://1.1.1.1/dns-query"
-        "https+local://9.9.9.9/dns-query"
-        "1.1.1.1"
-        "9.9.9.9"
+        "https+local://8.8.8.8/dns-query"
       ];
-      queryStrategy = "UseIP";
+      queryStrategy = if host == "relay" then "UseIPv4" else "UseIP";
     };
     routing = {
-      domainStrategy = "IPIfNonMatch";
+      domainStrategy = "AsIs";
       rules = [
         {
           inboundTag = [ "api" ];
           outboundTag = "api";
-        }
-        {
-          ip = [ "geoip:private" ];
-          outboundTag = "blocked";
         }
         {
           protocol = [ "bittorrent" ];
@@ -243,11 +237,7 @@ let
         };
         sniffing = {
           enabled = true;
-          destOverride = [
-            "http"
-            "tls"
-            "quic"
-          ];
+          metadataOnly = true;
         };
         streamSettings = {
           network = "tcp";
@@ -288,6 +278,21 @@ in
     443
     8443
   ];
+
+  services.logrotate.settings.xray = {
+    files = [
+      "/var/log/xray/access.log"
+      "/var/log/xray/error.log"
+    ];
+    frequency = "daily";
+    rotate = 7;
+    compress = true;
+    delaycompress = true;
+    missingok = true;
+    notifempty = true;
+    create = "0600 nobody nogroup";
+    postrotate = "${pkgs.systemd}/bin/systemctl kill -s USR1 xray.service || true";
+  };
 
   security.acme.certs."${config.networking.fqdn}".reloadServices = [ "nginx" ];
 

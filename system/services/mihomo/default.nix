@@ -24,7 +24,7 @@
       mixed-port: 7890
       mode: rule
       log-level: warning
-      ipv6: true
+      ipv6: false
       external-controller: 127.0.0.1:9090
       geodata-mode: true
       unified-delay: true
@@ -32,8 +32,7 @@
 
       dns:
         enable: true
-        ipv6: true
-        prefer-h3: true
+        ipv6: false
         enhanced-mode: fake-ip
         fake-ip-range: 198.18.0.1/16
         fake-ip-filter:
@@ -52,10 +51,12 @@
           - 77.88.8.1
         proxy-server-nameserver:
           - https://1.1.1.1/dns-query
-          - https://9.9.9.9/dns-query
+          - https://8.8.8.8/dns-query
+          - https://common.dot.dns.yandex.net/dns-query
         nameserver:
           - https://1.1.1.1/dns-query
-          - https://9.9.9.9/dns-query
+          - https://8.8.8.8/dns-query
+          - https://common.dot.dns.yandex.net/dns-query
 
       sniffer:
         enable: true
@@ -79,8 +80,8 @@
         auto-route: true
         auto-detect-interface: true
         inet4-address: 198.18.0.1/16
-        inet6-address: fdfe:dcba:9876::1/126
-        strict-route: true
+        inet6-address: null
+        strict-route: false
 
       proxies:
         - name: relay
@@ -103,7 +104,6 @@
 
       rules:
         - GEOIP,PRIVATE,DIRECT
-        - IP-CIDR6,::/0,relay,no-resolve
         - DOMAIN-SUFFIX,wiyba.org,DIRECT
         - DOMAIN-SUFFIX,openh264.org,DIRECT
         - GEOSITE,category-ru,DIRECT

@@ -24,10 +24,6 @@
     useNetworkd = true;
     useDHCP = false;
     dhcpcd.enable = false;
-    nameservers = [
-      "1.1.1.1"
-      "8.8.8.8"
-    ];
     usePredictableInterfaceNames = lib.mkForce true;
   };
 
@@ -46,6 +42,7 @@
       Gateway=${config.sops.placeholder.xray-london-gw6}
       DNS=1.1.1.1
       DNS=8.8.8.8
+      DNS=77.88.8.8
     '';
     restartUnits = [ "systemd-networkd.service" ];
   };

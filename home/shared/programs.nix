@@ -1,6 +1,6 @@
 let
   more =
-    { pkgs, ... }:
+    { pkgs, lib, ... }:
     {
       programs = {
         bat.enable = true;
@@ -67,6 +67,10 @@ let
               user = "root";
               port = 2222;
               identityFile = [ "~/.ssh/ssh.key" ];
+            };
+            "home-lan-override" = lib.hm.dag.entryBefore [ "home" ] {
+              match = ''host home exec "ip -4 route get 192.168.1.1 2>/dev/null | grep -q dev"'';
+              hostname = "192.168.1.1";
             };
             "home" = {
               hostname = "home.wiyba.org";

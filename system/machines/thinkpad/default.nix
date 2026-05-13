@@ -1,6 +1,4 @@
 { pkgs
-, lib
-, inputs
 , ...
 }:
 
@@ -53,10 +51,10 @@
         {
           type = "basic";
           source = pkgs.writeShellScript "link-policy" ''
-            target="wiyba_net"
             case "$2" in
-              up)
-                if [ "$CONNECTION_ID" = "$target" ]; then
+              up|down|pre-down)
+                active="$(${pkgs.networkmanager}/bin/nmcli -t -f NAME c show --active | ${pkgs.coreutils}/bin/head -1)"
+                if [ "$active" = "wiyba_net" ]; then
                   ${pkgs.systemd}/bin/systemctl stop mihomo.service
                 else
                   ${pkgs.systemd}/bin/systemctl start mihomo.service
@@ -74,15 +72,8 @@
             autoconnect = true;
           };
           gsm.auto-config = true;
-          ipv4 = {
-            method = "auto";
-            dns = "1.1.1.1;9.9.9.9;77.88.8.8;";
-            ignore-auto-dns = "true";
-          };
-          ipv6 = {
-            method = "auto";
-            never-default = true;
-          };
+          ipv4.ignore-auto-dns = "true";
+          ipv6.ignore-auto-dns = "true";
         };
 
         hotspot = {
@@ -98,14 +89,14 @@
             band = "bg";
           };
           wifi-security = {
-            key-mgmt = "wpa-psk";
+            key-mgmt = "sae";
             psk = "13371337";
+            pmf = 3;
           };
           ipv4 = {
             address1 = "10.0.0.1/24";
             method = "shared";
           };
-          ipv6.method = "ignore";
         };
       };
     };
@@ -130,8 +121,8 @@
 
   hardware.bluetooth.enable = true;
 
-  systemd.services = {
-    ModemManager = {
+  systemd = {
+    services.ModemManager = {
       wantedBy = [ "multi-user.target" ];
       serviceConfig = {
         Restart = "always";
@@ -140,56 +131,36 @@
         KillMode = "mixed";
       };
     };
-    fprint-fix = {
-      description = "fprint fix after resume";
-      wantedBy = [ "post-resume.target" ];
-      after = [ "post-resume.target" ];
-      before = [ "fprintd.service" ];
-      serviceConfig = {
-        Type = "oneshot";
-        ExecStart = pkgs.writeShellScript "fprint-fix" ''
-          ${pkgs.usb-modeswitch}/bin/usb_modeswitch -v 06cb -p 0123 -R || true
-          sleep 1
-          ${pkgs.systemd}/bin/systemctl restart --no-block fprintd.service || true
-        '';
-      };
-    };
-    modem-fix = {
-      description = "modemmanager fix after resume";
-      wantedBy = [ "post-resume.target" ];
-      after = [ "post-resume.target" ];
-      serviceConfig = {
-        Type = "oneshot";
-        ExecStart = pkgs.writeShellScript "modem-fix" ''
-          sleep 1
-          ${pkgs.usb-modeswitch}/bin/usb_modeswitch -v 2dee -p 4d54 -R || true
-          sleep 1
-          ${pkgs.systemd}/bin/systemctl restart ModemManager.service
-          sleep 1
-          ${pkgs.modemmanager}/bin/mmcli -S
-          echo "done"
-          exit 0
-        '';
-      };
-    };
-    mihomo-fix = {
-      description = "mihomo fix after resume";
-      wantedBy = [ "post-resume.target" ];
-      after = [ "post-resume.target" ];
-      serviceConfig = {
-        Type = "oneshot";
-        ExecStart = pkgs.writeShellScript "link-policy-resume" ''
-          target="wiyba_net"
-          sleep 5
-          active="$(${pkgs.networkmanager}/bin/nmcli -t -f NAME c show --active | ${pkgs.coreutils}/bin/head -1)"
-          if [ "$active" = "$target" ]; then
-            ${pkgs.systemd}/bin/systemctl stop mihomo.service
-          else
-            ${pkgs.systemd}/bin/systemctl start mihomo.service
-          fi
-        '';
-      };
-    };
+    tmpfiles.rules = [
+      "z /sys/class/leds/*/brightness 0666 - - - -"
+      "z /sys/class/leds/*/trigger 0666 - - - -"
+    ];
+  };
+
+  environment.etc = {
+    "systemd/system-sleep/modem-fix".source = pkgs.writeShellScript "modem-fix-sleep-hook" ''
+      [ "$1" = "post" ] || exit 0
+      ${pkgs.usb-modeswitch}/bin/usb_modeswitch -v 2dee -p 4d54 -R 2>/dev/null || true
+      sleep 1
+      ${pkgs.systemd}/bin/systemctl restart ModemManager.service
+    '';
+
+    "systemd/system-sleep/mihomo-toggle".source = pkgs.writeShellScript "mihomo-toggle-sleep-hook" ''
+      [ "$1" = "post" ] || exit 0
+      sleep 5
+      active="$(${pkgs.networkmanager}/bin/nmcli -t -f NAME c show --active | ${pkgs.coreutils}/bin/head -1)"
+      if [ "$active" = "wiyba_net" ]; then
+      ${pkgs.systemd}/bin/systemctl stop mihomo.service
+      else
+      ${pkgs.systemd}/bin/systemctl start mihomo.service
+      fi
+    '';
+
+    "systemd/system-sleep/niri-refresh-switch".source = pkgs.writeShellScript "niri-refresh-switch-sleep-hook" ''
+      [ "$1" = "post" ] || exit 0
+      sleep 2
+      ${pkgs.systemd}/bin/systemctl --no-block --machine=wiyba@.host --user start niri-refresh-switch.service
+    '';
   };
 
   services.udev.extraRules = ''
@@ -202,13 +173,11 @@
     tpm2-tss
   ];
 
-  services.logind = {
-    settings.Login = {
-      HandleLidSwitch = "suspend-then-hibernate";
-      HandleLidSwitchExternalPower = "suspend";
-      HandleLidSwitchDocked = "ignore";
-      HandlePowerKey = "hibernate";
-    };
+  services.logind.settings.Login = {
+    HandleLidSwitch = "suspend-then-hibernate";
+    HandleLidSwitchExternalPower = "suspend";
+    HandleLidSwitchDocked = "ignore";
+    HandlePowerKey = "hibernate";
   };
 
   systemd.sleep.settings.Sleep.HibernateDelaySec = "3h";
@@ -220,11 +189,6 @@
     percentageAction = 3;
     criticalPowerAction = "Hibernate";
   };
-
-  systemd.tmpfiles.rules = [
-    "z /sys/class/leds/*/brightness 0666 - - - -"
-    "z /sys/class/leds/*/trigger 0666 - - - -"
-  ];
 
   security = {
     tpm2 = {
@@ -241,8 +205,6 @@
   };
 
   services.fprintd.enable = true;
-
-  services.power-profiles-daemon.enable = false;
 
   services.tlp = {
     enable = true;
@@ -270,12 +232,9 @@
     };
   };
 
-  home-manager.users.wiyba.systemd.user.services.niri-refresh-switch = {
-    Unit.Description = "Refresh niri output mode on power state change";
-    Service = {
-      Type = "oneshot";
-      ExecStart = "%h/.nix-profile/bin/niri-refresh-switch";
-    };
+  home-manager.users.wiyba.systemd.user.services.niri-refresh-switch.Service = {
+    Type = "oneshot";
+    ExecStart = "/etc/profiles/per-user/wiyba/bin/niri-refresh-switch";
   };
 
   home-manager.users.wiyba.xdg.configFile = {
@@ -290,6 +249,8 @@
       switch-events {
           lid-close { spawn "noctalia-shell" "ipc" "call" "lockScreen" "lock"; }
       }
+
+      spawn-sh-at-startup "pactl-listener"
     '';
     "hypr/hyprland-host.conf".text = ''
       bind=SUPER, L, exec, hyprlock

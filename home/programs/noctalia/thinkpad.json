@@ -520,9 +520,9 @@
         "backgroundOpacity": 1,
         "enabled": true,
         "enabledTypes": [
-            0,
             1,
-            2
+            2,
+            0
         ],
         "location": "bottom_left",
         "monitors": [

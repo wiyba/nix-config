@@ -13,6 +13,12 @@
 
   networking.firewall.enable = lib.mkDefault false;
 
+  networking.nameservers = [
+    "1.1.1.1"
+    "8.8.8.8"
+    "77.88.8.8"
+  ];
+
   boot.kernel.sysctl = {
     "net.ipv4.conf.all.accept_redirects" = 0;
     "net.ipv4.conf.default.accept_redirects" = 0;

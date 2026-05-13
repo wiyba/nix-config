@@ -62,9 +62,9 @@
           };
           ipv4 = {
             address1 = "192.168.10.2/24";
-            dns = "1.1.1.1;9.9.9.9;77.88.8.8;";
-            ignore-auto-dns = "true";
             method = "auto";
+            ignore-auto-dns = true;
+            dns = "1.1.1.1;8.8.8.8;77.88.8.8;";
           };
         };
 

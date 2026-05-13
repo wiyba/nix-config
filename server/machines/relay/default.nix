@@ -19,7 +19,7 @@
         terminal_output serial console
       '';
     };
-    kernelParams = [ "console=tty1" "console=ttyS0,115200n8" ];
+    kernelParams = [ "console=tty1" "console=ttyS0,115200n8" "ipv6.disable=1" ];
   };
 
   zramSwap.enable = true;
@@ -31,6 +31,10 @@
     hostName = "relay";
     domain = "wiyba.org";
     usePredictableInterfaceNames = lib.mkForce false;
+    enableIPv6 = false;
+    dhcpcd.extraConfig = ''
+      nohook resolv.conf, domain_search
+    '';
   };
 
   time.timeZone = "Europe/Moscow";

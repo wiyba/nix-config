@@ -28,25 +28,26 @@
       socks-port: 7891
       bind-address: 127.0.0.1
       mode: rule
-      log-level: warning
-      ipv6: true
+      log-level: error
+      ipv6: false
       unified-delay: true
       tcp-concurrent: true
       geodata-mode: true
 
       dns:
         enable: true
-        ipv6: true
-        prefer-h3: true
+        ipv6: false
         default-nameserver:
           - 77.88.8.8
           - 77.88.8.1
         proxy-server-nameserver:
           - https://1.1.1.1/dns-query
-          - https://9.9.9.9/dns-query
+          - https://8.8.8.8/dns-query
+          - https://common.dot.dns.yandex.net/dns-query
         nameserver:
           - https://1.1.1.1/dns-query
-          - https://9.9.9.9/dns-query
+          - https://8.8.8.8/dns-query
+          - https://common.dot.dns.yandex.net/dns-query
 
       sniffer:
         enable: true
@@ -98,7 +99,8 @@
             short-id: ${config.sops.placeholder.xray-stockholm-sid}
 
       rules:
-        - IP-CIDR6,::/0,london,no-resolve
+        # v6-only
+        - DOMAIN-SUFFIX,ntc.party,london
         # optimization
         #- DOMAIN-SUFFIX,nixos.org,london # x2 quota usage
         #- DOMAIN-SUFFIX,cachix.org,london
