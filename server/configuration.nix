@@ -89,7 +89,7 @@
     ];
   };
   services.getty.autologinUser = "root";
-  security.pam.services.login.rules.session.lastlog.enable = false;
+  security.pam.services.login.rules.session.lastlog.enable = lib.mkForce false;
 
   nix = {
     channel.enable = false;

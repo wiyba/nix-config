@@ -1,17 +1,17 @@
 { pkgs, ... }:
 
+let
+  btopConf = pkgs.writeText "btop.conf" ''
+    color_theme = "gruvbox_material_dark"
+    theme_background = False
+    rounded_corners = True
+    proc_sorting = "cpu direct"
+    update_ms = 1000
+  '';
+in
 {
-  programs.btop = {
-    enable = true;
-    package = pkgs.btop.override {
-      rocmSupport = true;
-    };
-    settings = {
-      color_theme = "gruvbox_material_dark";
-      theme_background = false;
-      rounded_corners = true;
-      proc_sorting = "cpu direct";
-      update_ms = 1000;
-    };
-  };
+  environment.systemPackages = [ pkgs.btop ];
+
+  systemd.tmpfiles.settings."10-btop"."/root/.config/btop/btop.conf"."L+".argument =
+    "${btopConf}";
 }
