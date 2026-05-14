@@ -63,6 +63,7 @@
       age
       sops
       mtr
+      wakeonlan
       jq
       file
       nitch

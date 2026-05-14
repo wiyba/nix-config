@@ -28,6 +28,7 @@
       ld = "${pkgs.eza}/bin/eza -lhD --icons=auto";
       lt = "${pkgs.eza}/bin/eza --icons=auto --tree";
       up = "nix flake update --flake /etc/nixos";
+      wol-home = "${pkgs.wakeonlan}/bin/wakeonlan -i home.wiyba.org -p 9 2c:f0:5d:04:be:05";
 
       ssh = "TERM=xterm-256color ssh";
     };

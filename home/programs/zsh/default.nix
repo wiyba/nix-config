@@ -25,6 +25,7 @@
       up = "nix flake update --flake /etc/nixos";
       switch-nixos = "sudo nixos-rebuild switch --flake /etc/nixos#";
       switch-home = "home-manager switch --flake /etc/nixos#home";
+      wol-home = "${pkgs.wakeonlan}/bin/wakeonlan -i home.wiyba.org -p 9 2c:f0:5d:04:be:05";
 
       ssh = "TERM=xterm-256color ssh";
     };

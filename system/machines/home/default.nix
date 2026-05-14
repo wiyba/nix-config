@@ -43,6 +43,7 @@
     };
     script = ''
       ${pkgs.ethtool}/bin/ethtool -K wan0 tso off gso off gro off || true
+      ${pkgs.ethtool}/bin/ethtool -s wan0 wol g || true
     '';
   };
 

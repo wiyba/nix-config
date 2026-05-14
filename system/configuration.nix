@@ -133,6 +133,7 @@
       proxmark3
       nettools
       dnsutils
+      wakeonlan
       xwayland-satellite
       sbctl
       efibootmgr
@@ -181,6 +182,12 @@
   systemd.tmpfiles.rules = [
     "d /etc/nixos 0755 wiyba users - -"
   ];
+
+  systemd.watchdog = {
+    runtimeTime = "15s";
+    rebootTime = "30s";
+    kexecTime = "30s";
+  };
 
   nix = {
     gc = {
