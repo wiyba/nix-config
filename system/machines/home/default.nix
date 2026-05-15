@@ -17,7 +17,10 @@
   ];
 
   boot = {
-    kernelParams = [ "video=2560x1440@60" ];
+    kernelParams = [
+      "video=2560x1440@60"
+      "amdgpu.ppfeaturemask=0xffffffff"
+    ];
     extraModprobeConfig = ''
       options hid_apple fnmode=0
     '';

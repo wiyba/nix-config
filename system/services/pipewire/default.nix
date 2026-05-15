@@ -21,7 +21,7 @@
   services.pipewire.extraConfig.pipewire."10-sample-rate" = lib.mkIf (host == "home") {
     "context.properties" = {
       "default.clock.rate" = 48000;
-      "default.clock.quantum" = 2048;
+      "default.clock.quantum" = 1024;
       "default.clock.min-quantum" = 256;
       "default.clock.max-quantum" = 8192;
     };
