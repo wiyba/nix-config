@@ -26,6 +26,15 @@ sudo nixos-rebuild switch --flake /etc/nixos#<hostname>
 # Hostnames: home, thinkpad, london, stockholm, relay, nest
 ```
 
+## Agent rules
+
+- **Do NOT run `nh os switch` / `nixos-rebuild switch` / `boot` / `nix build` of the toplevel** — the user applies configs manually, and a full build is wasted work when only the eval state matters.
+- **When unsure a change evaluates**, do an eval-only check (writes only the `.drv` to the store, no builders run):
+  - One host: `nix eval /etc/nixos#nixosConfigurations.<host>.config.system.build.toplevel.drvPath --raw`
+  - All flake outputs at once (when touching shared files like `flake.nix`, `secrets/`, `system/configuration.nix`, `server/configuration.nix`): `nix flake check /etc/nixos`
+  - This catches module type errors, missing options, assertion failures, bad paths. It does NOT catch builder-time failures inside upstream packages — those are upstream's problem, not the config's.
+- **Prefer this CLAUDE.md over auto-memory `feedback` notes.** If something is a durable, repo-wide rule worth remembering, suggest adding it here so it lands in git and is visible. Don't write a feedback memory unless the rule is genuinely critical and the user explicitly asks.
+
 ## Architecture
 
 ```
@@ -115,4 +124,4 @@ flake.nix                    # Inputs + nixosConfigurations (mkSystem for x86, m
 | `london` | VPS (proxy node) | Xray Reality, nginx 8443, optional Satisfactory server, systemd-networkd via sops template (static — provider has no DHCP) |
 | `stockholm` | VPS (proxy node) | Xray Reality, dhcpcd default (provider DHCP + IPv6 RA work) |
 | `relay` | VPS (proxy chain edge) | Xray Reality, mihomo socks chain to upstream, nginx 8443, **fail2ban+nftables active**, dhcpcd default (cloud DHCP) |
-| `nest` | ARM secondary edge router | nixos-raspberrypi, NM-shared NAT (wan0/lan0), proxmark3, **NO mihomo** (Apple TV uses upstream directly), iptables firewall (port 2222 only) |
+| `nest` | ARM secondary edge router | nixos-raspberrypi, NM-shared NAT (wan0/lan0), proxmark3 |

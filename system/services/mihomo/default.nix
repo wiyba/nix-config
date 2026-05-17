@@ -76,7 +76,7 @@
 
       tun:
         enable: true
-        stack: gvisor
+        stack: mixed
         auto-route: true
         auto-detect-interface: true
         inet4-address: 198.18.0.1/16

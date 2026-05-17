@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 
 let
   gruvbox-theme = pkgs.nur.repos.rycee.firefox-addons.buildFirefoxXpiAddon {
@@ -134,6 +134,7 @@ in
   programs.firefox = {
     enable = true;
     package = pkgs.firefox-beta;
+    configPath = "${config.xdg.configHome}/mozilla/firefox";
 
     profiles.default = {
       id = 0;
