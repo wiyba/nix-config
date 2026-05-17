@@ -33,10 +33,10 @@
     "net.ipv4.conf.default.log_martians" = 1;
     "net.ipv4.tcp_max_syn_backlog" = 4096;
     "net.core.somaxconn" = 4096;
-    "net.core.rmem_max" = 16777216;
-    "net.core.wmem_max" = 16777216;
-    "net.core.rmem_default" = 1048576;
-    "net.core.wmem_default" = 1048576;
+    "net.core.rmem_max" = 67108864;
+    "net.core.wmem_max" = 67108864;
+    "net.core.rmem_default" = 4194304;
+    "net.core.wmem_default" = 4194304;
     "net.core.netdev_max_backlog" = 5000;
     "net.ipv4.udp_mem" = "65536 131072 16777216";
     "net.core.default_qdisc" = "fq";
@@ -44,9 +44,11 @@
     "net.ipv4.tcp_fastopen" = 3;
     "net.ipv4.tcp_mtu_probing" = 1;
     "net.ipv4.tcp_notsent_lowat" = 16384;
-    "net.ipv4.udp_rmem_min" = 8192;
-    "net.ipv4.udp_wmem_min" = 8192;
+    "net.ipv4.udp_rmem_min" = 16384;
+    "net.ipv4.udp_wmem_min" = 16384;
     "net.ipv4.ip_local_port_range" = "1024 65535";
+    "net.netfilter.nf_conntrack_udp_timeout" = 60;
+    "net.netfilter.nf_conntrack_udp_timeout_stream" = 600;
     "vm.swappiness" = 10;
   };
 

@@ -53,26 +53,15 @@
         enable: true
         force-dns-mapping: true
         parse-pure-ip: true
-        override-destination: true
+        override-destination: false
         sniffing-timeout: 100ms
         sniff:
           TLS:
             ports: [443]
           HTTP:
-            ports: [80, 8080-8880]
+            ports: [80, 8080]
           QUIC:
             ports: [443]
-        skip-domain:
-          - '+.push.apple.com'
-          - '+.apple.com'
-          - '+.icloud.com'
-          - 'dns.google'
-          - '+.googlevideo.com'
-        skip-src-address:
-          - 127.0.0.0/8
-          - 10.0.0.0/8
-          - 172.16.0.0/12
-          - 192.168.0.0/16
 
       proxies:
         - name: london

@@ -134,7 +134,7 @@ in
   programs.firefox = {
     enable = true;
     package = pkgs.firefox-beta;
-    configPath = "${config.xdg.configHome}/mozilla/firefox";
+    configPath = ".mozilla/firefox";
 
     profiles.default = {
       id = 0;

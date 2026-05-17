@@ -62,17 +62,14 @@
         enable: true
         force-dns-mapping: true
         parse-pure-ip: true
-        override-destination: true
+        override-destination: false
         sniff:
           TLS:
-            ports: [443, 8443]
+            ports: [443]
           HTTP:
-            ports: [80, 8080-8880]
+            ports: [80, 8080]
           QUIC:
             ports: [443]
-        skip-domain:
-          - '+.push.apple.com'
-          - 'dns.google'
 
       tun:
         enable: true
@@ -82,6 +79,10 @@
         inet4-address: 198.18.0.1/16
         inet6-address: null
         strict-route: false
+        endpoint-independent-nat: true
+        udp-timeout: 300
+        gso: true
+        gso-max-size: 65536
 
       proxies:
         - name: relay
