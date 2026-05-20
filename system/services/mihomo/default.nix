@@ -49,40 +49,19 @@
         default-nameserver:
           - 77.88.8.8
           - 77.88.8.1
-        proxy-server-nameserver:
-          - https://1.1.1.1/dns-query
-          - https://8.8.8.8/dns-query
-          - https://common.dot.dns.yandex.net/dns-query
         nameserver:
+          - https://common.dot.dns.yandex.net/dns-query
           - https://1.1.1.1/dns-query
           - https://8.8.8.8/dns-query
-          - https://common.dot.dns.yandex.net/dns-query
-
-      sniffer:
-        enable: true
-        force-dns-mapping: true
-        parse-pure-ip: true
-        override-destination: false
-        sniff:
-          TLS:
-            ports: [443]
-          HTTP:
-            ports: [80, 8080]
-          QUIC:
-            ports: [443]
 
       tun:
         enable: true
-        stack: mixed
+        stack: gvisor
         auto-route: true
         auto-detect-interface: true
         inet4-address: 198.18.0.1/16
         inet6-address: null
         strict-route: false
-        endpoint-independent-nat: true
-        udp-timeout: 300
-        gso: true
-        gso-max-size: 65536
 
       proxies:
         - name: relay

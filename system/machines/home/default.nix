@@ -1,6 +1,7 @@
 { pkgs
 , config
 , inputs
+, lib
 , ...
 }:
 
@@ -32,6 +33,13 @@
       matchConfig.MACAddress = "00:e0:4c:4d:7e:20";
       linkConfig.Name = "lan0";
     };
+  };
+
+  systemd.services.NetworkManager-wait-online.serviceConfig = {
+    ExecStart = [
+      ""
+      "${pkgs.networkmanager}/bin/nm-online -q --timeout=2"
+    ];
   };
 
   systemd.services.offloads-fix = {
@@ -91,12 +99,12 @@
 
     firewall = {
       enable = true;
-      trustedInterfaces = [ "lan0" ];
+      trustedInterfaces = [ "lan0" "Meta" ];
+      checkReversePath = "loose";
       allowedTCPPorts = [
         80
         443
         2222
-        25565
         27036
         27037
       ];
@@ -222,4 +230,18 @@
     "-r"
     "144"
   ];
+
+  specialisation.clean.configuration = {
+    systemd.services.jellyfin.wantedBy = lib.mkForce [ ];
+    systemd.services.navidrome.wantedBy = lib.mkForce [ ];
+    systemd.services.qbittorrent.wantedBy = lib.mkForce [ ];
+    systemd.services.nginx.wantedBy = lib.mkForce [ ];
+    systemd.services.wba-website.wantedBy = lib.mkForce [ ];
+    systemd.services.mihomo.wantedBy = lib.mkForce [ ];
+    systemd.services.xcli.wantedBy = lib.mkForce [ ];
+    systemd.services.cups.wantedBy = lib.mkForce [ ];
+    systemd.sockets.cups.wantedBy = lib.mkForce [ ];
+    systemd.services.avahi-daemon.wantedBy = lib.mkForce [ ];
+    systemd.sockets.avahi-daemon.wantedBy = lib.mkForce [ ];
+  };
 }

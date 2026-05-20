@@ -28,7 +28,9 @@ let
 
         obs-studio = {
           enable = true;
-          plugins = [ ];
+          plugins = with pkgs.obs-studio-plugins; [
+            obs-pipewire-audio-capture
+          ];
         };
 
         mangohud.enable = true;

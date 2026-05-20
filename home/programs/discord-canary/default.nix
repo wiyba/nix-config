@@ -14,21 +14,7 @@ let
       '';
 in
 {
-  home.packages = [
-    (pkgs.symlinkJoin {
-      name = "discord-canary";
-      paths = [ pkgs.discord-canary ];
-      nativeBuildInputs = [ pkgs.makeWrapper ];
-      postBuild = ''
-        for b in discordcanary DiscordCanary; do
-          wrapProgram $out/bin/$b \
-            --add-flags "--enable-features=VaapiVideoDecoder,VaapiVideoDecodeLinuxGL,AcceleratedVideoDecodeLinuxGL" \
-            --add-flags "--disable-features=UseChromeOSDirectVideoDecoder" \
-            --add-flags "--ignore-gpu-blocklist --enable-zero-copy --ozone-platform-hint=wayland"
-        done
-      '';
-    })
-  ];
+  home.packages = [ pkgs.discord-canary ];
 
   home.activation.discordcanaryAddOpenH264 = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     TARGET="$HOME/.config/discordcanary/discord_asset_cache/openh264"

@@ -1,4 +1,4 @@
-{ lib, host, ... }:
+{ lib, pkgs, host, ... }:
 
 {
   security.rtkit.enable = true;
@@ -9,13 +9,7 @@
     alsa.support32Bit = true;
     pulse.enable = true;
     wireplumber.enable = true;
-    extraConfig.pipewire = {
-      "11-resample-quality" = {
-        "stream.properties" = {
-          "resample.quality" = 6;
-        };
-      };
-    };
+    extraLadspaPackages = lib.mkIf (host == "home") [ pkgs.ladspaPlugins ];
   };
 
   services.pipewire.extraConfig.pipewire."10-sample-rate" = lib.mkIf (host == "home") {
@@ -23,43 +17,87 @@
       "default.clock.rate" = 48000;
       "default.clock.quantum" = 1024;
       "default.clock.min-quantum" = 256;
-      "default.clock.max-quantum" = 1024;
+      "default.clock.max-quantum" = 2048;
     };
   };
 
-  #thinkpad speakers optimizer by claude cus im too lazy to get impulse from win
-  services.pipewire.extraConfig.pipewire."50-speaker-dsp" = lib.mkIf (host == "thinkpad") {
+  services.pipewire.extraConfig.pipewire."20-ur22c-voice" = lib.mkIf (host == "home") {
     "context.modules" = [
       {
         name = "libpipewire-module-filter-chain";
         args = {
-          "node.description" = "Speakers";
-          "media.name" = "Speakers";
+          "node.description" = "UR22C Voice";
+          "media.name" = "UR22C Voice";
           "filter.graph" = {
             nodes = [
-              { type = "builtin"; name = "hpf_1"; label = "bq_highpass"; control = { "Freq" = 100.0; "Q" = 0.707; }; }
-              { type = "builtin"; name = "hpf_2"; label = "bq_highpass"; control = { "Freq" = 100.0; "Q" = 0.707; }; }
-              { type = "builtin"; name = "eq_1"; label = "bq_peaking"; control = { "Freq" = 469.0; "Q" = 2.9; "Gain" = -4.0; }; }
-              { type = "builtin"; name = "eq_2"; label = "bq_peaking"; control = { "Freq" = 656.0; "Q" = 3.5; "Gain" = -2.5; }; }
+              { type = "builtin"; name = "mix"; label = "mixer"; }
+              { type = "builtin"; name = "hpf"; label = "bq_highpass"; control = { "Freq" = 80.0; "Q" = 0.707; }; }
+              {
+                type = "ladspa";
+                name = "gate";
+                plugin = "gate_1410";
+                label = "gate";
+                control = {
+                  "Threshold (dB)" = -28.0;
+                  "Attack (ms)" = 1.0;
+                  "Hold (ms)" = 50.0;
+                  "Decay (ms)" = 100.0;
+                  "Range (dB)" = -90.0;
+                };
+              }
+              {
+                type = "ladspa";
+                name = "comp";
+                plugin = "sc1_1425";
+                label = "sc1";
+                control = {
+                  "Attack time (ms)" = 3.0;
+                  "Release time (ms)" = 200.0;
+                  "Threshold level (dB)" = -22.0;
+                  "Ratio (1:n)" = 4.0;
+                  "Knee radius (dB)" = 6.0;
+                  "Makeup gain (dB)" = 4.0;
+                };
+              }
+              {
+                type = "ladspa";
+                name = "limit";
+                plugin = "fast_lookahead_limiter_1913";
+                label = "fastLookaheadLimiter";
+                control = {
+                  "Input gain (dB)" = 0.0;
+                  "Limit (dB)" = -3.0;
+                  "Release time (s)" = 0.05;
+                };
+              }
             ];
+            inputs = [ "mix:In 1" "mix:In 2" ];
+            outputs = [ "limit:Output 1" ];
             links = [
-              { output = "hpf_1:Out"; input = "hpf_2:In"; }
-              { output = "hpf_2:Out"; input = "eq_1:In"; }
-              { output = "eq_1:Out"; input = "eq_2:In"; }
+              { output = "mix:Out"; input = "hpf:In"; }
+              { output = "hpf:Out"; input = "gate:Input"; }
+              { output = "gate:Output"; input = "comp:Input"; }
+              { output = "comp:Output"; input = "limit:Input 1"; }
+              { output = "comp:Output"; input = "limit:Input 2"; }
             ];
           };
-          "audio.channels" = 2;
-          "audio.position" = [ "FL" "FR" ];
+          "audio.channels" = 1;
+          "audio.position" = [ "MONO" ];
           "capture.props" = {
-            "node.name" = "effect_input.speaker_dsp";
-            "media.class" = "Audio/Sink";
-            "priority.session" = 1100;
-            "priority.driver" = 1100;
+            "node.name" = "ur22c_voice_capture";
+            "node.target" = "alsa_input.usb-Yamaha_Corporation_Steinberg_UR22C-00.pro-input-0";
+            "audio.channels" = 2;
+            "audio.position" = [ "FL" "FR" ];
+            "stream.dont-remix" = true;
           };
           "playback.props" = {
-            "node.name" = "effect_output.speaker_dsp";
-            "node.target" = "alsa_output.pci-0000_00_1f.3-platform-skl_hda_dsp_generic.HiFi__Speaker__sink";
-            "node.passive" = true;
+            "node.name" = "ur22c_voice_source";
+            "node.description" = "UR22C Voice";
+            "media.class" = "Audio/Source";
+            "audio.channels" = 1;
+            "audio.position" = [ "MONO" ];
+            "priority.session" = 3000;
+            "priority.driver" = 3000;
           };
         };
       }

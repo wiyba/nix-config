@@ -38,30 +38,12 @@
         enable: true
         ipv6: false
         default-nameserver:
+          - 1.1.1.1
           - 77.88.8.8
-          - 77.88.8.1
         proxy-server-nameserver:
           - https://1.1.1.1/dns-query
-          - https://8.8.8.8/dns-query
-          - https://common.dot.dns.yandex.net/dns-query
         nameserver:
           - https://1.1.1.1/dns-query
-          - https://8.8.8.8/dns-query
-          - https://common.dot.dns.yandex.net/dns-query
-
-      sniffer:
-        enable: true
-        force-dns-mapping: true
-        parse-pure-ip: true
-        override-destination: false
-        sniffing-timeout: 100ms
-        sniff:
-          TLS:
-            ports: [443]
-          HTTP:
-            ports: [80, 8080]
-          QUIC:
-            ports: [443]
 
       proxies:
         - name: london
@@ -111,6 +93,7 @@
         # geoblocked
         - DOMAIN-SUFFIX,last.fm,london
         - DOMAIN-SUFFIX,audioscrobbler.com,london
+        - DOMAIN-SUFFIX,qobuz.com,london
         - GEOSITE,youtube,stockholm
         - GEOSITE,lastfm,london
         - GEOSITE,tiktok,london

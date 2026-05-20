@@ -1,4 +1,4 @@
-{ inputs, pkgs, ... }:
+{ inputs, lib, pkgs, ... }:
 let
   wba-website = inputs.wba-website.packages.${pkgs.stdenv.hostPlatform.system}.default;
 in
@@ -100,6 +100,8 @@ in
       environmentFile = "/run/secrets/cloudflare";
     };
   };
+
+  systemd.services."acme-wiyba.org".wants = lib.mkForce [ "acme-setup.service" ];
 
   users.users.nginx.extraGroups = [ "acme" ];
 }

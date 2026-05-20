@@ -33,22 +33,6 @@
     "net.ipv4.conf.default.log_martians" = 1;
     "net.ipv4.tcp_max_syn_backlog" = 4096;
     "net.core.somaxconn" = 4096;
-    "net.core.rmem_max" = 67108864;
-    "net.core.wmem_max" = 67108864;
-    "net.core.rmem_default" = 4194304;
-    "net.core.wmem_default" = 4194304;
-    "net.core.netdev_max_backlog" = 5000;
-    "net.ipv4.udp_mem" = "65536 131072 16777216";
-    "net.core.default_qdisc" = "fq";
-    "net.ipv4.tcp_congestion_control" = "bbr";
-    "net.ipv4.tcp_fastopen" = 3;
-    "net.ipv4.tcp_mtu_probing" = 1;
-    "net.ipv4.tcp_notsent_lowat" = 16384;
-    "net.ipv4.udp_rmem_min" = 16384;
-    "net.ipv4.udp_wmem_min" = 16384;
-    "net.ipv4.ip_local_port_range" = "1024 65535";
-    "net.netfilter.nf_conntrack_udp_timeout" = 60;
-    "net.netfilter.nf_conntrack_udp_timeout_stream" = 600;
     "vm.swappiness" = 10;
   };
 
@@ -69,7 +53,6 @@
   };
 
   imports = [
-    inputs.lanzaboote.nixosModules.lanzaboote
     ./services/greetd
     ./services/pipewire
     ./services/ssh
@@ -77,23 +60,23 @@
 
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
-    kernelModules = [ "hid_playstation" "tcp_bbr" ];
-    kernelParams = [ "ipv6.disable=1" ];
-    consoleLogLevel = 3;
+    kernelModules = [ "hid_playstation" ];
+    kernelParams = [
+      "ipv6.disable=1"
+      "udev.log_level=3"
+      "8250.nr_uarts=0"
+    ];
     initrd = {
       systemd.enable = true;
-      verbose = true;
+      verbose = false;
     };
     loader = {
+      timeout = 1;
       efi = {
         canTouchEfiVariables = true;
         efiSysMountPoint = "/boot";
       };
-      systemd-boot.enable = lib.mkForce false;
-    };
-    lanzaboote = {
-      enable = true;
-      pkiBundle = "/var/lib/sbctl";
+      systemd-boot.enable = true;
     };
   };
 
@@ -104,7 +87,9 @@
     dconf.enable = true;
     steam = {
       enable = true;
-      package = pkgs.steam.override { extraArgs = "-cef-disable-gpu"; };
+      package = pkgs.steam.override {
+        extraArgs = "-cef-disable-gpu -nobootstrapupdate -skipinitialbootstrap";
+      };
       gamescopeSession.enable = true;
     };
     gamescope = {
@@ -134,7 +119,7 @@
     udisks2.enable = true;
     gvfs.enable = true;
     gnome.gnome-keyring.enable = true;
-    fwupd.enable = true;
+    udev.packages = [ pkgs.proxmark3 ];
   };
 
   environment = {
@@ -165,6 +150,7 @@
   users.users.wiyba = {
     isNormalUser = true;
     shell = pkgs.zsh;
+    hashedPassword = "$y$j9T$1ZGpYEWAc11NmYLtyggch.$BPfQ3XJh0qRANS9khQBTifk21PaQbEHxfwNt.xDuIn8";
     extraGroups = [
       "wheel"
       "networkmanager"
@@ -191,20 +177,9 @@
     hyprlock.enableGnomeKeyring = true;
   };
 
-  services.udev.extraRules = ''
-    KERNEL=="hidraw*", SUBSYSTEM=="hidraw", MODE="0666"
-    SUBSYSTEM=="usb", MODE="0666"
-  '';
-
   systemd.tmpfiles.rules = [
     "d /etc/nixos 0755 wiyba users - -"
   ];
-
-  systemd.settings.Manager = {
-    RuntimeWatchdogSec = "15s";
-    RebootWatchdogSec = "30s";
-    KExecWatchdogSec = "30s";
-  };
 
   nix = {
     gc = {

@@ -39,10 +39,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    wba-website = {
-      url = "github:wiyba/website";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    wba-website.url = "github:wiyba/website";
 
     claude-code-nix = {
       url = "github:sadjow/claude-code-nix";

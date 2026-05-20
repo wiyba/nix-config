@@ -1,14 +1,23 @@
 { pkgs
+, lib
+, inputs
 , ...
 }:
 
 {
   imports = [
     ./hardware-configuration.nix
+    inputs.lanzaboote.nixosModules.lanzaboote
     ../../services/mihomo
   ];
 
   boot = {
+    loader.systemd-boot.enable = lib.mkForce false;
+    lanzaboote = {
+      enable = true;
+      pkiBundle = "/var/lib/sbctl";
+    };
+
     initrd = {
       luks.devices.cryptroot = {
         device = "/dev/nvme0n1p2";
@@ -205,6 +214,7 @@
   };
 
   services.fprintd.enable = true;
+  services.fwupd.enable = true;
 
   services.tlp = {
     enable = true;
