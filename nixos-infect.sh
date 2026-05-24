@@ -99,7 +99,10 @@ prepareEnv() {
   fi
 
   rootfsdev="$(mount | awk '$3=="/"{print $1; exit}')"
-  rootfstype="$(df "$rootfsdev" --output=fstype | tail -n1)"
+  if [ -L "$rootfsdev" ]; then
+    rootfsdev="$(readlink -f "$rootfsdev")"
+  fi
+  rootfstype="$(findmnt -no FSTYPE / 2>/dev/null || df / --output=fstype | tail -n1)"
 
   export USER=root
   export HOME=/root
@@ -401,9 +404,11 @@ infect() {
 
   touch /etc/NIXOS
   {
+    echo nix
     echo etc/nixos
     echo etc/nixos-generated
     echo etc/resolv.conf
+    echo etc/machine-id
     echo root/.nix-defexpr/channels
     (cd / && ls etc/ssh/ssh_host_*_key* 2>/dev/null || true)
   } > /etc/NIXOS_LUSTRATE
