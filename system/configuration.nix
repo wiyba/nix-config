@@ -141,6 +141,7 @@
       efibootmgr
       wev
       libinput
+      android-tools
     ];
     variables = {
       NIXOS_OZONE_WL = "1";
@@ -161,6 +162,7 @@
       "media"
       "hysteria"
       "seat"
+      "adbusers"
     ];
   };
 

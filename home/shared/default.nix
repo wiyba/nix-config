@@ -66,6 +66,9 @@ let
       streamrip # music downloader for qobuz
       libreoffice-fresh # office app for ege(?)
       wireshark # wireshark
+      scrcpy
+      localsend
+      gnirehtet
     ]
     ++ fontPkgs;
 

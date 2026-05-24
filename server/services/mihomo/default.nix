@@ -45,6 +45,20 @@
         nameserver:
           - https://1.1.1.1/dns-query
 
+      sniffer:
+        enable: true
+        force-dns-mapping: true
+        parse-pure-ip: true
+        override-destination: false
+        sniffing-timeout: 100ms
+        sniff:
+          TLS:
+            ports: [443]
+          HTTP:
+            ports: [80, 8080]
+          QUIC:
+            ports: [443]
+
       proxies:
         - name: london
           type: vless

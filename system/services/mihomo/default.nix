@@ -23,7 +23,7 @@
     content = ''
       mixed-port: 7890
       mode: rule
-      log-level: warning
+      log-level: error
       ipv6: false
       external-controller: 127.0.0.1:9090
       geodata-mode: true
@@ -49,6 +49,8 @@
         default-nameserver:
           - 77.88.8.8
           - 77.88.8.1
+        proxy-server-nameserver:
+          - https://common.dot.dns.yandex.net/dns-query
         nameserver:
           - https://common.dot.dns.yandex.net/dns-query
           - https://1.1.1.1/dns-query

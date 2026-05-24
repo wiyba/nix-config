@@ -24,6 +24,8 @@
     '';
   };
 
+  powerManagement.cpuFreqGovernor = "performance";
+
   systemd.network.links = {
     "10-wan0" = {
       matchConfig.MACAddress = "2c:f0:5d:04:be:05";

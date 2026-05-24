@@ -235,10 +235,7 @@ let
           clients = map (client "xtls-rprx-vision") xrayUsers;
           decryption = "none";
         };
-        sniffing = {
-          enabled = true;
-          metadataOnly = true;
-        };
+        sniffing.enabled = false;
         streamSettings = {
           network = "tcp";
           security = "reality";

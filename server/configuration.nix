@@ -38,6 +38,7 @@
     "net.ipv4.conf.default.log_martians" = 1;
     "net.ipv4.tcp_max_syn_backlog" = 4096;
     "net.core.somaxconn" = 4096;
+    "net.core.netdev_max_backlog" = 5000;
   };
 
   i18n = {

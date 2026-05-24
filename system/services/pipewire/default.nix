@@ -15,10 +15,24 @@
   services.pipewire.extraConfig.pipewire."10-sample-rate" = lib.mkIf (host == "home") {
     "context.properties" = {
       "default.clock.rate" = 48000;
-      "default.clock.quantum" = 1024;
-      "default.clock.min-quantum" = 256;
-      "default.clock.max-quantum" = 2048;
+      "default.clock.quantum" = 2048;
+      "default.clock.min-quantum" = 1024;
+      "default.clock.max-quantum" = 4096;
     };
+  };
+
+  services.pipewire.wireplumber.extraConfig."51-ur22c-playback-master" = lib.mkIf (host == "home") {
+    "monitor.alsa.rules" = [
+      {
+        matches = [
+          { "node.name" = "alsa_output.usb-Yamaha_Corporation_Steinberg_UR22C-00.pro-output-0"; }
+        ];
+        actions.update-props = {
+          "priority.driver" = 5000;
+          "priority.session" = 5000;
+        };
+      }
+    ];
   };
 
   services.pipewire.extraConfig.pipewire."20-ur22c-voice" = lib.mkIf (host == "home") {
@@ -40,8 +54,8 @@
                 control = {
                   "Threshold (dB)" = -28.0;
                   "Attack (ms)" = 1.0;
-                  "Hold (ms)" = 50.0;
-                  "Decay (ms)" = 100.0;
+                  "Hold (ms)" = 200.0;
+                  "Decay (ms)" = 300.0;
                   "Range (dB)" = -90.0;
                 };
               }
