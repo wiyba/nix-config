@@ -268,12 +268,20 @@ EOF
   boot.tmp.cleanOnBoot = true;
   zramSwap.enable = $zramswap;
 
+  # Kernel пишет boot-сообщения на serial — без этого Cloud serial-console молчит
+  # после GRUB и невозможно отладить проблемы первой загрузки.
+  boot.kernelParams = [ "console=tty1" "console=ttyS0,115200n8" ];
+
   networking.hostName = "$NEW_HOST";
   networking.domain   = "$NEW_DOMAIN";
 
   services.openssh.enable = true;
   users.users.root.openssh.authorizedKeys.keys = [
 $keys_nix  ];
+
+  # Safety net на случай lockout: serial console доступна через
+  # gcloud compute connect-to-serial-port + serial-port-enable=TRUE.
+  services.getty.autologinUser = "root";
 
   environment.systemPackages = [ ];
 
