@@ -2,22 +2,26 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ../../services/mihomo
     ../../services/acme
     ../../services/xray
   ];
 
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
-    loader.grub = {
-      enable = true;
-      device = "/dev/vda";
-      timeoutStyle = "countdown";
-      extraConfig = ''
-        serial --unit=0 --speed=115200
-        terminal_input serial console
-        terminal_output serial console
-      '';
+    loader = {
+      grub = {
+        enable = true;
+        device = "nodev";
+        efiSupport = true;
+        efiInstallAsRemovable = true;
+        timeoutStyle = "countdown";
+        extraConfig = ''
+          serial --unit=0 --speed=115200
+          terminal_input serial console
+          terminal_output serial console
+        '';
+      };
+      efi.efiSysMountPoint = "/boot/efi";
     };
     kernelParams = [ "console=tty1" "console=ttyS0,115200n8" ];
   };
@@ -30,7 +34,15 @@
   networking = {
     hostName = "helsinki";
     enableIPv6 = true;
-    dhcpcd.enable = true;
+    dhcpcd = {
+      enable = true;
+      extraConfig = "nooption domain_name_servers";
+    };
+    nameservers = [
+      "8.8.8.8"
+      "1.1.1.1"
+      "77.88.8.8"
+    ];
   };
 
   time.timeZone = "Europe/Helsinki";

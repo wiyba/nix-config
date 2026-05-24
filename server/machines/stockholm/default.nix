@@ -35,6 +35,11 @@
         { address = "2a13:7c81::1"; prefixLength = 128; }
       ];
     };
+    nameservers = [
+      "1.1.1.1"
+      "8.8.8.8"
+      "77.88.8.8"
+    ];
   };
 
   time.timeZone = "Europe/Stockholm";

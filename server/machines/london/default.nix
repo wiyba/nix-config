@@ -36,6 +36,11 @@
         { address = "2a12:ab46:5344::1"; prefixLength = 128; }
       ];
     };
+    nameservers = [
+      "1.1.1.1"
+      "8.8.8.8"
+      "77.88.8.8"
+    ];
   };
 
   time.timeZone = "Europe/London";

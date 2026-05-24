@@ -156,6 +156,9 @@ let
       relay = "yandex.ru";
       london = "vk.com";
       stockholm = "vk.com";
+      # helsinki в AS396982 (Google Cloud) — выбираем Google SNI чтобы
+      # ASN SNI matched IP ASN (нет mismatch'а для глубокого DPI).
+      helsinki = "www.google.com";
     }.${host};
 
   client =
@@ -199,10 +202,7 @@ let
       statsOutboundDownlink = true;
     };
     dns = {
-      servers = [
-        "https+local://1.1.1.1/dns-query"
-        "https+local://8.8.8.8/dns-query"
-      ];
+      servers = [ "localhost" ];
       queryStrategy = if host == "relay" then "UseIPv4" else "UseIP";
     };
     routing = {

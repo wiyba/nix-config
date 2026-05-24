@@ -70,6 +70,7 @@ let
         "relay"
         "london"
         "stockholm"
+        "helsinki"
       ]
   );
 in

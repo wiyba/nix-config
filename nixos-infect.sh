@@ -192,7 +192,7 @@ networkCfg() {
   gateway6="$(ip -6 route show default dev "$eth0_name" | awk '/default/{print $3; exit}' || true)"
   ether0="$(ip link show dev "$eth0_name" | awk '/link\/ether/{print $2; exit}')"
 
-  nameservers="$(awk '/^nameserver/{print "\"" $2 "\""}' /etc/resolv.conf | paste -sd' ' -)"
+  nameservers="$(awk '/^nameserver/ && $2 !~ /^(127\.|::1$)/ {print "\"" $2 "\""}' /etc/resolv.conf | paste -sd' ' -)"
   [ -n "$nameservers" ] || nameservers='"1.1.1.1" "8.8.8.8"'
 
   if [[ "$eth0_name" == eth* ]]; then

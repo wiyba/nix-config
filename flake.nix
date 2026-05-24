@@ -143,6 +143,11 @@
           system = "x86_64-linux";
           base = ./server;
         };
+        helsinki = mkSystem {
+          host = "helsinki";
+          system = "x86_64-linux";
+          base = ./server;
+        };
         nest = mkRpi {
           host = "nest";
           system = "aarch64-linux";

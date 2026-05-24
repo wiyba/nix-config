@@ -5,7 +5,11 @@
   boot.initrd.kernelModules = [ "nvme" ];
 
   fileSystems."/" = {
-    device = "/dev/vda1";
+    device = "/dev/sda1";
     fsType = "ext4";
+  };
+  fileSystems."/boot/efi" = {
+    device = "/dev/disk/by-uuid/0E04-041A";
+    fsType = "vfat";
   };
 }

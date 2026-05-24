@@ -33,6 +33,11 @@
       enable = true;
       extraConfig = "nooption domain_name_servers";
     };
+    nameservers = [
+      "77.88.8.8"
+      "1.1.1.1"
+      "8.8.8.8"
+    ];
   };
 
   time.timeZone = "Europe/Moscow";
