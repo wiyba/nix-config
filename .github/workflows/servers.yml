@@ -21,7 +21,10 @@ jobs:
       matrix:
         host:
           - relay
+          - moscow
           - london
+          - stockholm
+          - helsinki
 
     steps:
       - uses: actions/checkout@v4
