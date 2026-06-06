@@ -10,6 +10,7 @@
       command_not_found_handler() { return 127 }
       source ${./headline.zsh-theme}
       bindkey '^ ' autosuggest-accept
+      umask 002
     '';
 
     autosuggestion.enable = true;

@@ -1,6 +1,6 @@
 { lib, stdenv, fetchFromGitHub, nim, makeWrapper, ffmpeg, wireplumber }:
 
-stdenv.mkDerivation rec {
+stdenv.mkDerivation {
   pname = "terminal-oscilloscope";
   version = "unstable-2026-04-07";
 
@@ -30,10 +30,10 @@ stdenv.mkDerivation rec {
   '';
 
   meta = with lib; {
-    description = "Terminal oscilloscope with CRT phosphor physics (braille renderer)";
+    description = "Terminal oscilloscope with CRT phosphor physics";
     homepage = "https://github.com/rolandnsharp/terminal-oscilloscope";
     license = licenses.mit;
-    platforms = platforms.linux;
     mainProgram = "osc_braille";
+    platforms = platforms.linux;
   };
 }

@@ -54,6 +54,7 @@ let
       dnsutils # dnsutils
       tcpdump # tcp dump
       python3 # python3
+      rkn-block-checker # internet block diagnosis tool
       supersonic-wayland # music player for subsonic api
       telegram-desktop # messanger
       terminal-oscilloscope # terminal-oscilloscope
@@ -66,9 +67,12 @@ let
       streamrip # music downloader for qobuz
       libreoffice-fresh # office app for ege(?)
       wireshark # wireshark
-      scrcpy
-      localsend
-      gnirehtet
+      scrcpy # android screen mirroring
+      localsend # local file sharing
+      gnirehtet # android reverse tethering
+      blender # 3d modeling
+      pinta # image editor
+      audacity # audio editor
     ]
     ++ fontPkgs;
 
@@ -111,169 +115,178 @@ in
           viewer = "org.gnome.Loupe.desktop";
           player = "vlc.desktop";
           archive = "org.gnome.FileRoller.desktop";
-          files = "nemo.desktop";
           terminal = "kitty.desktop";
+          prism = "org.prismlauncher.PrismLauncher.desktop";
+          telegram = "org.telegram.desktop.desktop";
+          appimage = "appimage-run.desktop";
+          office = app: "libreoffice-${app}.desktop";
+
+          each = app: types: lib.genAttrs types (_: app);
         in
-        {
-          "text/html" = browser;
-          "text/xml" = browser;
-          "application/xhtml+xml" = browser;
-          "application/xml" = browser;
-          "application/rdf+xml" = browser;
-          "application/rss+xml" = browser;
-          "x-scheme-handler/http" = browser;
-          "x-scheme-handler/https" = browser;
-          "x-scheme-handler/chromium" = browser;
-          "application/pdf" = browser;
+        lib.mergeAttrsList [
+          (each browser [
+            "text/html"
+            "text/xml"
+            "application/xhtml+xml"
+            "application/xml"
+            "application/rdf+xml"
+            "application/rss+xml"
+            "x-scheme-handler/http"
+            "x-scheme-handler/https"
+            "x-scheme-handler/chromium"
+            "application/pdf"
+            "image/png"
+            "image/jpeg"
+            "image/gif"
+            "image/webp"
+            "image/avif"
+            "image/bmp"
+            "image/svg+xml"
+            "image/vnd.microsoft.icon"
+          ])
+          (each viewer [
+            "image/tiff"
+            "image/svg+xml-compressed"
+            "image/jxl"
+            "image/heic"
+            "image/qoi"
+            "image/vnd-ms.dds"
+            "image/vnd.radiance"
+            "image/x-dds"
+            "image/x-exr"
+            "image/x-portable-anymap"
+            "image/x-portable-bitmap"
+            "image/x-portable-graymap"
+            "image/x-portable-pixmap"
+            "image/x-qoi"
+            "image/x-tga"
+          ])
+          (each editor [
+            "text/plain"
+            "text/markdown"
+            "text/css"
+            "text/javascript"
+            "text/x-c"
+            "text/x-c++"
+            "text/x-c++hdr"
+            "text/x-c++src"
+            "text/x-chdr"
+            "text/x-csrc"
+            "text/x-go"
+            "text/x-java"
+            "text/x-makefile"
+            "text/x-moc"
+            "text/x-pascal"
+            "text/x-python"
+            "text/x-rust"
+            "text/x-tcl"
+            "text/x-tex"
+            "text/english"
+            "application/json"
+            "application/toml"
+            "application/x-yaml"
+            "application/x-zerosize"
+          ])
+          (each terminal [
+            "application/x-sh"
+            "application/x-shellscript"
+          ])
+          (each archive [
+            "application/zip"
+            "application/x-tar"
+            "application/x-compressed-tar"
+            "application/x-bzip-compressed-tar"
+            "application/x-xz-compressed-tar"
+            "application/x-zstd-compressed-tar"
+            "application/gzip"
+            "application/x-7z-compressed"
+            "application/x-rar"
+            "application/x-rar-compressed"
+            "application/vnd.rar"
+            "application/x-cd-image"
+          ])
+          (each player [
+            "audio/aac"
+            "audio/ac3"
+            "audio/basic"
+            "audio/flac"
+            "audio/m4a"
+            "audio/midi"
+            "audio/mp3"
+            "audio/mp4"
+            "audio/mpeg"
+            "audio/mpegurl"
+            "audio/ogg"
+            "audio/opus"
+            "audio/vorbis"
+            "audio/wav"
+            "audio/webm"
+            "audio/x-aac"
+            "audio/x-aiff"
+            "audio/x-ape"
+            "audio/x-flac"
+            "audio/x-m4a"
+            "audio/x-matroska"
+            "audio/x-mp3"
+            "audio/x-mpeg"
+            "audio/x-mpegurl"
+            "audio/x-ms-wma"
+            "audio/x-musepack"
+            "audio/x-pn-realaudio"
+            "audio/x-vorbis+ogg"
+            "audio/x-wav"
+            "audio/x-wavpack"
+            "video/3gpp"
+            "video/3gpp2"
+            "video/avi"
+            "video/divx"
+            "video/dv"
+            "video/mp2t"
+            "video/mp4"
+            "video/mpeg"
+            "video/ogg"
+            "video/quicktime"
+            "video/webm"
+            "video/x-avi"
+            "video/x-flv"
+            "video/x-m4v"
+            "video/x-matroska"
+            "video/x-mpeg"
+            "video/x-ms-wmv"
+            "video/x-msvideo"
+            "video/x-ogm+ogg"
+            "video/x-theora+ogg"
+          ])
+          {
+            "inode/directory" = "nemo.desktop";
 
-          "image/png" = browser;
-          "image/jpeg" = browser;
-          "image/gif" = browser;
-          "image/webp" = browser;
-          "image/avif" = browser;
-          "image/bmp" = browser;
-          "image/svg+xml" = browser;
-          "image/vnd.microsoft.icon" = browser;
+            "x-scheme-handler/steam" = "steam.desktop";
+            "x-scheme-handler/steamlink" = "steam.desktop";
+            "x-scheme-handler/tg" = telegram;
+            "x-scheme-handler/tonsite" = telegram;
+            "x-scheme-handler/discord" = "com.discordapp.Discord.desktop";
+            "x-scheme-handler/prismlauncher" = prism;
+            "x-scheme-handler/curseforge" = prism;
+            "x-scheme-handler/vscode" = "code-url-handler.desktop";
+            "x-scheme-handler/zed" = editor;
+            "x-scheme-handler/albert" = "albert.desktop";
 
-          "image/tiff" = viewer;
-          "image/svg+xml-compressed" = viewer;
-          "image/jxl" = viewer;
-          "image/heic" = viewer;
-          "image/qoi" = viewer;
-          "image/vnd-ms.dds" = viewer;
-          "image/vnd.radiance" = viewer;
-          "image/x-dds" = viewer;
-          "image/x-exr" = viewer;
-          "image/x-portable-anymap" = viewer;
-          "image/x-portable-bitmap" = viewer;
-          "image/x-portable-graymap" = viewer;
-          "image/x-portable-pixmap" = viewer;
-          "image/x-qoi" = viewer;
-          "image/x-tga" = viewer;
+            "application/x-modrinth-modpack+zip" = prism;
 
-          "text/plain" = editor;
-          "text/markdown" = editor;
-          "text/css" = editor;
-          "text/javascript" = editor;
-          "text/x-c" = editor;
-          "text/x-c++" = editor;
-          "text/x-c++hdr" = editor;
-          "text/x-c++src" = editor;
-          "text/x-chdr" = editor;
-          "text/x-csrc" = editor;
-          "text/x-go" = editor;
-          "text/x-java" = editor;
-          "text/x-makefile" = editor;
-          "text/x-moc" = editor;
-          "text/x-pascal" = editor;
-          "text/x-python" = editor;
-          "text/x-rust" = editor;
-          "text/x-tcl" = editor;
-          "text/x-tex" = editor;
-          "text/english" = editor;
-          "application/json" = editor;
-          "application/toml" = editor;
-          "application/x-yaml" = editor;
-          "application/x-zerosize" = editor;
+            "application/vnd.appimage" = appimage;
+            "application/x-iso9660-appimage" = appimage;
 
-          "application/x-sh" = terminal;
-          "application/x-shellscript" = terminal;
-
-          "application/zip" = archive;
-          "application/x-tar" = archive;
-          "application/x-compressed-tar" = archive;
-          "application/x-bzip-compressed-tar" = archive;
-          "application/x-xz-compressed-tar" = archive;
-          "application/x-zstd-compressed-tar" = archive;
-          "application/gzip" = archive;
-          "application/x-7z-compressed" = archive;
-          "application/x-rar" = archive;
-          "application/x-rar-compressed" = archive;
-          "application/vnd.rar" = archive;
-          "application/x-cd-image" = archive;
-
-          "audio/aac" = player;
-          "audio/ac3" = player;
-          "audio/basic" = player;
-          "audio/flac" = player;
-          "audio/m4a" = player;
-          "audio/midi" = player;
-          "audio/mp3" = player;
-          "audio/mp4" = player;
-          "audio/mpeg" = player;
-          "audio/mpegurl" = player;
-          "audio/ogg" = player;
-          "audio/opus" = player;
-          "audio/vorbis" = player;
-          "audio/wav" = player;
-          "audio/webm" = player;
-          "audio/x-aac" = player;
-          "audio/x-aiff" = player;
-          "audio/x-ape" = player;
-          "audio/x-flac" = player;
-          "audio/x-m4a" = player;
-          "audio/x-matroska" = player;
-          "audio/x-mp3" = player;
-          "audio/x-mpeg" = player;
-          "audio/x-mpegurl" = player;
-          "audio/x-ms-wma" = player;
-          "audio/x-musepack" = player;
-          "audio/x-pn-realaudio" = player;
-          "audio/x-vorbis+ogg" = player;
-          "audio/x-wav" = player;
-          "audio/x-wavpack" = player;
-
-          "video/3gpp" = player;
-          "video/3gpp2" = player;
-          "video/avi" = player;
-          "video/divx" = player;
-          "video/dv" = player;
-          "video/mp2t" = player;
-          "video/mp4" = player;
-          "video/mpeg" = player;
-          "video/ogg" = player;
-          "video/quicktime" = player;
-          "video/webm" = player;
-          "video/x-avi" = player;
-          "video/x-flv" = player;
-          "video/x-m4v" = player;
-          "video/x-matroska" = player;
-          "video/x-mpeg" = player;
-          "video/x-ms-wmv" = player;
-          "video/x-msvideo" = player;
-          "video/x-ogm+ogg" = player;
-          "video/x-theora+ogg" = player;
-
-          "inode/directory" = files;
-
-          "x-scheme-handler/steam" = "steam.desktop";
-          "x-scheme-handler/steamlink" = "steam.desktop";
-          "x-scheme-handler/tg" = "org.telegram.desktop.desktop";
-          "x-scheme-handler/tonsite" = "org.telegram.desktop.desktop";
-          "x-scheme-handler/discord" = "discord-canary.desktop";
-          "x-scheme-handler/prismlauncher" = "org.prismlauncher.PrismLauncher.desktop";
-          "x-scheme-handler/curseforge" = "org.prismlauncher.PrismLauncher.desktop";
-          "x-scheme-handler/vscode" = "code-url-handler.desktop";
-          "x-scheme-handler/zed" = "dev.zed.Zed.desktop";
-          "x-scheme-handler/albert" = "albert.desktop";
-
-          "application/x-modrinth-modpack+zip" = "org.prismlauncher.PrismLauncher.desktop";
-
-          "application/vnd.appimage" = "appimage-run.desktop";
-          "application/x-iso9660-appimage" = "appimage-run.desktop";
-
-          "application/vnd.oasis.opendocument.spreadsheet" = "libreoffice-calc.desktop";
-          "application/vnd.oasis.opendocument.text" = "libreoffice-writer.desktop";
-          "application/vnd.oasis.opendocument.presentation" = "libreoffice-impress.desktop";
-          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" = "libreoffice-calc.desktop";
-          "application/vnd.openxmlformats-officedocument.wordprocessingml.document" =
-            "libreoffice-writer.desktop";
-          "application/vnd.openxmlformats-officedocument.presentationml.presentation" =
-            "libreoffice-impress.desktop";
-          "application/msword" = "libreoffice-writer.desktop";
-          "application/vnd.ms-excel" = "libreoffice-calc.desktop";
-          "application/vnd.ms-powerpoint" = "libreoffice-impress.desktop";
-        };
+            "application/vnd.oasis.opendocument.spreadsheet" = office "calc";
+            "application/vnd.oasis.opendocument.text" = office "writer";
+            "application/vnd.oasis.opendocument.presentation" = office "impress";
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" = office "calc";
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document" = office "writer";
+            "application/vnd.openxmlformats-officedocument.presentationml.presentation" = office "impress";
+            "application/msword" = office "writer";
+            "application/vnd.ms-excel" = office "calc";
+            "application/vnd.ms-powerpoint" = office "impress";
+          }
+        ];
     };
   };
 
@@ -296,11 +309,23 @@ in
     };
   };
 
-  dconf.settings."org/gnome/desktop/interface".color-scheme = "prefer-dark";
+  dconf.settings = {
+    "org/gnome/desktop/interface".color-scheme = "prefer-dark";
+    "org/cinnamon/desktop/applications/terminal" = {
+      exec = "kitty";
+      exec-arg = "-e";
+    };
+    "org/nemo/preferences".show-open-in-terminal-toolbar = true;
+  };
 
   gtk = {
     enable = true;
     gtk4.theme = null;
+
+    theme = {
+      name = "adw-gtk3-dark";
+      package = pkgs.adw-gtk3;
+    };
 
     iconTheme = {
       name = "Papirus-Dark";

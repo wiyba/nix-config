@@ -52,6 +52,18 @@ let
               controlPersist = "no";
               identityFile = [ "~/.ssh/ssh.key" ];
             };
+            "helsinki" = {
+              hostname = "helsinki.wiyba.org";
+              user = "root";
+              port = 2222;
+              identityFile = [ "~/.ssh/ssh.key" ];
+            };
+            "moscow" = {
+              hostname = "moscow.wiyba.org";
+              user = "root";
+              port = 2222;
+              identityFile = [ "~/.ssh/ssh.key" ];
+            };
             "london" = {
               hostname = "london.wiyba.org";
               user = "root";
@@ -99,7 +111,6 @@ in
   ../programs/neovim
   ../programs/musicpresence
   ../programs/zed
-  ../programs/discord-canary
   ../programs/uxplay
   more
 ]

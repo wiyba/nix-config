@@ -34,6 +34,8 @@ sudo nixos-rebuild switch --flake /etc/nixos#<hostname>
   - All flake outputs at once (when touching shared files like `flake.nix`, `secrets/`, `system/configuration.nix`, `server/configuration.nix`): `nix flake check /etc/nixos`
   - This catches module type errors, missing options, assertion failures, bad paths. It does NOT catch builder-time failures inside upstream packages — those are upstream's problem, not the config's.
 - **Prefer this CLAUDE.md over auto-memory `feedback` notes.** If something is a durable, repo-wide rule worth remembering, suggest adding it here so it lands in git and is visible. Don't write a feedback memory unless the rule is genuinely critical and the user explicitly asks.
+- **Don't propose `boot.kernel.sysctl` TCP/network tuning** (BBR, fq, TFO, MTU probing, tcp_notsent_lowat, etc.). A prior attempt destabilized the `home (mihomo) → relay (xray) → exit-server` proxy chain. For latency/throughput, only app-level levers (xray/mihomo config: DNS, sniffing, routing strategy, outbound strategy, unified-delay, tcp-concurrent). Existing sysctl entries (hardening + somaxconn/backlog) stay.
+- **User deploys by SSH'ing into the target host and running `nixos-rebuild` / `nh os switch` locally** — never via `--target-host` or `--build-host`. Don't suggest remote-build / push-closure even on slow nodes (RPi, e2-small). If a build is slow, suggest waiting, gc, or binary cache — not remote build.
 
 ## Architecture
 

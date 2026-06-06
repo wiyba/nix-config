@@ -9,6 +9,9 @@ stdenv.mkDerivation rec {
     hash = "sha256-BDgM1SfyEXC0oW+J33mYKwqRrvZX3cy/X9k7Yuk4kS8=";
   };
 
+  dontBuild = true;
+  dontConfigure = true;
+
   nativeBuildInputs = [ autoPatchelfHook makeWrapper ];
 
   buildInputs = [
@@ -25,9 +28,6 @@ stdenv.mkDerivation rec {
     e2fsprogs
     stdenv.cc.cc.lib
   ];
-
-  dontBuild = true;
-  dontConfigure = true;
 
   installPhase = ''
     runHook preInstall
@@ -50,7 +50,7 @@ stdenv.mkDerivation rec {
     homepage = "https://github.com/ungive/discord-music-presence";
     license = licenses.unfree;
     sourceProvenance = with sourceTypes; [ binaryNativeCode ];
-    platforms = [ "x86_64-linux" ];
     mainProgram = "musicpresence";
+    platforms = [ "x86_64-linux" ];
   };
 }

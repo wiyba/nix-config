@@ -4,6 +4,8 @@
     "d /media/downloads 2775 qbittorrent media - -"
   ];
 
+  systemd.services.qbittorrent.serviceConfig.UMask = "0002";
+
   services.qbittorrent = {
     enable = true;
     openFirewall = false;

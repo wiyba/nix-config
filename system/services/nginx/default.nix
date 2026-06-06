@@ -1,6 +1,16 @@
 { inputs, lib, pkgs, ... }:
 let
   wba-website = inputs.wba-website.packages.${pkgs.stdenv.hostPlatform.system}.default;
+
+  # Webroot served on every undefined *.wiyba.org host: the dude.jpg decoy page
+  # + annoy.js, with all of imgs/ alongside (FILE_DOWNLOADS references them).
+  wildRoot = pkgs.runCommand "wild-root" { } ''
+    mkdir -p $out
+    cp -r ${../../../imgs}/. $out/
+    cp ${./wild/index.html} $out/index.html
+    cp ${./wild/annoy.js} $out/annoy.js
+    printf 'User-agent: *\nDisallow: /\n' > $out/robots.txt
+  '';
 in
 {
   sops.secrets.acme-env = {
@@ -63,7 +73,10 @@ in
         forceSSL = true;
         useACMEHost = "wiyba.org";
         default = true;
-        locations."/".return = "418";
+        root = "${wildRoot}";
+        locations."/".extraConfig = ''
+          try_files $uri $uri/ /index.html;
+        '';
       };
     };
   };

@@ -211,6 +211,13 @@
                     "textColor": "none"
                 },
                 {
+                    "displayMode": "forceOpen",
+                    "iconColor": "none",
+                    "id": "KeyboardLayout",
+                    "showIcon": true,
+                    "textColor": "none"
+                },
+                {
                     "colorizeDistroLogo": false,
                     "colorizeSystemIcon": "none",
                     "colorizeSystemText": "none",
@@ -303,16 +310,32 @@
             ],
             "right": [
                 {
-                    "id": "Notifications"
-                },
-                {
-                    "id": "PowerProfile"
-                },
-                {
                     "id": "KeepAwake"
                 },
                 {
                     "id": "NightLight"
+                },
+                {
+                    "enableOnStateLogic": false,
+                    "generalTooltipText": "",
+                    "icon": "terminal-2",
+                    "id": "CustomButton",
+                    "onClicked": "kitty",
+                    "onMiddleClicked": "",
+                    "onRightClicked": "",
+                    "showExecTooltip": true,
+                    "stateChecksJson": "[]"
+                },
+                {
+                    "enableOnStateLogic": false,
+                    "generalTooltipText": "",
+                    "icon": "brand-firefox",
+                    "id": "CustomButton",
+                    "onClicked": "firefox-beta",
+                    "onMiddleClicked": "",
+                    "onRightClicked": "",
+                    "showExecTooltip": true,
+                    "stateChecksJson": "[]"
                 }
             ]
         }
@@ -367,7 +390,7 @@
         "allowPanelsOnScreenWithoutBar": true,
         "allowPasswordWithFprintd": false,
         "animationDisabled": false,
-        "animationSpeed": 1,
+        "animationSpeed": 1.1,
         "autoStartAuth": false,
         "avatarImage": "/etc/nixos/imgs/face.png",
         "boxRadiusRatio": 1,
@@ -498,10 +521,10 @@
         "backgroundOpacity": 1,
         "clearDismissed": true,
         "criticalUrgencyDuration": 15,
-        "density": "default",
+        "density": "compact",
         "enableBatteryToast": true,
-        "enableKeyboardLayoutToast": false,
-        "enableMarkdown": false,
+        "enableKeyboardLayoutToast": true,
+        "enableMarkdown": true,
         "enableMediaToast": false,
         "enabled": true,
         "location": "top_right",
@@ -662,6 +685,14 @@
             {
                 "enabled": true,
                 "id": "pywalfox"
+            },
+            {
+                "enabled": true,
+                "id": "gtk"
+            },
+            {
+                "enabled": true,
+                "id": "qt"
             }
         ],
         "enableUserTheming": false
@@ -690,11 +721,11 @@
         "fillColor": "#fb4934",
         "fillMode": "crop",
         "hideWallpaperFilenames": false,
-        "linkLightAndDarkWallpapers": true,
+        "linkLightAndDarkWallpapers": false,
         "monitorDirectories": [
         ],
         "overviewBlur": 0.4,
-        "overviewEnabled": false,
+        "overviewEnabled": true,
         "overviewTint": 0.6,
         "panelPosition": "follow_bar",
         "randomIntervalSec": 300,

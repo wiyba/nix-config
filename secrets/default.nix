@@ -68,6 +68,7 @@ let
       )
       [
         "relay"
+        "moscow"
         "london"
         "stockholm"
         "helsinki"

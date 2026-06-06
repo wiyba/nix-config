@@ -18,10 +18,14 @@ in
     xray-admin = grp;
     xray-relay-key-pub = grp;
     xray-relay-sid = grp;
+    xray-moscow-key-pub = grp;
+    xray-moscow-sid = grp;
     xray-london-key-pub = grp;
     xray-london-sid = grp;
     xray-stockholm-key-pub = grp;
     xray-stockholm-sid = grp;
+    xray-helsinki-key-pub = grp;
+    xray-helsinki-sid = grp;
   };
 
   environment.systemPackages = [ xcli ];

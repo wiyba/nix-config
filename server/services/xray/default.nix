@@ -154,6 +154,7 @@ let
   sni =
     {
       relay = "yandex.ru";
+      moscow = "vk.com";
       london = "vk.com";
       stockholm = "vk.com";
       # helsinki в AS396982 (Google Cloud) — выбираем Google SNI чтобы
@@ -203,7 +204,7 @@ let
     };
     dns = {
       servers = [ "localhost" ];
-      queryStrategy = if host == "relay" then "UseIPv4" else "UseIP";
+      queryStrategy = if lib.elem host [ "relay" "moscow" ] then "UseIPv4" else "UseIP";
     };
     routing = {
       domainStrategy = "AsIs";
@@ -245,7 +246,7 @@ let
     ];
     outbounds = [
       (
-        if host == "relay" then
+        if lib.elem host [ "relay" "moscow" ] then
           {
             protocol = "socks";
             tag = "out";

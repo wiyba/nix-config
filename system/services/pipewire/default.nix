@@ -9,16 +9,10 @@
     alsa.support32Bit = true;
     pulse.enable = true;
     wireplumber.enable = true;
-    extraLadspaPackages = lib.mkIf (host == "home") [ pkgs.ladspaPlugins ];
-  };
-
-  services.pipewire.extraConfig.pipewire."10-sample-rate" = lib.mkIf (host == "home") {
-    "context.properties" = {
-      "default.clock.rate" = 48000;
-      "default.clock.quantum" = 2048;
-      "default.clock.min-quantum" = 1024;
-      "default.clock.max-quantum" = 4096;
-    };
+    extraLadspaPackages = lib.mkIf (host == "home") [
+      pkgs.ladspaPlugins
+      pkgs.rnnoise-plugin.ladspa
+    ];
   };
 
   services.pipewire.wireplumber.extraConfig."51-ur22c-playback-master" = lib.mkIf (host == "home") {
@@ -45,18 +39,29 @@
           "filter.graph" = {
             nodes = [
               { type = "builtin"; name = "mix"; label = "mixer"; }
-              { type = "builtin"; name = "hpf"; label = "bq_highpass"; control = { "Freq" = 80.0; "Q" = 0.707; }; }
+              { type = "builtin"; name = "hpf"; label = "bq_highpass"; control = { "Freq" = 150.0; "Q" = 0.707; }; }
+              {
+                type = "ladspa";
+                name = "rnnoise";
+                plugin = "librnnoise_ladspa";
+                label = "noise_suppressor_mono";
+                control = {
+                  "VAD Threshold (%)" = 50.0;
+                  "VAD Grace Period (ms)" = 600;
+                  "Retroactive VAD Grace (ms)" = 350;
+                };
+              }
               {
                 type = "ladspa";
                 name = "gate";
                 plugin = "gate_1410";
                 label = "gate";
                 control = {
-                  "Threshold (dB)" = -28.0;
-                  "Attack (ms)" = 1.0;
-                  "Hold (ms)" = 200.0;
-                  "Decay (ms)" = 300.0;
-                  "Range (dB)" = -90.0;
+                  "Threshold (dB)" = -50.0;
+                  "Attack (ms)" = 2.0;
+                  "Hold (ms)" = 500.0;
+                  "Decay (ms)" = 250.0;
+                  "Range (dB)" = -25.0;
                 };
               }
               {
@@ -65,12 +70,12 @@
                 plugin = "sc1_1425";
                 label = "sc1";
                 control = {
-                  "Attack time (ms)" = 3.0;
+                  "Attack time (ms)" = 8.0;
                   "Release time (ms)" = 200.0;
-                  "Threshold level (dB)" = -22.0;
-                  "Ratio (1:n)" = 4.0;
-                  "Knee radius (dB)" = 6.0;
-                  "Makeup gain (dB)" = 4.0;
+                  "Threshold level (dB)" = -38.0;
+                  "Ratio (1:n)" = 5.0;
+                  "Knee radius (dB)" = 8.0;
+                  "Makeup gain (dB)" = 10.0;
                 };
               }
               {
@@ -79,9 +84,9 @@
                 plugin = "fast_lookahead_limiter_1913";
                 label = "fastLookaheadLimiter";
                 control = {
-                  "Input gain (dB)" = 0.0;
+                  "Input gain (dB)" = -1.0;
                   "Limit (dB)" = -3.0;
-                  "Release time (s)" = 0.05;
+                  "Release time (s)" = 0.15;
                 };
               }
             ];
@@ -89,7 +94,8 @@
             outputs = [ "limit:Output 1" ];
             links = [
               { output = "mix:Out"; input = "hpf:In"; }
-              { output = "hpf:Out"; input = "gate:Input"; }
+              { output = "hpf:Out"; input = "rnnoise:Input"; }
+              { output = "rnnoise:Output"; input = "gate:Input"; }
               { output = "gate:Output"; input = "comp:Input"; }
               { output = "comp:Output"; input = "limit:Input 1"; }
               { output = "comp:Output"; input = "limit:Input 2"; }

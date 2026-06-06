@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
+        />
+        <title></title>
+        <meta name="theme-color" content="#000" class="theme-color" />
+        <style>
+            html,
+            body {
+                margin: 0;
+                height: 100%;
+                background: #000;
+                overflow: hidden;
+            }
+            body {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+            }
+            #dude {
+                display: block;
+            }
+            #hint {
+                position: absolute;
+                top: 0;
+                left: 0;
+                color: #fff;
+                mix-blend-mode: difference;
+                font-size: clamp(13px, 1vmin, 20px);
+                white-space: pre-line;
+                pointer-events: none;
+                font-family:
+                    -apple-system, BlinkMacSystemFont, "segoe ui", roboto,
+                    sans-serif;
+            }
+        </style>
+    </head>
+    <body>
+        <img id="dude" src="/dude.jpg" alt="" />
+        <div id="hint">click to unmute</div>
+        <template>
+            <div class="hello-message"></div>
+        </template>
+        <script src="/annoy.js"></script>
+    </body>
+</html>

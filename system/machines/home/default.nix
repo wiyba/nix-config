@@ -15,12 +15,16 @@
     ../../services/xcli
     ../../services/printing
     ../../services/qbittorrent
+    ../../services/stream
   ];
 
   boot = {
     kernelParams = [ "video=2560x1440@60" ];
+    extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback ];
+    kernelModules = [ "v4l2loopback" ];
     extraModprobeConfig = ''
       options hid_apple fnmode=0
+      options v4l2loopback devices=1 video_nr=0 card_label="OBS Virtual Camera" exclusive_caps=1
     '';
   };
 
@@ -75,7 +79,7 @@
             address1 = "192.168.10.2/24";
             method = "auto";
             ignore-auto-dns = true;
-            dns = "1.1.1.1;8.8.8.8;77.88.8.8;";
+            dns = "77.88.8.8;1.1.1.1;8.8.8.8;";
           };
         };
 
@@ -177,6 +181,12 @@
 
   #media
   users.groups.media = { };
+  systemd.tmpfiles.rules = [
+    "d /media         2775 root        media - -"
+    "d /media/movies  2775 wiyba       media - -"
+    "d /media/shows   2775 wiyba       media - -"
+    "d /media/music   2775 wiyba       media - -"
+  ];
   services.jellyfin = {
     enable = true;
     group = "media";

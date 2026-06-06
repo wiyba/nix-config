@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
+        />
+        <title></title>
+        <style>
+            html,
+            body {
+                margin: 0;
+                height: 100%;
+                background: #000;
+                overflow: hidden;
+            }
+            #v {
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+                background: #000;
+                display: block;
+                cursor: pointer;
+            }
+            #hint,
+            #users,
+            #g {
+                position: absolute;
+                top: 0;
+                color: #fff;
+                mix-blend-mode: difference;
+                font-size: clamp(13px, 1vmin, 20px);
+            }
+            #hint {
+                left: 0;
+                white-space: pre-line;
+                pointer-events: none;
+            }
+            #users {
+                right: 0;
+                text-align: right;
+                pointer-events: none;
+            }
+            #g {
+                left: 0;
+            }
+            #u {
+                color: inherit;
+                font: inherit;
+                background: transparent;
+                border: 0;
+                outline: 0;
+                padding: 0;
+            }
+        </style>
+    </head>
+    <body>
+        <video id="v" autoplay muted playsinline></video>
+        <div id="hint" hidden></div>
+        <div id="users"></div>
+        <form id="g">
+            <input
+                id="u"
+                autofocus
+                autocomplete="off"
+                autocapitalize="off"
+                spellcheck="false"
+                enterkeyhint="done"
+                placeholder="username"
+            />
+        </form>
+        <script src="/hls.min.js"></script>
+        <script>
+            var v = document.getElementById("v");
+            var hint = document.getElementById("hint");
+            var users = document.getElementById("users");
+            var input = document.getElementById("u");
+            var done = false;
+
+            function fsActive() {
+                return (
+                    document.fullscreenElement || v.webkitDisplayingFullscreen
+                );
+            }
+            function updateHint() {
+                hint.textContent =
+                    (v.muted ? "click to unmute" : "click to mute") +
+                    "\n" +
+                    (fsActive()
+                        ? "double click to exit fullscreen"
+                        : "double click to fullscreen");
+            }
+
+            var ct;
+            v.addEventListener("click", function () {
+                clearTimeout(ct);
+                ct = setTimeout(function () {
+                    v.muted = !v.muted;
+                    if (v.paused) v.play();
+                }, 220);
+            });
+            v.addEventListener("dblclick", function () {
+                clearTimeout(ct);
+                if (document.fullscreenElement) document.exitFullscreen();
+                else if (v.requestFullscreen) v.requestFullscreen();
+                else if (v.webkitEnterFullscreen) v.webkitEnterFullscreen();
+            });
+            v.addEventListener("volumechange", updateHint);
+            document.addEventListener("fullscreenchange", updateHint);
+            v.addEventListener("webkitbeginfullscreen", updateHint);
+            v.addEventListener("webkitendfullscreen", updateHint);
+
+            async function startWebRTC() {
+                var pc = new RTCPeerConnection({
+                    iceServers: [
+                        {
+                            urls: [
+                                "stun:stun.l.google.com:19302",
+                                "stun:stun1.l.google.com:19302",
+                            ],
+                        },
+                    ],
+                    bundlePolicy: "max-bundle",
+                });
+                var fb = setTimeout(function () {
+                    if (!done) {
+                        try {
+                            pc.close();
+                        } catch (e) {}
+                        startHLS();
+                    }
+                }, 5000);
+                pc.addTransceiver("video", { direction: "recvonly" });
+                pc.addTransceiver("audio", { direction: "recvonly" });
+                pc.ontrack = function (e) {
+                    done = true;
+                    clearTimeout(fb);
+                    v.srcObject = e.streams[0];
+                };
+                pc.onconnectionstatechange = function () {
+                    if (!done && pc.connectionState === "failed") {
+                        clearTimeout(fb);
+                        try {
+                            pc.close();
+                        } catch (e) {}
+                        startHLS();
+                    }
+                };
+                await pc.setLocalDescription(await pc.createOffer());
+                await Promise.race([
+                    new Promise(function (res) {
+                        if (pc.iceGatheringState === "complete") return res();
+                        pc.addEventListener(
+                            "icegatheringstatechange",
+                            function () {
+                                if (pc.iceGatheringState === "complete") res();
+                            },
+                        );
+                    }),
+                    new Promise(function (res) {
+                        setTimeout(res, 500);
+                    }),
+                ]);
+                var r = await fetch("/live/whep", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/sdp" },
+                    body: pc.localDescription.sdp,
+                });
+                if (!r.ok) {
+                    clearTimeout(fb);
+                    try {
+                        pc.close();
+                    } catch (e) {}
+                    return startHLS();
+                }
+                await pc.setRemoteDescription({
+                    type: "answer",
+                    sdp: await r.text(),
+                });
+            }
+
+            function startHLS() {
+                if (done) return;
+                done = true;
+                var src = "/live/index.m3u8";
+                if (v.canPlayType("application/vnd.apple.mpegurl")) {
+                    v.src = src;
+                    return;
+                }
+                if (window.Hls && Hls.isSupported()) {
+                    var h = new Hls({ liveSyncDurationCount: 3 });
+                    h.loadSource(src);
+                    h.attachMedia(v);
+                    h.on(Hls.Events.ERROR, function (_, d) {
+                        if (d.fatal) {
+                            h.destroy();
+                            done = false;
+                            setTimeout(startHLS, 2000);
+                        }
+                    });
+                }
+            }
+
+            function startPresence(name) {
+                var es = new EventSource(
+                    "/presence?u=" + encodeURIComponent(name),
+                );
+                es.onmessage = function (e) {
+                    var list;
+                    try {
+                        list = JSON.parse(e.data);
+                    } catch (_) {
+                        return;
+                    }
+                    users.textContent = "";
+                    for (var i = 0; i < list.length; i++) {
+                        var line = document.createElement("div");
+                        line.textContent =
+                            list[i].name + " (" + list[i].ip + ")";
+                        users.appendChild(line);
+                    }
+                };
+            }
+
+            function begin(name) {
+                document.getElementById("g").remove();
+                hint.hidden = false;
+                updateHint();
+                startPresence(name);
+                if (window.RTCPeerConnection) {
+                    startWebRTC().catch(startHLS);
+                } else {
+                    startHLS();
+                }
+            }
+
+            function savedName() {
+                var m = document.cookie.match(/(?:^|;\s*)u=([^;]*)/);
+                return m ? decodeURIComponent(m[1]) : "";
+            }
+
+            var saved = savedName();
+            if (saved) {
+                begin(saved);
+            } else {
+                input.focus();
+                document
+                    .getElementById("g")
+                    .addEventListener("submit", function (e) {
+                        e.preventDefault();
+                        var n = input.value.trim().slice(0, 32);
+                        if (!n) return;
+                        document.cookie =
+                            "u=" +
+                            encodeURIComponent(n) +
+                            "; path=/; max-age=315360000; SameSite=Lax";
+                        begin(n);
+                    });
+            }
+        </script>
+    </body>
+</html>

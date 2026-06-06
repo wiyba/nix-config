@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, host, ... }:
 {
   systemd.services.mihomo = {
     description = "mihomo";
@@ -33,17 +33,24 @@
       unified-delay: true
       tcp-concurrent: true
       geodata-mode: true
+      find-process-mode: off
 
       dns:
         enable: true
         ipv6: false
         default-nameserver:
-          - 1.1.1.1
           - 77.88.8.8
+          - 1.1.1.1
         proxy-server-nameserver:
-          - https://1.1.1.1/dns-query
+          - https://common.dot.dns.yandex.net/dns-query
         nameserver:
+          - https://common.dot.dns.yandex.net/dns-query
+        fallback:
           - https://1.1.1.1/dns-query
+          - https://8.8.8.8/dns-query
+        fallback-filter:
+          geoip: false
+          ipcidr: []
 
       sniffer:
         enable: true
@@ -60,29 +67,11 @@
             ports: [443]
 
       proxies:
-        - name: london
-          type: vless
-          server: london.wiyba.org
-          port: 443
-          uuid: ${config.sops.placeholder.xray-uuid-relay}
-          flow: xtls-rprx-vision
-          network: tcp
-          tls: true
-          udp: true
-          ip-version: ipv4
-          servername: vk.com
-          client-fingerprint: chrome
-          alpn:
-            - h2
-          reality-opts:
-            public-key: ${config.sops.placeholder.xray-london-key-pub}
-            short-id: ${config.sops.placeholder.xray-london-sid}
-
         - name: stockholm
           type: vless
           server: stockholm.wiyba.org
           port: 443
-          uuid: ${config.sops.placeholder.xray-uuid-relay}
+          uuid: ${config.sops.placeholder."xray-uuid-${host}"}
           flow: xtls-rprx-vision
           network: tcp
           tls: true
@@ -96,45 +85,59 @@
             public-key: ${config.sops.placeholder.xray-stockholm-key-pub}
             short-id: ${config.sops.placeholder.xray-stockholm-sid}
 
+        - name: helsinki
+          type: vless
+          server: helsinki.wiyba.org
+          port: 443
+          uuid: ${config.sops.placeholder."xray-uuid-${host}"}
+          flow: xtls-rprx-vision
+          network: tcp
+          tls: true
+          udp: true
+          ip-version: ipv4
+          servername: www.google.com
+          client-fingerprint: chrome
+          alpn:
+            - h2
+          reality-opts:
+            public-key: ${config.sops.placeholder.xray-helsinki-key-pub}
+            short-id: ${config.sops.placeholder.xray-helsinki-sid}
+
+        - name: london
+          type: vless
+          server: london.wiyba.org
+          port: 443
+          uuid: ${config.sops.placeholder."xray-uuid-${host}"}
+          flow: xtls-rprx-vision
+          network: tcp
+          tls: true
+          udp: true
+          ip-version: ipv4
+          servername: vk.com
+          client-fingerprint: chrome
+          alpn:
+            - h2
+          reality-opts:
+            public-key: ${config.sops.placeholder.xray-london-key-pub}
+            short-id: ${config.sops.placeholder.xray-london-sid}
+
+      proxy-groups:
+        - name: auto
+          type: fallback
+          proxies:
+            - stockholm
+            - helsinki
+            - london
+          url: 'https://www.gstatic.com/generate_204'
+          interval: 60
+          lazy: true
+
       rules:
-        # v6-only
-        - DOMAIN-SUFFIX,ntc.party,london
-        # optimization
-        #- DOMAIN-SUFFIX,nixos.org,london # x2 quota usage
-        #- DOMAIN-SUFFIX,cachix.org,london
-        - GEOSITE,roblox,london
-        - IP-ASN,22697,london,no-resolve
-        # geoblocked
-        - DOMAIN-SUFFIX,last.fm,london
-        - DOMAIN-SUFFIX,audioscrobbler.com,london
-        - DOMAIN-SUFFIX,qobuz.com,london
-        - GEOSITE,youtube,stockholm
-        - GEOSITE,lastfm,london
-        - GEOSITE,tiktok,london
-        - GEOSITE,flibusta,london
-        - GEOSITE,rutracker,london
-        - GEOSITE,category-ai-!cn,london
-        - GEOSITE,figma,london
-        - GEOSITE,canva,london
-        - GEOSITE,adobe,london
-        - GEOSITE,notion,london
-        - GEOSITE,atlassian,london
-        - GEOSITE,slack,london
-        - GEOSITE,spotify,london
-        - GEOSITE,netflix,london
-        - GEOSITE,twitch,london
-        - GEOSITE,deezer,london
-        - GEOSITE,jetbrains,london
-        - GEOSITE,jetbrains-ai,london
-        - GEOSITE,vercel,london
-        - GEOSITE,digitalocean,london
-        - GEOSITE,dropbox,london
-        - GEOSITE,paypal,london
-        - GEOSITE,stripe,london
-        - GEOSITE,zendesk,london
-        - GEOSITE,autodesk,london
-        - GEOSITE,patreon,london
-        - MATCH,DIRECT
+        - GEOSITE,roblox,helsinki
+        - IP-ASN,22697,helsinki,no-resolve
+        - GEOSITE,category-ru,DIRECT
+        - GEOSITE,category-ai-!cn,auto
+        - MATCH,stockholm
     '';
     path = "/etc/mihomo/config.yaml";
     mode = "0600";
