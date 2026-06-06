@@ -1,6 +1,3 @@
-# NOTE: placeholder modelled on relay (qemu/KVM guest). After `nixos-infect`
-# on Selectel, REPLACE this file with the generated /etc/nixos/hardware-configuration.nix
-# from the box (verify root device — Selectel may use /dev/vda1 or /dev/sda1).
 { modulesPath, ... }:
 {
   imports = [ (modulesPath + "/profiles/qemu-guest.nix") ];
@@ -8,7 +5,7 @@
   boot.initrd.kernelModules = [ "nvme" ];
 
   fileSystems."/" = {
-    device = "/dev/vda1";
+    device = "/dev/sda1";
     fsType = "ext4";
   };
 }
