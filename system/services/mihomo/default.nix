@@ -96,7 +96,7 @@
           tls: true
           udp: true
           ip-version: ipv4
-          servername: vk.com
+          servername: yandex.ru
           client-fingerprint: chrome
           alpn:
             - h2
@@ -132,7 +132,7 @@
           tls: true
           udp: true
           ip-version: ipv4
-          servername: vk.com
+          servername: www.google.com
           client-fingerprint: chrome
           alpn:
             - h2
@@ -168,7 +168,7 @@
           tls: true
           udp: true
           ip-version: ipv4
-          servername: vk.com
+          servername: www.google.com
           client-fingerprint: chrome
           alpn:
             - h2

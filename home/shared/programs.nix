@@ -38,65 +38,58 @@ let
         ssh = {
           enable = true;
           enableDefaultConfig = false;
-          matchBlocks = {
+          settings = {
             "*" = {
-              forwardAgent = false;
-              addKeysToAgent = "240m";
-              compression = false;
-              serverAliveInterval = 0;
-              serverAliveCountMax = 3;
-              hashKnownHosts = false;
-              userKnownHostsFile = "~/.ssh/known_hosts";
-              controlMaster = "no";
-              controlPath = "~/.ssh/master-%r@%n:%p";
-              controlPersist = "no";
-              identityFile = [ "~/.ssh/ssh.key" ];
+              ForwardAgent = false;
+              AddKeysToAgent = "240m";
+              Compression = false;
+              ServerAliveInterval = 0;
+              ServerAliveCountMax = 3;
+              HashKnownHosts = false;
+              UserKnownHostsFile = "~/.ssh/known_hosts";
+              ControlMaster = "no";
+              ControlPath = "~/.ssh/master-%r@%n:%p";
+              ControlPersist = "no";
+              IdentityFile = "~/.ssh/ssh.key";
             };
             "helsinki" = {
-              hostname = "helsinki.wiyba.org";
-              user = "root";
-              port = 2222;
-              identityFile = [ "~/.ssh/ssh.key" ];
+              HostName = "helsinki.wiyba.org";
+              User = "root";
+              Port = 2222;
             };
             "moscow" = {
-              hostname = "moscow.wiyba.org";
-              user = "root";
-              port = 2222;
-              identityFile = [ "~/.ssh/ssh.key" ];
+              HostName = "moscow.wiyba.org";
+              User = "root";
+              Port = 2222;
             };
             "london" = {
-              hostname = "london.wiyba.org";
-              user = "root";
-              port = 2222;
-              identityFile = [ "~/.ssh/ssh.key" ];
+              HostName = "london.wiyba.org";
+              User = "root";
+              Port = 2222;
             };
             "stockholm" = {
-              hostname = "stockholm.wiyba.org";
-              user = "root";
-              port = 2222;
-              identityFile = [ "~/.ssh/ssh.key" ];
+              HostName = "stockholm.wiyba.org";
+              User = "root";
+              Port = 2222;
             };
             "relay" = {
-              hostname = "relay.wiyba.org";
-              user = "root";
-              port = 2222;
-              identityFile = [ "~/.ssh/ssh.key" ];
+              HostName = "relay.wiyba.org";
+              User = "root";
+              Port = 2222;
             };
             "home-lan-override" = lib.hm.dag.entryBefore [ "home" ] {
-              match = ''host home exec "ip -4 route get 192.168.1.1 2>/dev/null | grep -q dev"'';
-              hostname = "192.168.1.1";
+              header = ''Match host home exec "ip -4 -o addr show | grep -qF 192.168.1."'';
+              HostName = "192.168.1.1";
             };
             "home" = {
-              hostname = "home.wiyba.org";
-              user = "wiyba";
-              port = 2222;
-              identityFile = [ "~/.ssh/ssh.key" ];
+              HostName = "home.wiyba.org";
+              User = "wiyba";
+              Port = 2222;
             };
             "nest" = {
-              hostname = "nest.wiyba.org";
-              user = "root";
-              port = 2222;
-              identityFile = [ "~/.ssh/ssh.key" ];
+              HostName = "nest.wiyba.org";
+              User = "root";
+              Port = 2222;
             };
           };
         };

@@ -15,6 +15,7 @@
       background_opacity = 1.0;
       hide_window_decorations = "yes";
       confirm_os_window_close = 0;
+      auto_reload_config = -1;
     };
 
     extraConfig = ''
