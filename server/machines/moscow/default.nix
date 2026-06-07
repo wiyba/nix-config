@@ -11,7 +11,7 @@
     kernelPackages = pkgs.linuxPackages_latest;
     loader.grub = {
       enable = true;
-      device = "/dev/vda";
+      device = "/dev/sda";
       timeoutStyle = "countdown";
       extraConfig = ''
         serial --unit=0 --speed=115200

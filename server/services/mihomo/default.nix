@@ -136,6 +136,7 @@
         - GEOSITE,roblox,helsinki
         - IP-ASN,22697,helsinki,no-resolve
         - GEOSITE,category-ru,DIRECT
+        - GEOSITE,youtube,DIRECT
         - GEOSITE,category-ai-!cn,auto
         - MATCH,stockholm
     '';

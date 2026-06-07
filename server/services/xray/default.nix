@@ -154,11 +154,9 @@ let
   sni =
     {
       relay = "yandex.ru";
-      moscow = "vk.com";
-      london = "vk.com";
-      stockholm = "vk.com";
-      # helsinki в AS396982 (Google Cloud) — выбираем Google SNI чтобы
-      # ASN SNI matched IP ASN (нет mismatch'а для глубокого DPI).
+      moscow = "yandex.ru";
+      london = "www.google.com";
+      stockholm = "www.google.com";
       helsinki = "www.google.com";
     }.${host};
 

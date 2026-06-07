@@ -23,7 +23,6 @@
     hostName = "stockholm";
     enableIPv6 = true;
     defaultGateway = "193.53.40.1";
-    defaultGateway6 = "2a13:7c81::1";
     interfaces.wan0 = {
       ipv4.addresses = [
         { address = "193.53.40.182"; prefixLength = 24; }
@@ -33,6 +32,7 @@
       ];
       ipv6.routes = [
         { address = "2a13:7c81::1"; prefixLength = 128; }
+        { address = "::"; prefixLength = 0; via = "2a13:7c81::1"; }
       ];
     };
     nameservers = [
