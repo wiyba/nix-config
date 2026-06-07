@@ -193,6 +193,7 @@
 
     settings = {
       auto-optimise-store = true;
+      accept-flake-config = true;
       trusted-users = [
         "root"
         "wiyba"
@@ -210,12 +211,14 @@
         "https://nix-community.cachix.org"
         "https://cache.thalheim.io"
         "https://noctalia.cachix.org"
+        "https://zed.cachix.org"
       ];
       trusted-public-keys = [
         "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
         "cache.thalheim.io-1:R7msbosLEZKrxk/lKxf9BTjOOH7Ax3H0Qj0/6wiHOgc="
         "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
+        "zed.cachix.org-1:/pHQ6dpMsAZk2DiP4WCL0p9YDNKWj2Q5FL20bNmw1cU="
       ];
     };
   };

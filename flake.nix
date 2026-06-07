@@ -59,6 +59,8 @@
     };
 
     nix-flatpak.url = "github:gmodena/nix-flatpak";
+
+    zed-editor.url = "github:zed-industries/zed";
   };
 
   outputs =
