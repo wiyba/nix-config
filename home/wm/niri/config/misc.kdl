@@ -1,0 +1,38 @@
+hotkey-overlay {
+    skip-at-startup
+}
+
+prefer-no-csd
+
+animations {}
+
+debug {
+    honor-xdg-activation-with-invalid-serial
+}
+
+cursor {
+    hide-when-typing
+    hide-after-inactive-ms 1000
+}
+
+recent-windows {
+    debounce-ms 750
+    open-delay-ms 150
+
+    highlight {
+        padding 30
+        corner-radius 0
+    }
+
+    previews {
+        max-height 480
+        max-scale 0.5
+    }
+
+    binds {
+        Alt+Tab         { next-window     scope="workspace"; }
+        Alt+Shift+Tab   { previous-window scope="workspace"; }
+        Alt+grave       { next-window     scope="all"; }
+        Alt+Shift+grave { previous-window scope="all"; }
+    }
+}

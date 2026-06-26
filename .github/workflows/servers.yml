@@ -1,0 +1,36 @@
+name: build servers
+
+on:
+  push:
+    paths:
+      - "flake.nix"
+      - "flake.lock"
+      - "server/**"
+  pull_request:
+    paths:
+      - "flake.nix"
+      - "flake.lock"
+      - "server/**"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: true
+      matrix:
+        host:
+          - stockholm
+          - helsinki
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: install nix
+        uses: cachix/install-nix-action@v27
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+
+      - name: check ${{ matrix.host }} nixos config
+        run: nix eval .#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel.drvPath --raw --accept-flake-config

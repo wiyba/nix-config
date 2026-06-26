@@ -1,0 +1,91 @@
+{ pkgs, lib, ... }:
+let
+  packages = with pkgs; [
+    grim # screenshots
+    grimblast # screenshot program from hyprland
+    hypridle # idle daemon for hyprland
+    hyprlock # lockscreen for hyprland
+    hyprpaper # wallpaper daemon for hyprland
+    pwvucontrol # pipewire gui
+    playerctl # player controller
+    swaynotificationcenter # notifications daemon
+    sway-audio-idle-inhibit # idle inhibitor
+    wl-clipboard # clipboard support
+    libreoffice-fresh # document viewer&editor
+  ];
+in
+{
+  imports = [
+    ../../shared
+    ../../scripts/hyprland
+    ../../programs/kitty
+    ../../programs/waybar
+    ../../programs/albert
+  ];
+
+  home = {
+    inherit packages;
+    stateVersion = "24.11";
+
+    sessionVariables = {
+      NIXOS_OZONE_WL = 1;
+      SHELL = "${lib.getExe pkgs.zsh}";
+      MOZ_ENABLE_WAYLAND = 1;
+      XDG_CURRENT_DESKTOP = "Hyprland";
+      XDG_SESSION_DESKTOP = "Hyprland";
+      XDG_SESSION_TYPE = "wayland";
+      GDK_BACKEND = "wayland,x11";
+      QT_QPA_PLATFORM = "wayland;xcb";
+    };
+  };
+
+  fonts.fontconfig.enable = true;
+
+  xdg = {
+    configFile = {
+      "electron-flags.conf".text = ''
+        --enable-features=UseOzonePlatform
+        --ozone-platform=wayland
+      '';
+
+      "hypr/hyprlock.conf".text = (builtins.readFile ./hyprlock.conf);
+      "hypr/hypridle.conf".text = (builtins.readFile ./hypridle.conf);
+    };
+
+    portal = {
+      enable = true;
+      config = {
+        common = {
+          default = [
+            "hyprland"
+            "gtk"
+          ];
+        };
+        hyprland = {
+          default = [
+            "hyprland"
+            "gtk"
+          ];
+          "org.freedesktop.impl.portal.ScreenCast" = "hyprland";
+          "org.freedesktop.impl.portal.Screenshot" = "hyprland";
+        };
+      };
+      extraPortals = with pkgs; [
+        xdg-desktop-portal-hyprland
+        xdg-desktop-portal-gtk
+      ];
+      xdgOpenUsePortal = true;
+    };
+  };
+
+  wayland.windowManager.hyprland = {
+    enable = true;
+    extraConfig = (builtins.readFile ./hyprland.conf);
+    plugins = [ ];
+    systemd = {
+      enable = true;
+      variables = [ "--all" ];
+    };
+    xwayland.enable = true;
+  };
+}
