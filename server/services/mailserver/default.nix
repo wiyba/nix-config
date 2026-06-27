@@ -22,27 +22,48 @@
     stateVersion = 5;
     fqdn = "mail.wiyba.org";
     domains = [ "wiyba.org" ];
+
     accounts."mail@wiyba.org" = {
       hashedPasswordFile = config.sops.secrets.mail-account-hash.path;
       aliases = [
-        "contact@wiyba.org"
-        "account@wiyba.org"
         "admin@wiyba.org"
-        "postmaster@wiyba.org"
+        "account@wiyba.org"
+        "contact@wiyba.org"
+        "wiyba@wiyba.org"
+        "abuse@wiyba.org" # RFC 2142
+        "security@wiyba.org" # RFC 2142
+        "postmaster@wiyba.org" # RFC 5321
       ];
-    };
-    x509.useACMEHost = "mail.wiyba.org";
-    enableSubmission = true;
-    localDnsResolver = true;
-  };
 
-  services.rspamd.extraConfig = ''
-    options {
-      dns {
-        nameserver = ["127.0.0.1:53"];
-      }
-    }
-  '';
+      sieveScript = ''
+        require [ "fileinto", "mailbox" ];
+
+        if header :is "X-Spam" "Yes" {
+          fileinto "Junk";
+          stop;
+        }
+
+        if address :is [ "to", "cc" ] [
+          "admin@wiyba.org",
+          "abuse@wiyba.org",
+          "security@wiyba.org",
+          "postmaster@wiyba.org"
+        ] {
+          fileinto :create "Admin";
+          stop;
+        }
+
+        if address :is [ "to", "cc" ] "account@wiyba.org" {
+          fileinto :create "Account";
+          stop;
+        }
+      '';
+    };
+
+    x509.useACMEHost = "mail.wiyba.org";
+
+    dkim.enable = false;
+  };
 
   services.postfix.settings.main = {
     relayhost = [ "[mail-eu.smtp2go.com]:2525" ];
@@ -51,6 +72,8 @@
     smtp_sasl_security_options = "noanonymous";
     smtp_tls_security_level = lib.mkForce "encrypt";
   };
+
+  services.rspamd.overrides."greylist.conf".text = "enabled = false;";
 
   security.acme.certs."mail.wiyba.org" = {
     dnsProvider = "cloudflare";
