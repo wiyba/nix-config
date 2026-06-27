@@ -11,6 +11,7 @@
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
     loader = {
+      timeout = 0;
       grub = {
         enable = true;
         device = "nodev";
