@@ -92,5 +92,6 @@ in
   ../programs/musicpresence
   ../programs/zed
   ../programs/uxplay
+  ../programs/aerc
   more
 ]

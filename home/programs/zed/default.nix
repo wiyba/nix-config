@@ -1,8 +1,7 @@
-{ pkgs, inputs, ... }:
+{ pkgs, ... }:
 {
   programs.zed-editor = {
     enable = true;
-    package = inputs.zed-editor.packages.${pkgs.stdenv.hostPlatform.system}.default;
     userSettings = {
       theme = "Gruvbox Dark";
       languages.Nix = {
@@ -35,7 +34,7 @@
     prettierd # web
     black # python
     isort # python improrts
-    nixpkgs-fmt # nix (less aggressive than nixfmt-rfc-style)
+    nixpkgs-fmt # nix
     shfmt # shell
 
     gcc

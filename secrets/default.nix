@@ -71,6 +71,10 @@ in
           owner = "wiyba";
           mode = "0600";
         };
+        mail-account-password = lib.mkIf (!isServer) {
+          owner = "wiyba";
+          mode = "0400";
+        };
       };
 
     templates = lib.mkMerge [
