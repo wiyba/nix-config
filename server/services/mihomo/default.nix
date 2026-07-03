@@ -94,6 +94,7 @@ in
     wantedBy = [ "multi-user.target" ];
     restartIfChanged = false;
     serviceConfig = {
+      ExecStartPre = "${pkgs.coreutils}/bin/ln -sfn ${pkgs.v2ray-domain-list-community}/share/v2ray/geosite.dat /var/lib/mihomo/GeoSite.dat";
       ExecStart = "${pkgs.mihomo}/bin/mihomo -d /var/lib/mihomo -f \${CREDENTIALS_DIRECTORY}/config.yaml";
       LoadCredential = "config.yaml:/etc/mihomo/config.yaml";
       StateDirectory = "mihomo";

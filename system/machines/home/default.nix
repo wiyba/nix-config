@@ -250,6 +250,13 @@
     "144"
   ];
 
+  services.terraria = {
+    enable = true;
+    messageOfTheDay = "добро пожалаоваэт в комупутре веби!!";
+    worldPath = "/var/lib/terraria/sin-vzriva-pirojka.wld";
+    openFirewall = true;
+  };
+
   specialisation.clean.configuration = {
     systemd.services.jellyfin.wantedBy = lib.mkForce [ ];
     systemd.services.navidrome.wantedBy = lib.mkForce [ ];

@@ -57,6 +57,20 @@ let
       nameserver-policy:
         "+.themoviedb.org,+.tmdb.org": proxy
 
+    sniffer:
+      enable: true
+      force-dns-mapping: true
+      parse-pure-ip: true
+      override-destination: false
+      sniffing-timeout: 100ms
+      sniff:
+        TLS:
+          ports: [443]
+        HTTP:
+          ports: [80, 8080]
+        QUIC:
+          ports: [443]
+
     tun:
       enable: true
       stack: gvisor
@@ -108,8 +122,11 @@ let
     rules:
       - DOMAIN-SUFFIX,wiyba.org,DIRECT
       - GEOIP,PRIVATE,DIRECT
+      - GEOSITE,category-game-platforms-download,DIRECT
+      - GEOSITE,sony,stockholm
+      - GEOSITE,playstation,stockholm
       - GEOSITE,category-ru,DIRECT
-      - GEOSITE,google,DIRECT
+      #- GEOIP,RU,DIRECT,no-resolve
       - GEOSITE,roblox,helsinki
       - IP-ASN,22697,helsinki,no-resolve
       - MATCH,helsinki
@@ -150,6 +167,7 @@ in
     wantedBy = [ "multi-user.target" ];
     restartIfChanged = false;
     serviceConfig = {
+      ExecStartPre = "${pkgs.coreutils}/bin/ln -sfn ${pkgs.v2ray-domain-list-community}/share/v2ray/geosite.dat /var/lib/mihomo/GeoSite.dat";
       ExecStart = "${pkgs.mihomo}/bin/mihomo -d /var/lib/mihomo -f \${CREDENTIALS_DIRECTORY}/config.yaml";
       LoadCredential = "config.yaml:/etc/mihomo/config.yaml";
       AmbientCapabilities = [

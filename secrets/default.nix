@@ -12,6 +12,7 @@ let
     { name = "obguy"; admin = false; }
     { name = "helsinki"; admin = false; }
     { name = "stockholm"; admin = false; }
+    { name = "rklimat"; admin = false; }
     { name = "wiyba"; admin = true; }
     { name = "home"; admin = true; }
     { name = "mamo"; admin = true; }
