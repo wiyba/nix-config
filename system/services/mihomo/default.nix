@@ -53,9 +53,9 @@ let
         - https://8.8.8.8/dns-query
       fallback-filter:
         geoip: false
-        ipcidr: []
-      nameserver-policy:
-        "+.themoviedb.org,+.tmdb.org": proxy
+        ipcidr:
+          - 127.0.0.0/8
+          - 0.0.0.0/8
 
     sniffer:
       enable: true

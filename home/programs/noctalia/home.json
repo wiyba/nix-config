@@ -62,7 +62,8 @@
         "middleClickCommand": "",
         "middleClickFollowMouse": false,
         "monitors": [
-            "DP-1"
+            "DP-1",
+            "DP-2"
         ],
         "mouseWheelAction": "none",
         "mouseWheelWrap": true,
@@ -531,7 +532,8 @@
         "location": "top_right",
         "lowUrgencyDuration": 3,
         "monitors": [
-            "DP-1"
+            "DP-1",
+            "DP-2"
         ],
         "normalUrgencyDuration": 8,
         "overlayLayer": true,
