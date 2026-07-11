@@ -18,9 +18,9 @@ in
   imports = [
     ../../shared
     ../../scripts/hyprland
+    ../../programs/albert
     ../../programs/kitty
     ../../programs/waybar
-    ../../programs/albert
   ];
 
   home = {

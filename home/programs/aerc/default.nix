@@ -7,6 +7,14 @@
     extraConfig = {
       general.unsafe-accounts-conf = true;
       compose.edit-headers = true;
+      filters = {
+        "text/plain" = "colorize";
+        "text/calendar" = "calendar";
+        "message/delivery-status" = "colorize";
+        "message/rfc822" = "colorize";
+        "text/html" = "! html";
+        ".headers" = "colorize";
+      };
     };
 
     extraAccounts.personal = {

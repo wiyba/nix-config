@@ -2,9 +2,7 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ../../services/mihomo
     ../../services/acme
-    ../../services/xray
     ../../services/mailserver
   ];
 

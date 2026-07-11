@@ -143,6 +143,19 @@
       wev
       libinput
       android-tools
+      file
+      psmisc
+      lsof
+      usbutils
+      pciutils
+      dmidecode
+      smartmontools
+      ethtool
+      parted
+      mtr
+      tcpdump
+      ntfs3g
+      xxd
     ];
     variables = {
       NIXOS_OZONE_WL = "1";

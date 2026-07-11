@@ -156,6 +156,11 @@ let
       - GEOIP,PRIVATE,DIRECT
       - MATCH,home
   '';
+
+  tails = {
+    home = homeTail;
+    thinkpad = thinkpadTail;
+  };
 in
 {
   systemd.services.mihomo = {
@@ -179,7 +184,7 @@ in
   };
 
   sops.templates.mihomo-config = {
-    content = head + (if host == "thinkpad" then thinkpadTail else homeTail);
+    content = head + tails.${host};
     path = "/etc/mihomo/config.yaml";
     mode = "0600";
   };

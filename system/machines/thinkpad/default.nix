@@ -8,7 +8,6 @@
   imports = [
     ./hardware-configuration.nix
     inputs.lanzaboote.nixosModules.lanzaboote
-    ../../services/mihomo
   ];
 
   boot = {
@@ -301,13 +300,4 @@
       }
     '';
   };
-
-  programs.steam.gamescopeSession.args = [
-    "-W"
-    "2880"
-    "-H"
-    "1800"
-    "-r"
-    "60"
-  ];
 }

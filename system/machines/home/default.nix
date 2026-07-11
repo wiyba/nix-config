@@ -8,12 +8,10 @@
 {
   imports = [
     ./hardware-configuration.nix
+    ./audio.nix
     inputs.nixos-hardware.nixosModules.common-cpu-intel
     inputs.nixos-hardware.nixosModules.common-gpu-amd
     ../../services/nginx
-    ../../services/mihomo
-    ../../../server/services/xray
-    ../../services/xcli
     ../../services/printing
     ../../services/qbittorrent
     ../../services/stream
@@ -31,11 +29,6 @@
   };
 
   powerManagement.cpuFreqGovernor = "performance";
-
-  systemd.services.xray = {
-    after = [ "mihomo.service" ];
-    wants = [ "mihomo.service" ];
-  };
 
   systemd.network.links = {
     "10-wan0" = {
@@ -129,7 +122,6 @@
       ];
     };
   };
-
 
   home-manager.users.wiyba.xdg.configFile = {
     "niri/outputs.kdl".text = ''
@@ -239,35 +231,5 @@
   systemd.services.navidrome.serviceConfig.EnvironmentFile = config.sops.secrets.navidrome-env.path;
   sops.secrets.navidrome-env = {
     owner = "navidrome";
-  };
-
-  programs.steam.gamescopeSession.args = [
-    "-W"
-    "2560"
-    "-H"
-    "1440"
-    "-r"
-    "144"
-  ];
-
-  services.terraria = {
-    enable = true;
-    messageOfTheDay = "добро пожалаоваэт в комупутре веби!!";
-    worldPath = "/var/lib/terraria/sin-vzriva-pirojka.wld";
-    openFirewall = true;
-  };
-
-  specialisation.clean.configuration = {
-    systemd.services.jellyfin.wantedBy = lib.mkForce [ ];
-    systemd.services.navidrome.wantedBy = lib.mkForce [ ];
-    systemd.services.qbittorrent.wantedBy = lib.mkForce [ ];
-    systemd.services.nginx.wantedBy = lib.mkForce [ ];
-    systemd.services.wba-website.wantedBy = lib.mkForce [ ];
-    systemd.services.mihomo.wantedBy = lib.mkForce [ ];
-    systemd.services.xcli.wantedBy = lib.mkForce [ ];
-    systemd.services.cups.wantedBy = lib.mkForce [ ];
-    systemd.sockets.cups.wantedBy = lib.mkForce [ ];
-    systemd.services.avahi-daemon.wantedBy = lib.mkForce [ ];
-    systemd.sockets.avahi-daemon.wantedBy = lib.mkForce [ ];
   };
 }

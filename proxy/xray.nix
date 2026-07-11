@@ -151,17 +151,12 @@ let
     HTTPServer(("127.0.0.1", 10086), H).serve_forever()
   '';
 
-  sni =
-    {
-      stockholm = "stockholm.wiyba.org";
-      helsinki = "www.google.com";
-      home = "home.wiyba.org";
-      almaty = "almaty.wiyba.org";
-    }.${host};
-
-  realityDest = if host == "helsinki" then "www.google.com:443" else "127.0.0.1:443";
-
-  certName = if host == "home" then "wiyba.org" else config.networking.fqdn;
+  profile = {
+    stockholm = { sni = "stockholm.wiyba.org"; dest = "127.0.0.1:443"; cert = config.networking.fqdn; acme = true; };
+    helsinki = { sni = "www.google.com"; dest = "www.google.com:443"; cert = config.networking.fqdn; acme = true; };
+    home = { sni = "home.wiyba.org"; dest = "127.0.0.1:443"; cert = "wiyba.org"; acme = false; };
+    almaty = { sni = "almaty.wiyba.org"; dest = "127.0.0.1:443"; cert = config.networking.fqdn; acme = true; };
+  }.${host};
 
   client =
     flow: user:
@@ -172,8 +167,8 @@ let
     // lib.optionalAttrs (flow != null) { inherit flow; };
 
   reality = {
-    dest = realityDest;
-    serverNames = [ sni ];
+    dest = profile.dest;
+    serverNames = [ profile.sni ];
     privateKey = config.sops.placeholder."xray-${host}-key-priv";
     shortIds = [ config.sops.placeholder."xray-${host}-sid" ];
   };
@@ -284,7 +279,7 @@ in
     postrotate = "${pkgs.systemd}/bin/systemctl kill -s USR1 xray.service || true";
   };
 
-  security.acme.certs = lib.mkIf (host != "home") {
+  security.acme.certs = lib.mkIf profile.acme {
     "${config.networking.fqdn}".reloadServices = [ "nginx" ];
   };
 
@@ -292,7 +287,7 @@ in
     enable = true;
     virtualHosts."${config.networking.fqdn}" = {
       onlySSL = true;
-      useACMEHost = certName;
+      useACMEHost = profile.cert;
       listen = [
         {
           addr = "0.0.0.0";
@@ -312,9 +307,18 @@ in
   };
 
   systemd.services.xray = {
-    after = [ "sops-nix.service" ];
+    after = [
+      "sops-nix.service"
+      "mihomo.service"
+    ];
+    wants = [ "mihomo.service" ];
     restartIfChanged = false;
     serviceConfig.LogsDirectory = "xray";
+  };
+
+  sops.secrets = {
+    "xray-${host}-key-priv".key = "xray/${host}/key_priv";
+    xray-admin = { };
   };
 
   systemd.services.xray-poll = {

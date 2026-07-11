@@ -1,12 +1,10 @@
 { pkgs
-, host
-, lib
 , ...
 }:
 {
-  home.packages = lib.mkIf (host == "home") [ pkgs.uxplay ];
+  home.packages = [ pkgs.uxplay ];
 
-  systemd.user.services.uxplay = lib.mkIf (host == "home") {
+  systemd.user.services.uxplay = {
     Unit = {
       Description = "airplay reciver";
       After = [

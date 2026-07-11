@@ -105,6 +105,7 @@
             (base + "/configuration.nix")
             (base + "/machines/${host}")
             ./secrets
+            ./proxy
             inputs.home-manager.nixosModules.home-manager
             inputs.nix-index-database.nixosModules.nix-index
             inputs.sops-nix.nixosModules.sops
@@ -127,6 +128,7 @@
             (base + "/configuration.nix")
             (base + "/machines/${host}")
             ./secrets
+            ./proxy
             inputs.home-manager.nixosModules.home-manager
             inputs.nix-index-database.nixosModules.nix-index
             inputs.sops-nix.nixosModules.sops

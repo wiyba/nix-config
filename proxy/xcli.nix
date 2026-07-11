@@ -1,4 +1,4 @@
-{ inputs, pkgs, ... }:
+{ config, inputs, pkgs, xrayUsers, ... }:
 let
   xcli = inputs.xcli.packages.${pkgs.stdenv.hostPlatform.system}.default;
   grp = {
@@ -22,6 +22,21 @@ in
     xray-helsinki-sid = grp;
     xray-home-key-pub = grp;
     xray-home-sid = grp;
+  };
+
+  sops.templates.xray-users = {
+    owner = "root";
+    mode = "0444";
+    path = "/run/secrets/xray-users.json";
+    content = builtins.toJSON (
+      map
+        (user: {
+          user = user.name;
+          uuid = config.sops.placeholder."xray-uuid-${user.name}";
+          inherit (user) admin;
+        })
+        xrayUsers
+    );
   };
 
   environment.systemPackages = [ xcli ];

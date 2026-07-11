@@ -28,19 +28,15 @@ let
       any-nix-shell # zsh support for nix shell
       appimage-run # tool to run appimage in nixos
       bun # bun
-      claude-code # cli llm
       eza # ls but better
-      file # file
       filezilla # sftp gui client
       gh # github cli
       jq # json parser
       nemo # file manager
       file-roller # archive manager
       hyprpolkitagent # polkit auth agent
-      mtr # better traceroute
       nil # lsp for nix
       nitch # preconfigured fastfetch
-      ntfs3g # ntfs driver
       packwiz # minecraft modpacks manager
       prismlauncher # minecraft launcher
       sops # sops
@@ -52,8 +48,6 @@ let
       sqlite # cli sqlite db viewer
       scanmem # memory scanner
       xrdb # xrdb for setting Xft.dpi
-      dnsutils # dnsutils
-      tcpdump # tcp dump
       python3 # python3
       rkn-block-checker # internet block diagnosis tool
       supersonic-wayland # music player for subsonic api

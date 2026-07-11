@@ -36,7 +36,6 @@ let
       "MATCH,stockholm"
     ];
     stockholm = [
-      "DOMAIN-SUFFIX,wiyba.org,DIRECT"
       "GEOSITE,category-ru,home"
       "MATCH,DIRECT"
     ];
@@ -101,11 +100,6 @@ in
       Restart = "on-failure";
       RestartSec = "5s";
     };
-  };
-
-  systemd.services.xray = {
-    wants = [ "mihomo.service" ];
-    after = [ "mihomo.service" ];
   };
 
   sops.templates.mihomo-relay-config = {
