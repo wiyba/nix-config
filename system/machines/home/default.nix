@@ -1,7 +1,6 @@
 { pkgs
 , config
 , inputs
-, lib
 , ...
 }:
 
@@ -30,6 +29,14 @@
 
   powerManagement.cpuFreqGovernor = "performance";
 
+
+  hardware.bluetooth.enable = true;
+
+  systemd.services.xray = {
+    after = [ "mihomo.service" ];
+    wants = [ "mihomo.service" ];
+  };
+
   systemd.network.links = {
     "10-wan0" = {
       matchConfig.MACAddress = "2c:f0:5d:04:be:05";
@@ -38,6 +45,10 @@
     "10-lan0" = {
       matchConfig.MACAddress = "00:e0:4c:4d:7e:20";
       linkConfig.Name = "lan0";
+    };
+    "10-wlan0" = {
+      matchConfig.MACAddress = "70:d8:c2:2d:4f:fb";
+      linkConfig.Name = "wlan0";
     };
   };
 

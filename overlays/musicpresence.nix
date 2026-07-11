@@ -2,11 +2,11 @@
 
 stdenv.mkDerivation rec {
   pname = "musicpresence";
-  version = "2.3.5";
+  version = "2.3.6";
 
   src = fetchurl {
     url = "https://github.com/ungive/discord-music-presence/releases/download/v${version}/musicpresence-${version}-linux-x86_64.tar.gz";
-    hash = "sha256-BDgM1SfyEXC0oW+J33mYKwqRrvZX3cy/X9k7Yuk4kS8=";
+    hash = "sha256-w3y1I6nnztEMaihbXIfQqB0ng6s07iA8bqC8PDq+E+I=";
   };
 
   dontBuild = true;

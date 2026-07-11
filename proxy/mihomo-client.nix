@@ -123,8 +123,8 @@ let
       - DOMAIN-SUFFIX,wiyba.org,DIRECT
       - GEOIP,PRIVATE,DIRECT
       - GEOSITE,category-game-platforms-download,DIRECT
-      - GEOSITE,sony,stockholm
-      - GEOSITE,playstation,stockholm
+      - GEOSITE,sony,DIRECT
+      - GEOSITE,playstation,DIRECT
       - GEOSITE,category-ru,DIRECT
       #- GEOIP,RU,DIRECT,no-resolve
       - GEOSITE,roblox,helsinki
