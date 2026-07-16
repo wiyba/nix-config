@@ -1,14 +1,9 @@
-{ host, lib, ... }:
-let
-  roles = {
-    home = [ ./xray.nix ./mihomo-client.nix ./xcli.nix ];
-    thinkpad = [ ./mihomo-client.nix ];
-    helsinki = [ ./xray.nix ./mihomo-chain.nix ];
-    stockholm = [ ./xray.nix ./mihomo-chain.nix ];
-    almaty = [ ./xray.nix ./mihomo-chain.nix ];
-  };
-  active = roles.${host} or [ ];
-in
+{ host, ... }:
 {
-  imports = active ++ lib.optional (active != [ ]) ./secrets.nix;
+  imports = {
+    home = [ ./secrets.nix ./xray.nix ./admin.nix ./mihomo.nix ./xcli.nix ];
+    thinkpad = [ ./secrets.nix ./mihomo.nix ];
+    stockholm = [ ./secrets.nix ./xray.nix ./admin.nix ./mihomo.nix ];
+    almaty = [ ./secrets.nix ./xray.nix ./admin.nix ./mihomo.nix ];
+  }.${host} or [ ];
 }

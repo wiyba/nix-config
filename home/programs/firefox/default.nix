@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 let
   gruvbox-theme = pkgs.nur.repos.rycee.firefox-addons.buildFirefoxXpiAddon {

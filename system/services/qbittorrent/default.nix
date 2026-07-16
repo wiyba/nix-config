@@ -1,7 +1,7 @@
 { ... }:
 {
   systemd.tmpfiles.rules = [
-    "d /media/downloads 2775 qbittorrent media - -"
+    "d /data/downloads 2775 qbittorrent media - -"
   ];
 
   systemd.services.qbittorrent.serviceConfig.UMask = "0002";
@@ -15,7 +15,7 @@
 
     serverConfig = {
       BitTorrent.Session = {
-        DefaultSavePath = "/media/downloads/";
+        DefaultSavePath = "/data/downloads/";
         Port = 6881;
         Interface = "wan0";
         InterfaceName = "wan0";

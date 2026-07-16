@@ -23,10 +23,25 @@
     fsType = "vfat";
   };
 
-  fileSystems."/media" = {
-    device = "/dev/disk/by-uuid/90787f3a-c2d8-4899-8fe0-f62ec36001d6";
-    fsType = "ext4";
+  fileSystems."/data" = {
+    device = "/dev/disk/by-label/data";
+    fsType = "btrfs";
+    options = [ "compress=zstd" "noatime" "nofail" ];
   };
+
+  fileSystems."/music" = {
+    device = "/dev/disk/by-label/music";
+    fsType = "ext4";
+    options = [ "noatime" "nofail" ];
+  };
+
+  services.btrfs.autoScrub = {
+    enable = true;
+    fileSystems = [ "/data" ];
+    interval = "weekly";
+  };
+
+  services.fstrim.enable = true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 

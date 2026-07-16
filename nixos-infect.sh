@@ -29,7 +29,9 @@ REPO_BRANCH="${REPO_BRANCH:-main}"
 NIX_CHANNEL="${NIX_CHANNEL:-nixos-25.11}"
 GEN_DIR="/etc/nixos-generated"
 REPO_DIR="/etc/nixos-repo-staging"
-
+# /\/\/\/\/\/\
+# dont forget to change theese if forking
+# \/\/\/\/\/\/
 DEFAULT_KEY="ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBQmY892Awak26eH1iK0aEj7nILjGddlayY7e+fAwRV0 wiyba.org"
 
 # ---------- helpers ---------------------------------------------------------

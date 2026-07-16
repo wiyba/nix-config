@@ -6,7 +6,7 @@
 
 {
   imports = [
-    ./hardware-configuration.nix
+    ./hardware.nix
     ./audio.nix
     inputs.nixos-hardware.nixosModules.common-cpu-intel
     inputs.nixos-hardware.nixosModules.common-gpu-amd
@@ -28,14 +28,6 @@
   };
 
   powerManagement.cpuFreqGovernor = "performance";
-
-
-  hardware.bluetooth.enable = true;
-
-  systemd.services.xray = {
-    after = [ "mihomo.service" ];
-    wants = [ "mihomo.service" ];
-  };
 
   systemd.network.links = {
     "10-wan0" = {
@@ -59,7 +51,7 @@
     ];
   };
 
-  systemd.services.offloads-fix = {
+  systemd.services.wan-fix = {
     wantedBy = [ "multi-user.target" ];
     after = [ "network-pre.target" ];
     serviceConfig = {
@@ -149,14 +141,8 @@
           transform "normal"
           position x=0 y=-1440
       }
-
-      workspace "social" {
-          open-on-output "DP-2"
-      }
-      workspace "media" {
-          open-on-output "DP-2"
-      }
     '';
+
     "hypr/hyprland-host.conf".text = ''
       exec= pkill hyprpaper; hyprpaper
       bind=SUPER, L, exec, hyprctl dispatch dpms toggle
@@ -174,6 +160,7 @@
       workspace=8, monitor:DP-1
       workspace=9, monitor:DP-1
     '';
+
     "hypr/hyprpaper.conf".text = ''
       preload=/etc/nixos/imgs/nix4.png
       wallpaper {
@@ -189,18 +176,19 @@
     '';
   };
 
-  #media
   users.groups.media = { };
   systemd.tmpfiles.rules = [
-    "d /media         2775 root        media - -"
-    "d /media/movies  2775 wiyba       media - -"
-    "d /media/shows   2775 wiyba       media - -"
-    "d /media/music   2775 wiyba       media - -"
+    "d /data          2775 root        media - -"
+    "d /data/.transcodes 0750 jellyfin media - -"
+    "d /data/movies   2775 wiyba       media - -"
+    "d /data/shows    2775 wiyba       media - -"
+    "d /data/clips    2775 wiyba       media - -"
+    "d /music         2775 wiyba       media - -"
+    "L+ /media        -    -           -     - /data"
   ];
   services.jellyfin = {
     enable = true;
     group = "media";
-    dataDir = "/media/jellyfin";
     hardwareAcceleration = {
       enable = true;
       type = "vaapi";
@@ -210,6 +198,7 @@
       enableHardwareEncoding = true;
       enableToneMapping = true;
       enableSubtitleExtraction = true;
+      throttleTranscoding = true;
       hardwareDecodingCodecs = {
         h264 = true;
         hevc = true;
@@ -227,13 +216,12 @@
     "video"
     "render"
   ];
+
   services.navidrome = {
     enable = true;
     group = "media";
     settings = {
-      DataFolder = "/media/navidrome";
-      MusicFolder = "/media/music";
-      PlaylistsPath = "/media/navidrome/playlists";
+      MusicFolder = "/music";
       UILoginBackgroundUrl = "https://i.pinimg.com/736x/b0/fc/d9/b0fcd999b0e3d3f3ef4336db0e218838.jpg";
       "LastFM.Enabled" = true;
       "LastFM.Language" = "ru";

@@ -25,6 +25,7 @@
         bypassWorkqueues = true;
       };
       systemd.services.early-backlight = {
+        description = "fix early backlight";
         wantedBy = [ "cryptsetup.target" ];
         before = [ "systemd-cryptsetup@cryptroot.service" ];
         unitConfig.DefaultDependencies = false;
@@ -55,23 +56,6 @@
 
     networkmanager = {
       enable = true;
-      dispatcherScripts = [
-        {
-          type = "basic";
-          source = pkgs.writeShellScript "link-policy" ''
-            case "$2" in
-              up|down|pre-down)
-                active="$(${pkgs.networkmanager}/bin/nmcli -t -f NAME c show --active | ${pkgs.coreutils}/bin/head -1)"
-                if [ "$active" = "wiyba_net" ]; then
-                  ${pkgs.systemd}/bin/systemctl stop mihomo.service
-                else
-                  ${pkgs.systemd}/bin/systemctl start mihomo.service
-                fi
-                ;;
-            esac
-          '';
-        }
-      ];
       ensureProfiles.profiles = {
         cdc-wdm0 = {
           connection = {
@@ -171,15 +155,7 @@
     '';
   };
 
-  services.udev.extraRules = ''
-    ACTION=="change", SUBSYSTEM=="power_supply", KERNEL=="AC", \
-      RUN+="${pkgs.systemd}/bin/systemctl --no-block --machine=wiyba@.host --user start niri-refresh-switch.service"
-  '';
-
-  environment.systemPackages = with pkgs; [
-    brightnessctl
-    tpm2-tss
-  ];
+  services.udev.extraRules = ''ACTION=="change", SUBSYSTEM=="power_supply", KERNEL=="AC", RUN+="${pkgs.systemd}/bin/systemctl --no-block --machine=wiyba@.host --user start niri-refresh-switch.service"'';
 
   services.logind.settings.Login = {
     HandleLidSwitch = "suspend-then-hibernate";
@@ -255,12 +231,14 @@
           position x=0 y=0
       }
 
+      // make it trigger on sleep nor lid close
       switch-events {
           lid-close { spawn "noctalia-shell" "ipc" "call" "lockScreen" "lock"; }
       }
 
       spawn-sh-at-startup "pactl-listener"
     '';
+
     "hypr/hyprland-host.conf".text = ''
       bind=SUPER, L, exec, hyprlock
 

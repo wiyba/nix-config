@@ -6,7 +6,6 @@ let
     { name = "kika"; admin = false; }
     { name = "osman"; admin = false; }
     { name = "obguy"; admin = false; }
-    { name = "helsinki"; admin = false; }
     { name = "stockholm"; admin = false; }
     { name = "wiyba"; admin = true; }
     { name = "home"; admin = true; }
@@ -17,13 +16,15 @@ let
 
   hosts = [
     "almaty"
-    "helsinki"
     "home"
     "stockholm"
   ];
 in
 {
-  _module.args.xrayUsers = users;
+  _module.args = {
+    xrayUsers = users;
+    xrayHosts = hosts;
+  };
 
   sops.secrets = lib.mergeAttrsList (
     map

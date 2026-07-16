@@ -21,7 +21,6 @@ jobs:
       matrix:
         host:
           - stockholm
-          - helsinki
 
     steps:
       - uses: actions/checkout@v4

@@ -160,11 +160,6 @@
           system = "x86_64-linux";
           base = ./server;
         };
-        helsinki = mkSystem {
-          host = "helsinki";
-          system = "x86_64-linux";
-          base = ./server;
-        };
         almaty = mkSystem {
           host = "almaty";
           system = "x86_64-linux";

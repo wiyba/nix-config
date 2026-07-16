@@ -1,20 +1,57 @@
 { pkgs, ... }:
 
+# TODO: remove unnecessary things
 {
   services.pipewire.extraLadspaPackages = [
     pkgs.ladspaPlugins
     pkgs.rnnoise-plugin.ladspa
   ];
 
-  services.pipewire.wireplumber.extraConfig."51-ur22c-playback-master" = {
+  services.pipewire.wireplumber.extraConfig."51-ur22c" = {
     "monitor.alsa.rules" = [
       {
         matches = [
           { "node.name" = "alsa_output.usb-Yamaha_Corporation_Steinberg_UR22C-00.pro-output-0"; }
         ];
         actions.update-props = {
+          "node.description" = "UR22C Output";
           "priority.driver" = 5000;
           "priority.session" = 5000;
+          "api.alsa.disable-tsched" = false;
+        };
+      }
+      {
+        matches = [
+          { "node.name" = "alsa_input.usb-Yamaha_Corporation_Steinberg_UR22C-00.pro-input-0"; }
+        ];
+        actions.update-props = {
+          "priority.driver" = 5000;
+          "priority.session" = 5000;
+          "api.alsa.disable-tsched" = false;
+        };
+      }
+    ];
+  };
+
+  services.pipewire.extraConfig.pipewire."20-elgato-loopback" = {
+    "context.modules" = [
+      {
+        name = "libpipewire-module-loopback";
+        args = {
+          "node.description" = "Elgato 4K X Loopback";
+          "capture.props" = {
+            "node.name" = "elgato_4kx_capture";
+            "target.object" = "alsa_input.usb-Elgato_Elgato_4K_X_A7SNB60130I2V4-02.analog-stereo";
+            "node.dont-reconnect" = true;
+            "stream.dont-remix" = true;
+            "audio.position" = [ "FL" "FR" ];
+          };
+          "playback.props" = {
+            "node.name" = "elgato_4kx_playback";
+            "target.object" = "alsa_output.usb-Yamaha_Corporation_Steinberg_UR22C-00.pro-output-0";
+            "node.dont-reconnect" = true;
+            "audio.position" = [ "FL" "FR" ];
+          };
         };
       }
     ];
@@ -25,8 +62,8 @@
       {
         name = "libpipewire-module-filter-chain";
         args = {
-          "node.description" = "UR22C Voice";
-          "media.name" = "UR22C Voice";
+          "node.description" = "UR22C Input";
+          "media.name" = "UR22C Input";
           "filter.graph" = {
             nodes = [
               { type = "builtin"; name = "mix"; label = "mixer"; }
@@ -96,14 +133,14 @@
           "audio.position" = [ "MONO" ];
           "capture.props" = {
             "node.name" = "ur22c_voice_capture";
-            "node.target" = "alsa_input.usb-Yamaha_Corporation_Steinberg_UR22C-00.pro-input-0";
+            "target.object" = "alsa_input.usb-Yamaha_Corporation_Steinberg_UR22C-00.pro-input-0";
             "audio.channels" = 2;
             "audio.position" = [ "FL" "FR" ];
             "stream.dont-remix" = true;
           };
           "playback.props" = {
             "node.name" = "ur22c_voice_source";
-            "node.description" = "UR22C Voice";
+            "node.description" = "UR22C Input";
             "media.class" = "Audio/Source";
             "audio.channels" = 1;
             "audio.position" = [ "MONO" ];

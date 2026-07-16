@@ -81,11 +81,28 @@
     };
   };
 
-  hardware.xone.enable = true;
+  hardware = {
+    xone.enable = true;
+    bluetooth.enable = true;
+  };
 
   programs = {
+    uwsm.enable = wm == "hyprland";
+    hyprland.enable = wm == "hyprland";
+    hyprland.withUWSM = wm == "hyprland";
+    niri.enable = wm == "niri";
+
     zsh.enable = true;
     dconf.enable = true;
+    gamemode.enable = true;
+    nix-ld.enable = true;
+    nix-index-database.comma.enable = true;
+
+    nh = {
+      enable = true;
+      flake = "/etc/nixos";
+    };
+
     steam = {
       enable = true;
       package = pkgs.steam.override {
@@ -93,23 +110,11 @@
       };
       gamescopeSession.enable = true;
     };
+
     gamescope = {
       enable = true;
       capSysNice = true;
     };
-    gamemode.enable = true;
-    nh = {
-      enable = true;
-      flake = "/etc/nixos";
-    };
-    nix-ld.enable = true;
-    nix-index-database.comma.enable = true;
-    uwsm.enable = wm == "hyprland";
-    hyprland = lib.mkIf (wm == "hyprland") {
-      enable = true;
-      withUWSM = true;
-    };
-    niri.enable = wm == "niri";
   };
 
   services = {
@@ -120,7 +125,7 @@
     udisks2.enable = true;
     gvfs.enable = true;
     gnome.gnome-keyring.enable = true;
-    udev.packages = [ pkgs.proxmark3 ];
+    udev.packages = [ pkgs.proxmark3 pkgs.chrommium ];
   };
 
   environment = {
@@ -130,6 +135,7 @@
       git
       wget
       lm_sensors
+      brightnessctl
       wl-clipboard
       usb-modeswitch
       libsecret
@@ -156,6 +162,10 @@
       tcpdump
       ntfs3g
       xxd
+      tpm2-tss
+      tmux
+      p7zip
+      libarchive
     ];
     variables = {
       NIXOS_OZONE_WL = "1";

@@ -1,3 +1,7 @@
+// borrowed from https://github.com/feross/TheAnnoyingSite.com
+// disabled most malicious trolls
+// dont ban me please
+
 const SCREEN_WIDTH = window.screen.availWidth;
 
 const SCREEN_HEIGHT = window.screen.availHeight;

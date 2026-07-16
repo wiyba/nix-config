@@ -33,7 +33,7 @@
             "Telegram"
         ],
         "preferredPlayer": "supersonic-wayland",
-        "spectrumFrameRate": 144,
+        "spectrumFrameRate": 60,
         "spectrumMirrored": false,
         "visualizerType": "wave",
         "volumeFeedback": false,
@@ -180,14 +180,6 @@
                         "steam",
                         "Discord"
                     ]
-                },
-                {
-                    "hideWhenZero": false,
-                    "hideWhenZeroUnread": false,
-                    "iconColor": "none",
-                    "id": "NotificationHistory",
-                    "showUnreadBadge": true,
-                    "unreadBadgeColor": "primary"
                 },
                 {
                     "deviceNativePath": "__default__",
@@ -469,14 +461,14 @@
     "idle": {
         "customCommands": "[]",
         "enabled": true,
-        "fadeDuration": 30,
+        "fadeDuration": 10,
         "lockCommand": "",
-        "lockTimeout": 240,
+        "lockTimeout": 660,
         "resumeLockCommand": "",
         "resumeScreenOffCommand": "",
         "resumeSuspendCommand": "",
         "screenOffCommand": "",
-        "screenOffTimeout": 120,
+        "screenOffTimeout": 600,
         "suspendCommand": "",
         "suspendTimeout": 0
     },
@@ -489,7 +481,7 @@
         "name": "Moscow",
         "showCalendarEvents": true,
         "showCalendarWeather": true,
-        "showWeekNumberInCalendar": false,
+        "showWeekNumberInCalendar": true,
         "use12hourFormat": false,
         "useFahrenheit": false,
         "weatherEnabled": true,

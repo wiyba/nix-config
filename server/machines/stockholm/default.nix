@@ -3,6 +3,7 @@
   imports = [
     ./hardware-configuration.nix
     ../../services/acme
+    ../../services/mailserver
   ];
 
   boot = {

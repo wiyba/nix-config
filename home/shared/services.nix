@@ -14,7 +14,7 @@ let
       };
 
       systemd.user.services.hyprpolkitagent = {
-        Unit.Description = "Hyprland Polkit Authentication Agent";
+        Unit.Description = "hyprland gui polkit";
         Unit.After = [ "graphical-session.target" ];
         Install.WantedBy = [ "graphical-session.target" ];
         Service = {

@@ -1,4 +1,4 @@
-{ config, inputs, pkgs, xrayUsers, ... }:
+{ config, inputs, lib, pkgs, xrayUsers, xrayHosts, ... }:
 let
   xcli = inputs.xcli.packages.${pkgs.stdenv.hostPlatform.system}.default;
   grp = {
@@ -14,15 +14,14 @@ in
   users.groups.xcli = { };
   users.users.wiyba.extraGroups = [ "xcli" ];
 
-  sops.secrets = {
-    xray-admin = grp;
-    xray-stockholm-key-pub = grp;
-    xray-stockholm-sid = grp;
-    xray-helsinki-key-pub = grp;
-    xray-helsinki-sid = grp;
-    xray-home-key-pub = grp;
-    xray-home-sid = grp;
-  };
+  sops.secrets = { xray-admin = grp; } // lib.mergeAttrsList (
+    map
+      (h: {
+        "xray-${h}-key-pub" = grp;
+        "xray-${h}-sid" = grp;
+      })
+      xrayHosts
+  );
 
   sops.templates.xray-users = {
     owner = "root";
