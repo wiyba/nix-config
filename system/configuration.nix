@@ -125,7 +125,7 @@
     udisks2.enable = true;
     gvfs.enable = true;
     gnome.gnome-keyring.enable = true;
-    udev.packages = [ pkgs.proxmark3 pkgs.chrommium ];
+    udev.packages = [ pkgs.proxmark3 pkgs.chromium ];
   };
 
   environment = {
