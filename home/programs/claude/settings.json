@@ -5,6 +5,12 @@
     "pr": ""
   },
   "model": "claude-fable-5[1m]",
+  "permissions": {
+    "additionalDirectories": [
+      "~/Projects",
+      "/etc/nixos"
+    ]
+  },
   "enabledPlugins": {
     "github@claude-plugins-official": true,
     "typescript-lsp@claude-plugins-official": true,
@@ -14,6 +20,8 @@
   "language": "Russian",
   "effortLevel": "xhigh",
   "promptSuggestionEnabled": false,
+  "autoMemoryEnabled": false,
+  "autoDreamEnabled": false,
   "awaySummaryEnabled": false,
   "tui": "fullscreen",
   "showThinkingSummaries": true,
